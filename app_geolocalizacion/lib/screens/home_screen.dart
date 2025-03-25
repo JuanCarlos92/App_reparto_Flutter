@@ -1,5 +1,6 @@
 import 'package:app_geolocalizacion/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -9,6 +10,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<Position> determinarPosition() async {
+    LocationPermission permission;
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error("error");
+      }
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
+  void getCurrentLocation() async {
+    Position position = await determinarPosition();
+    print(position.latitude);
+    print(position.longitude);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    //funcion
+                    getCurrentLocation();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
