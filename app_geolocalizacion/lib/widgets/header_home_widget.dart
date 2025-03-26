@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Headerwidget extends StatelessWidget {
-  const Headerwidget({super.key});
+class Headerhomewidget extends StatelessWidget {
+  const Headerhomewidget({super.key});
 
   // Estilo de texto para el título: color blanco, negrita, tamaño de fuente 26
   final tituloTextStyle = const TextStyle(
@@ -19,9 +19,9 @@ class Headerwidget extends StatelessWidget {
       padding: const EdgeInsets.all(25.0),
       height: 120.0, // Altura del contenedor
       // Fondo de color
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
-          colors: [Colors.black, const Color.fromARGB(255, 79, 201, 142)],
+          colors: [Colors.black, Color.fromARGB(255, 79, 201, 142)],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
         ),

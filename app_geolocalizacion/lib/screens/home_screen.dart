@@ -1,4 +1,4 @@
-import 'package:app_geolocalizacion/widgets/header_widget.dart';
+import 'package:app_geolocalizacion/widgets/header_home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -24,7 +24,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void getCurrentLocation() async {
     Position position = await determinarPosition();
+    // ignore: avoid_print
     print(position.latitude);
+    // ignore: avoid_print
     print(position.longitude);
   }
 
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.greenAccent,
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.greenAccent, Colors.black],
             begin: Alignment.topCenter,
@@ -42,12 +44,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Column(
           children: <Widget>[
-            Headerwidget(),
+            const Headerhomewidget(),
             Expanded(
               child: Center(
                 child: ElevatedButton(
                   onPressed: () {
                     getCurrentLocation();
+                    Navigator.pushReplacementNamed(context, '/timer');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
