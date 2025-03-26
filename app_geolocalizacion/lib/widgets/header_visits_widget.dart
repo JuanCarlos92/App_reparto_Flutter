@@ -1,15 +1,23 @@
 import 'package:app_geolocalizacion/providers/timer_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 
-class HeaderVisitswidget extends StatelessWidget {
+class HeaderVisitswidget extends StatefulWidget {
   const HeaderVisitswidget({super.key});
+
+  @override
+  // ignore: library_private_types_in_public_api
+  _HeaderVisitswidgetState createState() => _HeaderVisitswidgetState();
+}
+
+class _HeaderVisitswidgetState extends State<HeaderVisitswidget> {
+  bool isPaused = true; // Variable para controlar el estado de pausa/reanudar
 
   String _formatNumber(int number) {
     return number.toString().padLeft(2, '0');
   }
 
-  // Estilo de texto para el título: color blanco, negrita, tamaño de fuente 26
+  // Estilo de texto para el título
   final tituloTextStyle = const TextStyle(
     color: Colors.white,
     fontWeight: FontWeight.bold,
@@ -19,12 +27,9 @@ class HeaderVisitswidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // Alineación del contenido hacia la parte inferior y centrado
       alignment: Alignment.bottomCenter,
-      // Espaciado interno de 25 píxeles alrededor del contenedor
       padding: const EdgeInsets.all(25.0),
       height: 120.0,
-      // Fondo de color
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.black, Color.fromARGB(255, 79, 201, 142)],
@@ -33,10 +38,11 @@ class HeaderVisitswidget extends StatelessWidget {
         ),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Consumer<TimerProvider>(
                 builder: (context, timerProvider, child) {
@@ -45,45 +51,50 @@ class HeaderVisitswidget extends StatelessWidget {
                     style: tituloTextStyle,
                   );
                 },
-              ),
+              )
             ],
           ),
           Row(
             children: [
-              // Primer contenedor
+              // Botón de pausa/inicio
               Container(
                 decoration: BoxDecoration(
-                  // Bordes redondeados con radio de 15
                   borderRadius: BorderRadius.circular(15),
-                  // Fondo negro con opacidad al 10%
                   // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(.1),
                 ),
                 child: IconButton(
-                  // Icono de búsqueda de tamaño 28 y color blanco
-                  icon: const Icon(Icons.pause, size: 28, color: Colors.white),
-                  onPressed: () {},
+                  icon: Icon(
+                    isPaused ? Icons.pause : Icons.play_arrow, // Cambiar ícono
+                    size: 28,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isPaused = !isPaused; // Alternar estado al presionar
+                    });
+                    context.read<TimerProvider>().pausarTimer();
+                  },
                 ),
               ),
-              // Espacio de 10 píxeles entre los botones
               const SizedBox(width: 10),
-              // Segundo contenedor
+              // Botón de detener
               Container(
                 decoration: BoxDecoration(
-                  // Bordes redondeados con radio de 15
                   borderRadius: BorderRadius.circular(15),
-                  // Fondo negro con opacidad al 10%
                   // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(.1),
                 ),
                 child: IconButton(
-                  // Icono de notificaciones
                   icon: const Icon(
                     Icons.stop,
                     size: 28,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<TimerProvider>().finalizarTimer();
+                    Navigator.pushReplacementNamed(context, '/home');
+                  },
                 ),
               ),
             ],

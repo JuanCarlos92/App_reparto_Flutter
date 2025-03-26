@@ -15,9 +15,9 @@ class _TimerPageState extends State<TimerPage> {
   void initState() {
     super.initState();
     // Iniciar el temporizador cuando se crea la página
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<TimerProvider>().iniciarTimer();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   context.read<TimerProvider>().iniciarTimer();
+    // });
   }
 
   String _formatNumber(int number) {
@@ -37,7 +37,7 @@ class _TimerPageState extends State<TimerPage> {
         ),
         child: Column(
           children: [
-            // Encabezado con el temporizador
+            // Encabezado
             const HeaderTimerwidget(),
             // Espacio restante para el contenido centrado
             Expanded(
@@ -45,15 +45,17 @@ class _TimerPageState extends State<TimerPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Temporizador con el mismo estilo de fondo que VisitsPage
+                    // Texto
+                    const Text(
+                      'Llevas:',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                     Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Colors.white
-                            // ignore: deprecated_member_use
-                            .withOpacity(0.2), // Misma opacidad que VisitsPage
-                        borderRadius: BorderRadius.circular(20),
-                      ),
                       child: Consumer<TimerProvider>(
                         builder: (context, timerProvider, child) {
                           return Text(

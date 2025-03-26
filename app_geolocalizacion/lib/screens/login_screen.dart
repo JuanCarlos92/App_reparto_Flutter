@@ -1,46 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:app_geolocalizacion/services/auth_service.dart';
+import 'login_form.dart';
 
+// Clase StatefulWidget que representa la pantalla de login
 class LoginScreen extends StatefulWidget {
+  // Constructor que permite pasar una clave opcional
   const LoginScreen({super.key});
 
   @override
+  // Método que crea el estado del widget
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
+// Clase que maneja el estado del widget LoginScreen
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<
-      FormState>(); // Clave global para manejar el estado del formulario
-  final _usernameController =
-      TextEditingController(); // Controlador para el campo de usuario
-  final _passwordController =
-      TextEditingController(); // Controlador para el campo de contraseña
-  final _domainController =
-      TextEditingController(); // Controlador para el campo de dominio (solo para registro)
-  final _authService = AuthService(); // Instancia del servicio de autenticación
-  bool _isLoading = false; // Estado de carga para el botón de login
-  bool _isRegistering = false; // Estado de carga para el botón de registro
-  bool _isLoginForm =
-      true; // Estado que indica si es formulario de login o de registro
+  // Clave global para manejar el estado del formulario
+  final _formKey = GlobalKey<FormState>();
 
+  // Controladores para los campos de texto de usuario, contraseña y dominio
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _domainController = TextEditingController();
+
+  // Instancia del servicio de autenticación
+  final _authService = AuthService();
+
+  // Estados de carga para los botones de login y registro
+  bool _isLoading = false;
+  bool _isRegistering = false;
+
+  // Estado que indica si el formulario actual es de login o registro
+  bool _isLoginForm = true;
+
+  // Método para iniciar sesión
   Future<void> _login() async {
+    // Valida el formulario antes de continuar
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
+      // Activa el indicador de carga
       _isLoading = true;
     });
 
     try {
+      // Llama al servicio de autenticación para iniciar sesión
       await _authService.login(
         _usernameController.text,
         _passwordController.text,
       );
 
       if (mounted) {
+        // Si la pantalla sigue en el árbol de widgets, redirige a la pantalla de inicio
         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       }
     } catch (e) {
       if (mounted) {
+        // Muestra un mensaje de error en caso de fallo en la autenticación
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
         );
@@ -48,20 +63,25 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       if (mounted) {
         setState(() {
+          // Desactiva el indicador de carga
           _isLoading = false;
         });
       }
     }
   }
 
+  // Método para registrarse
   Future<void> _register() async {
+    // Valida el formulario antes de continuar
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
+      // Activa el indicador de carga para el registro
       _isRegistering = true;
     });
 
     try {
+      // Llama al servicio de autenticación para registrar un nuevo usuario
       await _authService.register(
         _usernameController.text,
         _passwordController.text,
@@ -69,10 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (mounted) {
+        // Si el registro es exitoso, redirige a la pantalla de inicio
         Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
       }
     } catch (e) {
       if (mounted) {
+        // Muestra un mensaje de error en caso de fallo en el registro
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString()), backgroundColor: Colors.red),
         );
@@ -80,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
     } finally {
       if (mounted) {
         setState(() {
+          // Desactiva el indicador de carga
           _isRegistering = false;
         });
       }
@@ -89,7 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // La estructura principal de la pantalla, que contiene un contenedor y una decoración de fondo
       body: Container(
+        // Aplica un fondo con un degradado de verde a negro
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.greenAccent, Colors.black],
@@ -97,130 +122,37 @@ class _LoginScreenState extends State<LoginScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
+        // Centra el contenido dentro del contenedor
         child: Center(
           child: SingleChildScrollView(
+            // Permite que el contenido sea desplazable si es necesario
             padding: const EdgeInsets.all(24.0),
+            // Define una tarjeta con sombra y bordes redondeados
             child: Card(
               elevation: 8,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
+              // Añade un relleno alrededor del contenido de la tarjeta
               child: Padding(
                 padding: const EdgeInsets.all(24.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        _isLoginForm ? 'Iniciar Sesión' : 'Registrarse',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 24),
-                      TextFormField(
-                        controller: _usernameController,
-                        decoration: const InputDecoration(
-                          labelText: 'Usuario',
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa tu usuario';
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 16),
-                      TextFormField(
-                        controller: _passwordController,
-                        decoration: const InputDecoration(
-                          labelText: 'Contraseña',
-                          prefixIcon: Icon(Icons.lock),
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor ingresa tu contraseña';
-                          }
-                          return null;
-                        },
-                      ),
-                      if (!_isLoginForm) ...[
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          controller: _domainController,
-                          decoration: const InputDecoration(
-                            labelText: 'Dominio',
-                            prefixIcon: Icon(Icons.public),
-                            border: OutlineInputBorder(),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Por favor ingresa tu dominio';
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: _isLoginForm
-                              ? (_isLoading ? null : _login)
-                              : (_isRegistering ? null : _register),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                _isLoginForm ? Colors.green : Colors.blue,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: _isLoginForm
-                              ? (_isLoading
-                                  ? const CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  : const Text(
-                                      'Iniciar Sesión',
-                                      style: TextStyle(fontSize: 16),
-                                    ))
-                              : (_isRegistering
-                                  ? const CircularProgressIndicator(
-                                      color: Colors.white,
-                                    )
-                                  : const Text(
-                                      'Registrarse',
-                                      style: TextStyle(fontSize: 16),
-                                    )),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLoginForm = !_isLoginForm;
-                          });
-                        },
-                        child: Text(
-                          _isLoginForm
-                              ? '¿No tienes una cuenta? Regístrate'
-                              : '¿Ya tienes una cuenta? Inicia sesión',
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.blue,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                // Usa el componente LoginForm para mostrar el formulario de login o registro
+                child: LoginForm(
+                  formKey: _formKey,
+                  usernameController: _usernameController,
+                  passwordController: _passwordController,
+                  domainController: _domainController,
+                  isLoginForm: _isLoginForm,
+                  onLogin: _login,
+                  onRegister: _register,
+                  toggleForm: () {
+                    setState(() {
+                      // Alterna entre el formulario de login y registro
+                      _isLoginForm = !_isLoginForm;
+                    });
+                  },
+                  isLoading: _isLoading,
+                  isRegistering: _isRegistering,
                 ),
               ),
             ),
@@ -232,6 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    // Libera los recursos de los controladores de texto
     _usernameController.dispose();
     _passwordController.dispose();
     _domainController.dispose();

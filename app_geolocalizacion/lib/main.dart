@@ -1,12 +1,22 @@
+import 'package:app_geolocalizacion/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:app_geolocalizacion/providers/timer_provider.dart';
+import 'package:app_geolocalizacion/pages/visits_page.dart';
 import 'package:app_geolocalizacion/screens/home_screen.dart';
 import 'package:app_geolocalizacion/screens/login_screen.dart';
 import 'package:app_geolocalizacion/pages/main_pages.dart';
-import 'package:app_geolocalizacion/providers/timer_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => TimerProvider()),
+        ChangeNotifierProvider(create: (_) => ClientsProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,18 +24,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TimerProvider>(
-      create: (context) => TimerProvider(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: "Geolocalización",
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const LoginScreen(),
-          '/home': (context) => const HomeScreen(),
-          '/timer': (context) => const MainPages(),
-        },
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: "Geolocalización",
+      initialRoute: '/home',
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
+        '/timer': (context) => const MainPages(),
+        '/visits': (context) => const VisitsPage(),
+      },
     );
   }
 }

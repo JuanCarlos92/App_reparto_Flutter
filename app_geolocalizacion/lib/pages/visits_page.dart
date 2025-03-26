@@ -1,11 +1,18 @@
+import 'package:app_geolocalizacion/providers/clients_provider.dart';
 import 'package:app_geolocalizacion/widgets/header_visits_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../widgets/list_clients_widget.dart'; // Importar el widget de lista
 
 class VisitsPage extends StatelessWidget {
   const VisitsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Cargar los clientes al iniciar la página
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ClientsProvider>().fetchClientsFromBackend();
+    });
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -15,38 +22,12 @@ class VisitsPage extends StatelessWidget {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: Column(
+        child: const Column(
           children: [
             // Encabezado con el temporizador
-            const HeaderVisitswidget(),
-            // Espacio restante para el contenido centrado
-            Expanded(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Visitas',
-                      style: TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    // Aquí puedes agregar la lista de visitas
-                    Container(
-                      padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            HeaderVisitswidget(),
+            // Lista de clientes
+            ListClients(),
           ],
         ),
       ),
