@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_geolocalizacion/widgets/header_home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,6 +12,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Timer? _locationTimer;
+
   Future<Position> determinarPosition() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
@@ -28,6 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
     print(position.latitude);
     // ignore: avoid_print
     print(position.longitude);
+  }
+
+  void startLocationUpdates() {
+    _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      getCurrentLocation();
+    });
+  }
+
+  void stopLocationUpdates() {
+    _locationTimer?.cancel();
+  }
+
+  @override
+  void dispose() {
+    stopLocationUpdates();
+    super.dispose();
   }
 
   @override
@@ -52,8 +72,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        getCurrentLocation();
-                        Navigator.pushReplacementNamed(context, '/timer');
+                        startLocationUpdates();
+                        // Navigator.pushReplacementNamed(context, '/timer');
+                        Navigator.pushNamed(context, '/timer');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,

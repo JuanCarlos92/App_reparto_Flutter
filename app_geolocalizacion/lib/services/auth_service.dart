@@ -3,15 +3,15 @@ import 'dart:convert';
 import 'token_service.dart';
 
 class AuthService {
-  static const String baseUrl =
-      'http://localhost:8080/api'; // URL base de la API
+  // URL base de la API
+  static const String baseUrl = 'https://dirty-shrimps-stare.loca.lt';
 
   // Método de login
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       final response = await http.post(
         // Realiza una petición HTTP POST a la API de login
-        Uri.parse('$baseUrl/login'), // URL de login
+        Uri.parse('$baseUrl/login'),
         // Especifica que se envía JSON en la solicitud
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ class AuthService {
     try {
       final response = await http.post(
         // Realiza una petición HTTP POST a la API de registro
-        Uri.parse('$baseUrl/register'), // URL de registro
+        Uri.parse('$baseUrl/register'),
         // Especifica que se envía JSON en la solicitud
         headers: {
           'Content-Type': 'application/json',
