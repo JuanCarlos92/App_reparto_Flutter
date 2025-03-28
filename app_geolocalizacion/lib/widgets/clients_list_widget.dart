@@ -1,7 +1,8 @@
-import 'package:app_geolocalizacion/pages/clients_details_page.dart';
+import 'package:app_geolocalizacion/pages/client_details_page.dart';
 import 'package:app_geolocalizacion/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/intl.dart'; // Para formatear la distancia
 
 class ClientsListWidget extends StatelessWidget {
   const ClientsListWidget({super.key});
@@ -24,6 +25,11 @@ class ClientsListWidget extends StatelessWidget {
               itemCount: clients.length,
               itemBuilder: (context, index) {
                 final client = clients[index];
+
+                // Formatear la distancia
+                final distanceFormatted = NumberFormat("#0.00")
+                    .format(client.distanceToDelivery / 1000); // En kilómetros
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: Row(
@@ -57,11 +63,22 @@ class ClientsListWidget extends StatelessWidget {
                       ),
                       const SizedBox(width: 15),
                       Expanded(
-                        child: Text(
-                          client.address,
-                          style: const TextStyle(
-                              fontSize: 16, color: Colors.white),
-                          overflow: TextOverflow.ellipsis,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              client.address,
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.white),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Distancia: $distanceFormatted km',
+                              style: const TextStyle(
+                                  fontSize: 14, color: Colors.white),
+                            ),
+                          ],
                         ),
                       ),
                     ],
