@@ -3,8 +3,7 @@ import 'dart:convert';
 import 'token_service.dart';
 
 class AuthService {
-  // URL base de la API
-  static const String baseUrl = 'https://dirty-shrimps-stare.loca.lt';
+  static const String baseUrl = 'https://8666-80-102-248-37.ngrok-free.app';
 
   // Método de login
   Future<Map<String, dynamic>> login(String username, String password) async {
@@ -22,14 +21,14 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        // Si el login es exitoso (código 200)
-        final data = json.decode(response.body); // Decodifica la respuesta JSON
+        // Si el login es exitoso...
+        final data = json.decode(response.body);
         // Guarda el token en el almacenamiento
         await TokenService.setToken(data['token']);
         return data;
       } else if (response.statusCode == 401) {
-        // Si las credenciales son inválidas (código 401)
-        await TokenService.clearToken(); // Borra el token si existía
+        // Si las credenciales son inválidas...
+        await TokenService.clearToken();
         throw Exception(
             'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
       } else {
@@ -62,8 +61,8 @@ class AuthService {
       );
 
       if (response.statusCode == 201) {
-        // Si el registro es exitoso (código 201)
-        final data = json.decode(response.body); // Decodifica la respuesta JSON
+        // Si el registro es exitoso...
+        final data = json.decode(response.body);
         // Guarda el token en el almacenamiento
         await TokenService.setToken(data['token']);
         return data;

@@ -12,12 +12,18 @@ class TimerPage extends StatefulWidget {
 
 class _TimerPageState extends State<TimerPage> {
   @override
-  void initState() {
-    super.initState();
-    // Iniciar el temporizador cuando se crea la página
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   context.read<TimerProvider>().iniciarTimer();
-    // });
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Lee el argumento pasado al navegar a esta página
+    final shouldStartTimer =
+        ModalRoute.of(context)?.settings.arguments as bool?;
+
+    // Si el argumento es true, inicia el temporizador
+    if (shouldStartTimer == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<TimerProvider>().iniciarTimer();
+      });
+    }
   }
 
   String _formatNumber(int number) {
@@ -37,15 +43,12 @@ class _TimerPageState extends State<TimerPage> {
         ),
         child: Column(
           children: [
-            // Encabezado
             const HeaderTimerwidget(),
-            // Espacio restante para el contenido centrado
             Expanded(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // Texto
                     const Text(
                       'Llevas:',
                       style: TextStyle(
@@ -70,7 +73,6 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    // Botón Pausa/Reanudar
                     ElevatedButton(
                       onPressed: context.read<TimerProvider>().pausarTimer,
                       style: ElevatedButton.styleFrom(
@@ -94,7 +96,6 @@ class _TimerPageState extends State<TimerPage> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    // Botón Finalizar
                     ElevatedButton(
                       onPressed: () {
                         context.read<TimerProvider>().finalizarTimer();

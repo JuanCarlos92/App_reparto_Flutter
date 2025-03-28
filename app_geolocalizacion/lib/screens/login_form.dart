@@ -4,27 +4,17 @@ import 'package:flutter/material.dart';
 
 // Clase StatefulWidget que representa el formulario de login y registro
 class LoginForm extends StatefulWidget {
-  // Clave global para manejar el estado del formulario
   final GlobalKey<FormState> formKey;
-
-  // Controladores para los campos de texto de usuario, contraseña y dominio
   final TextEditingController usernameController;
   final TextEditingController passwordController;
   final TextEditingController domainController;
-
-  // Indica si el formulario actual es de login o registro
   final bool isLoginForm;
-
-  // Callbacks para las acciones de login, registro y cambio de formulario
   final VoidCallback onLogin;
   final VoidCallback onRegister;
   final VoidCallback toggleForm;
-
-  // Estados de carga para los botones de login y registro
   final bool isLoading;
   final bool isRegistering;
 
-  // Constructor que recibe todos los parámetros necesarios
   const LoginForm({
     super.key,
     required this.formKey,

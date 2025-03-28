@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:app_geolocalizacion/widgets/header_home_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import '../services/geolocation_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,40 +11,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // Temporizador para actualizaciones de ubicación
   Timer? _locationTimer;
+  // Servicio de geolocalización
+  final GeolocationService _geolocationService = GeolocationService();
 
-  Future<Position> determinarPosition() async {
-    LocationPermission permission;
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error("error");
-      }
-    }
-    return await Geolocator.getCurrentPosition();
-  }
-
-  void getCurrentLocation() async {
-    Position position = await determinarPosition();
-    // ignore: avoid_print
-    print(position.latitude);
-    // ignore: avoid_print
-    print(position.longitude);
-  }
-
+  // Método para iniciar actualizaciones de ubicación periódicas
   void startLocationUpdates() {
     _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      getCurrentLocation();
+      // Obtiene la ubicación actual
+      _geolocationService.getCurrentLocation();
     });
   }
 
+  // Método para detener las actualizaciones de ubicación
   void stopLocationUpdates() {
+    // Cancela el temporizador si está activo
     _locationTimer?.cancel();
   }
 
   @override
   void dispose() {
+    // Detiene las actualizaciones de ubicación cuando el widget se destruye
     stopLocationUpdates();
     super.dispose();
   }
@@ -73,8 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ElevatedButton(
                       onPressed: () {
                         startLocationUpdates();
-                        // Navigator.pushReplacementNamed(context, '/timer');
-                        Navigator.pushNamed(context, '/timer');
+                        Navigator.pushNamed(context, '/timer', arguments: true);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -93,10 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
-
-                    // Espacio entre los botones
                     const SizedBox(height: 20),
-
                     ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/');
