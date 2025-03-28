@@ -1,15 +1,14 @@
+import 'package:app_geolocalizacion/pages/clients_details_page.dart';
 import 'package:app_geolocalizacion/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ListClients extends StatelessWidget {
-  const ListClients({super.key});
+class ClientsListWidget extends StatelessWidget {
+  const ClientsListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final clientsProvider = Provider.of<ClientsProvider>(context);
-
-    // Obtener los clientes del provider
     final clients = clientsProvider.clients;
 
     return Expanded(
@@ -30,11 +29,19 @@ class ListClients extends StatelessWidget {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Botón del cliente
                       ElevatedButton(
                         onPressed: () {
-                          // ignore: avoid_print
-                          print("Cliente seleccionado: ${client.name}");
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ClientDetailsPage(
+                                clientName: client.name,
+                                clientAddress: client.address,
+                                latitude: client.latitude,
+                                longitude: client.longitude,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
@@ -49,7 +56,6 @@ class ListClients extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 15),
-                      // Dirección del cliente
                       Expanded(
                         child: Text(
                           client.address,

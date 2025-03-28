@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'token_service.dart';
 
 class AuthService {
-  static const String baseUrl = 'https://8666-80-102-248-37.ngrok-free.app';
+  static const String baseUrl = 'https://2830-80-102-248-37.ngrok-free.app/';
 
   // Método de login
   Future<Map<String, dynamic>> login(String username, String password) async {

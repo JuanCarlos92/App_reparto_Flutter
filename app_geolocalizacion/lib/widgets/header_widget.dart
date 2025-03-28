@@ -2,15 +2,15 @@ import 'package:app_geolocalizacion/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-class HeaderVisitswidget extends StatefulWidget {
-  const HeaderVisitswidget({super.key});
+class HeaderWidget extends StatefulWidget {
+  const HeaderWidget({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _HeaderVisitswidgetState createState() => _HeaderVisitswidgetState();
+  _HeaderWidgetState createState() => _HeaderWidgetState();
 }
 
-class _HeaderVisitswidgetState extends State<HeaderVisitswidget> {
+class _HeaderWidgetState extends State<HeaderWidget> {
   bool isPaused = true; // Variable para controlar el estado de pausa/reanudar
 
   String _formatNumber(int number) {

@@ -17,21 +17,27 @@ class ClientsProvider extends ChangeNotifier {
 
   // Simulación de un llamado al backend (API)
   Future<void> fetchClientsFromBackend() async {
-    // Simulando una llamada HTTP y respuesta JSON // Simulación de datos del backend
+    // Simulando una llamada HTTP y respuesta JSON
     await Future.delayed(const Duration(seconds: 2));
     final response = [
-      {"name": "Cliente A", "address": "Dirección A"},
-      {"name": "Cliente B", "address": "Dirección B"},
-      {"name": "Cliente C", "address": "Dirección C"},
-      {"name": "Cliente A", "address": "Dirección A"},
-      {"name": "Cliente B", "address": "Dirección B"},
-      {"name": "Cliente C", "address": "Dirección C"},
-      {"name": "Cliente A", "address": "Dirección A"},
-      {"name": "Cliente B", "address": "Dirección B"},
-      {"name": "Cliente C", "address": "Dirección C"},
-      {"name": "Cliente A", "address": "Dirección A"},
-      {"name": "Cliente B", "address": "Dirección B"},
-      {"name": "Cliente C", "address": "Dirección C"},
+      {
+        "name": "Cliente A",
+        "address": "Dirección A",
+        "latitude": 40.7128,
+        "longitude": -74.0060
+      },
+      {
+        "name": "Cliente B",
+        "address": "Dirección B",
+        "latitude": 34.0522,
+        "longitude": -118.2437
+      },
+      {
+        "name": "Cliente C",
+        "address": "Dirección C",
+        "latitude": 41.8781,
+        "longitude": -87.6298
+      },
     ];
 
     // Convierte la respuesta a una lista de objetos Cliente
