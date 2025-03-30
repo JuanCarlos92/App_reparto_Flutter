@@ -1,4 +1,4 @@
-import 'package:app_geolocalizacion/widgets/clients_map_widget.dart';
+import 'package:app_reparto/widgets/clients_map_widget.dart';
 import 'package:flutter/material.dart';
 
 class ClientDetailsWidget extends StatelessWidget {

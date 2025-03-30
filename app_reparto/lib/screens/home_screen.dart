@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:app_geolocalizacion/widgets/header_home_widget.dart';
+import 'package:app_reparto/widgets/header_home_widget.dart';
 import 'package:flutter/material.dart';
 import '../services/geolocation_service.dart';
 
@@ -13,10 +13,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // Temporizador para actualizaciones de ubicación
   Timer? _locationTimer;
+
   // Servicio de geolocalización
   final GeolocationService _geolocationService = GeolocationService();
 
-  // Método para iniciar actualizaciones de ubicación periódicas
+  // Metodo para iniciar actualizaciones de ubicación periódicas
   void startLocationUpdates() {
     _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       // Obtiene la ubicación actual
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  // Método para detener las actualizaciones de ubicación
+  // Metodo para detener las actualizaciones de ubicación
   void stopLocationUpdates() {
     // Cancela el temporizador si está activo
     _locationTimer?.cancel();
@@ -75,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: const Text(
                         'Iniciar Jornada',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -97,8 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: const Text(
                         'Cerrar sesión',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

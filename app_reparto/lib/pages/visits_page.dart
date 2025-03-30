@@ -1,5 +1,5 @@
-import 'package:app_geolocalizacion/providers/clients_provider.dart';
-import 'package:app_geolocalizacion/widgets/header_widget.dart';
+import 'package:app_reparto/providers/clients_provider.dart';
+import 'package:app_reparto/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/clients_list_widget.dart';

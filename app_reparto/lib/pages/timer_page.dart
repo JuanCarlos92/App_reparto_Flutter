@@ -1,7 +1,7 @@
-import 'package:app_geolocalizacion/widgets/header_timer_widget.dart';
+import 'package:app_reparto/widgets/header_timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app_geolocalizacion/providers/timer_provider.dart';
+import 'package:app_reparto/providers/timer_provider.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -15,8 +15,7 @@ class _TimerPageState extends State<TimerPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Lee el argumento pasado al navegar a esta página
-    final shouldStartTimer =
-        ModalRoute.of(context)?.settings.arguments as bool?;
+    final shouldStartTimer = ModalRoute.of(context)?.settings.arguments as bool?;
 
     // Si el argumento es true, inicia el temporizador
     if (shouldStartTimer == true) {
@@ -112,8 +111,7 @@ class _TimerPageState extends State<TimerPage> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: const Text('Finalizar',
-                          style: TextStyle(fontSize: 20)),
+                      child: const Text('Finalizar', style: TextStyle(fontSize: 20)),
                     ),
                   ],
                 ),

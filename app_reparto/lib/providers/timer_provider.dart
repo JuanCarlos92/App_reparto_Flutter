@@ -9,8 +9,11 @@ class TimerProvider extends ChangeNotifier {
   Timer? _timer;
 
   int get seconds => _seconds;
+
   int get minutes => _minutes;
+
   int get hours => _hours;
+
   bool get isRunning => _isRunning;
 
   void iniciarTimer() {

@@ -1,5 +1,5 @@
-import 'package:app_geolocalizacion/pages/client_details_page.dart';
-import 'package:app_geolocalizacion/providers/clients_provider.dart';
+import 'package:app_reparto/pages/client_details_page.dart';
+import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart'; // Para formatear la distancia
@@ -27,8 +27,8 @@ class ClientsListWidget extends StatelessWidget {
                 final client = clients[index];
 
                 // Formatear la distancia
-                final distanceFormatted = NumberFormat("#0.00")
-                    .format(client.distanceToDelivery / 1000); // En kilómetros
+                final distanceFormatted =
+                    NumberFormat("#0.00").format(client.distanceToDelivery / 1000); // En kilómetros
 
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -50,8 +50,7 @@ class ClientsListWidget extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -68,15 +67,13 @@ class ClientsListWidget extends StatelessWidget {
                           children: [
                             Text(
                               client.address,
-                              style: const TextStyle(
-                                  fontSize: 16, color: Colors.white),
+                              style: const TextStyle(fontSize: 16, color: Colors.white),
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 5),
                             Text(
                               'Distancia: $distanceFormatted km',
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.white),
+                              style: const TextStyle(fontSize: 14, color: Colors.white),
                             ),
                           ],
                         ),

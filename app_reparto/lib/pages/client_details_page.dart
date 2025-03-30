@@ -1,5 +1,5 @@
-import 'package:app_geolocalizacion/widgets/clients_details_widget.dart';
-import 'package:app_geolocalizacion/widgets/header_widget.dart';
+import 'package:app_reparto/widgets/clients_details_widget.dart';
+import 'package:app_reparto/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
 
 class ClientDetailsPage extends StatelessWidget {

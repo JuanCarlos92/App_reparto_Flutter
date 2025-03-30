@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app_geolocalizacion/pages/timer_page.dart';
-import 'package:app_geolocalizacion/pages/visits_page.dart';
+import 'package:app_reparto/pages/timer_page.dart';
+import 'package:app_reparto/pages/visits_page.dart';
 
 class MainPages extends StatefulWidget {
   const MainPages({super.key});

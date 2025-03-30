@@ -1,4 +1,4 @@
-import 'package:app_geolocalizacion/providers/timer_provider.dart';
+import 'package:app_reparto/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 

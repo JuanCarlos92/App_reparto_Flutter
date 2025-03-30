@@ -1,11 +1,11 @@
-import 'package:app_geolocalizacion/providers/clients_provider.dart';
+import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app_geolocalizacion/providers/timer_provider.dart';
-import 'package:app_geolocalizacion/pages/visits_page.dart';
-import 'package:app_geolocalizacion/screens/home_screen.dart';
-import 'package:app_geolocalizacion/screens/login_screen.dart';
-import 'package:app_geolocalizacion/pages/main_pages.dart';
+import 'package:app_reparto/providers/timer_provider.dart';
+import 'package:app_reparto/pages/visits_page.dart';
+import 'package:app_reparto/screens/home_screen.dart';
+import 'package:app_reparto/screens/login_screen.dart';
+import 'package:app_reparto/pages/main_pages.dart';
 
 void main() {
   runApp(

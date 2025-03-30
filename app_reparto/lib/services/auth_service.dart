@@ -29,8 +29,7 @@ class AuthService {
       } else if (response.statusCode == 401) {
         // Si las credenciales son inválidas...
         await TokenService.clearToken();
-        throw Exception(
-            'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
+        throw Exception('Credenciales inválidas. Por favor, inicia sesión nuevamente.');
       } else {
         // Cualquier otro error
         throw Exception(
@@ -44,8 +43,7 @@ class AuthService {
   }
 
   // Método de registro
-  Future<Map<String, dynamic>> register(
-      String username, String password, String domain) async {
+  Future<Map<String, dynamic>> register(String username, String password, String domain) async {
     try {
       final response = await http.post(
         // Realiza una petición HTTP POST a la API de registro
@@ -56,8 +54,7 @@ class AuthService {
           'Accept': 'application/json',
         },
         // Convierte los datos en JSON
-        body: json.encode(
-            {'usuario': username, 'contrasena': password, 'dominio': domain}),
+        body: json.encode({'usuario': username, 'contrasena': password, 'dominio': domain}),
       );
 
       if (response.statusCode == 201) {

@@ -1,7 +1,7 @@
 import 'package:geolocator/geolocator.dart';
 
 class GeolocationService {
-  // Método para determinar la posición actual del usuario
+  // Metodo para determinar la posición actual del usuario
   Future<Position> determinarPosition() async {
     LocationPermission permission;
     // Variable para almacenar el permiso de ubicación
@@ -21,7 +21,7 @@ class GeolocationService {
     return await Geolocator.getCurrentPosition();
   }
 
-  // Método para obtener la ubicación actual y mostrar la latitud y longitud
+  // Metodo para obtener la ubicación actual y mostrar la latitud y longitud
   Future<void> getCurrentLocation() async {
     Position position = await determinarPosition();
     // ignore: avoid_print

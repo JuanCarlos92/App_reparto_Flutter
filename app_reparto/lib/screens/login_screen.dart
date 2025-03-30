@@ -1,6 +1,6 @@
-import 'package:app_geolocalizacion/utils/dialog_utils.dart';
+import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:app_geolocalizacion/services/auth_service.dart';
+import 'package:app_reparto/services/auth_service.dart';
 import 'login_form.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -72,8 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _usernameController.clear();
         _passwordController.clear();
         _domainController.clear();
-        DialogUtils.showInfoDialog(
-            context, 'Registro exitoso. Por favor, inicia sesión.');
+        DialogUtils.showInfoDialog(context, 'Registro exitoso. Por favor, inicia sesión.');
       }
     } catch (e) {
       if (mounted) {

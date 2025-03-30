@@ -17,7 +17,8 @@ class Headerhomewidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       // Espaciado interno de 25 píxeles alrededor del contenedor
       padding: const EdgeInsets.all(25.0),
-      height: 120.0, // Altura del contenedor
+      // Altura del contenedor
+      height: 120.0,
       // Fondo de color
       decoration: const BoxDecoration(
         gradient: LinearGradient(
