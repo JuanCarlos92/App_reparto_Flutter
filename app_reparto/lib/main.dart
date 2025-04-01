@@ -1,4 +1,5 @@
 import 'package:app_reparto/providers/clients_provider.dart';
+import 'package:app_reparto/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
@@ -30,9 +31,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: "Geolocalización",
-      initialRoute: '/home',
+      initialRoute: '/splash',
       routes: {
-        '/': (context) => const LoginPage(),
+        '/splash': (context) => const SplashScreen(),
+        '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
         '/timer': (context) => const MainPage(),
         '/visits': (context) => const VisitsPage(),

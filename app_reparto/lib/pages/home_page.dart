@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                           end: Alignment.centerRight,
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/');
+                          Navigator.pushReplacementNamed(context, '/login');
                         },
                       ),
                     ],
