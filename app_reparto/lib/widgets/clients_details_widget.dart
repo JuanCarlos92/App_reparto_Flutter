@@ -23,12 +23,12 @@ class ClientDetailsWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Nombre: $clientName',
+            clientName,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           Text(
-            'Dirección: $clientAddress',
+            clientAddress,
             style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 20),

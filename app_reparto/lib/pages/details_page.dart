@@ -1,19 +1,23 @@
+import 'package:app_reparto/widgets/clients_details_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
-import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../widgets/clients_list_widget.dart';
 
-class VisitsPage extends StatelessWidget {
-  const VisitsPage({super.key});
+class DetailsPage extends StatelessWidget {
+  final String clientName;
+  final String clientAddress;
+  final double latitude;
+  final double longitude;
+
+  const DetailsPage({
+    super.key,
+    required this.clientName,
+    required this.clientAddress,
+    required this.latitude,
+    required this.longitude,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Cargar los clientes al iniciar la página
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ClientsProvider>().fetchClientsFromBackend();
-    });
-
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -29,36 +33,18 @@ class VisitsPage extends StatelessWidget {
           ),
         ),
         child: Column(
+          crossAxisAlignment:
+              CrossAxisAlignment.center, // Centrar horizontalmente
           children: [
             // Header
             Container(
               padding: const EdgeInsets.fromLTRB(25, 60, 25, 20),
               child: Column(
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Centrar verticalmente
                 children: [
-                  // const Icon(
-                  //   Icons.location_on,
-                  //   size: 42,
-                  //   color: Colors.white,
-                  // ),
-                  // Timer display modularizado
                   const TimerWidget(),
                   const SizedBox(height: 10),
-                  Text(
-                    "Visitas Programadas",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                      fontFamily: 'Roboto',
-                      shadows: [
-                        Shadow(
-                          blurRadius: 8,
-                          color: Colors.black.withOpacity(0.3),
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -76,6 +62,7 @@ class VisitsPage extends StatelessWidget {
                     ],
                   ),
                   borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(40),
                     topRight: Radius.circular(40),
                   ),
                   boxShadow: [
@@ -86,9 +73,15 @@ class VisitsPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                  child: ClientsListWidget(),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                  child: ClientDetailsWidget(
+                    clientName: clientName,
+                    clientAddress: clientAddress,
+                    latitude: latitude,
+                    longitude: longitude,
+                  ),
                 ),
               ),
             ),

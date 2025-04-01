@@ -1,4 +1,4 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart'; // librería para almacenamiento seguro
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenService {
   // Clave utilizada para almacenar el token de autenticación

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:app_reparto/pages/timer_page.dart';
 import 'package:app_reparto/pages/visits_page.dart';
 
-class MainPages extends StatefulWidget {
-  const MainPages({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<MainPages> createState() => _MainPagesState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPagesState extends State<MainPages> {
+class _MainPageState extends State<MainPage> {
   final PageController _pageController = PageController(initialPage: 0);
 
   @override
