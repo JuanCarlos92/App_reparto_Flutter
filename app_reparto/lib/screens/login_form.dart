@@ -121,7 +121,8 @@ class _LoginFormState extends State<LoginForm> {
                   : (widget.isRegistering ? null : widget.onRegister),
               style: ElevatedButton.styleFrom(
                 // Estilo del botón que cambia según el estado del formulario
-                backgroundColor: widget.isLoginForm ? Colors.green : Colors.blue,
+                backgroundColor:
+                    widget.isLoginForm ? Colors.green : Colors.blue,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
@@ -131,10 +132,12 @@ class _LoginFormState extends State<LoginForm> {
               child: widget.isLoginForm
                   ? (widget.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Iniciar Sesión', style: TextStyle(fontSize: 16)))
+                      : const Text('Iniciar Sesión',
+                          style: TextStyle(fontSize: 16)))
                   : (widget.isRegistering
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Registrarse', style: TextStyle(fontSize: 16))),
+                      : const Text('Registrarse',
+                          style: TextStyle(fontSize: 16))),
             ),
           ),
           const SizedBox(height: 16),

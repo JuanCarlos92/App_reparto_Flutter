@@ -76,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: const Text(
                         'Iniciar Jornada',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -97,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       child: const Text(
                         'Cerrar sesión',
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ],

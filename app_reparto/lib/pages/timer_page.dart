@@ -15,7 +15,8 @@ class _TimerPageState extends State<TimerPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Lee el argumento pasado al navegar a esta página
-    final shouldStartTimer = ModalRoute.of(context)?.settings.arguments as bool?;
+    final shouldStartTimer =
+        ModalRoute.of(context)?.settings.arguments as bool?;
 
     // Si el argumento es true, inicia el temporizador
     if (shouldStartTimer == true) {
@@ -111,7 +112,8 @@ class _TimerPageState extends State<TimerPage> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      child: const Text('Finalizar', style: TextStyle(fontSize: 20)),
+                      child: const Text('Finalizar',
+                          style: TextStyle(fontSize: 20)),
                     ),
                   ],
                 ),

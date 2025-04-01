@@ -29,7 +29,8 @@ class AuthService {
       } else if (response.statusCode == 401) {
         // Si las credenciales son inválidas...
         await TokenService.clearToken();
-        throw Exception('Credenciales inválidas. Por favor, inicia sesión nuevamente.');
+        throw Exception(
+            'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
       } else {
         // Cualquier otro error
         throw Exception(
@@ -43,35 +44,31 @@ class AuthService {
   }
 
   // Método de registro
-  Future<Map<String, dynamic>> register(String username, String password, String domain) async {
+  Future<Map<String, dynamic>> register(
+      String username, String password, String domain) async {
     try {
       final response = await http.post(
-        // Realiza una petición HTTP POST a la API de registro
+        // Realiza una solicitud HTTP POST a la API de registro
         Uri.parse('$baseUrl/register'),
-        // Especifica que se envía JSON en la solicitud
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        // Convierte los datos en JSON
-        body: json.encode({'usuario': username, 'contrasena': password, 'dominio': domain}),
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode(
+            {'usuario': username, 'contrasena': password, 'dominio': domain}),
       );
 
+      // Verificar si la respuesta fue exitosa (código 201)
       if (response.statusCode == 201) {
         // Si el registro es exitoso...
         final data = json.decode(response.body);
-        // Guarda el token en el almacenamiento
+        // Guardar el token en el almacenamiento o realizar alguna otra acción
         await TokenService.setToken(data['token']);
-        return data;
+        return data; // Devuelve los datos del usuario y el token
       } else {
-        // Cualquier otro error en el registro
-        throw Exception(
-          'Error de registro: ${response.statusCode} - ${response.body}',
-        );
+        // Si la respuesta es un error, muestra el error correspondiente
+        throw Exception('Error en el registro: ${response.body}');
       }
     } catch (e) {
-      // Captura errores de conexión u otros errores inesperados
-      throw Exception('Error de conexión: $e');
+      // Manejar errores de conexión u otros errores
+      throw Exception('Error de conexión o servidor: $e');
     }
   }
 }
