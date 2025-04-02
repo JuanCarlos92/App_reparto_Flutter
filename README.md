@@ -50,7 +50,7 @@ El sistema se divide en dos partes principales:
 ### 4.2 Instrucciones para Aplicación Android
 1. Clonar el repositorio de la aplicación:
    ```bash
-    git clone https://github.com/tu-usuario/app-android.git
+    git clone https://github.com/JuanCarlos92/Flutter_app_reparto.git
    ```
 2. Navegar al directorio del proyecto y ejecutar:
    ```bash
