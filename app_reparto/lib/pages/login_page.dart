@@ -72,11 +72,14 @@ class _LoginPageState extends State<LoginPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0D3A21),
-              Color(0xFF1E5631),
-              Color(0xFF4FC98E),
+              Color.fromARGB(255, 200, 120, 20),
+              Color.fromARGB(255, 252, 231, 197),
+
+              // Color(0xFF0D3A21),
+              // Color(0xFF1E5631),
+              // Color(0xFF4FC98E),
             ],
-            stops: [0.0, 0.5, 1.0],
+            // stops: [0.0, 1],
           ),
         ),
 
@@ -90,10 +93,19 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
+                  Icon(
                     Icons.local_shipping,
                     size: 80,
                     color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        // Sombra del texto
+                        blurRadius: 8,
+                        // ignore: deprecated_member_use
+                        color: Colors.black.withOpacity(0.3),
+                        offset: Offset(2, 2),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 16),
 
@@ -126,7 +138,9 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     // ignore: deprecated_member_use
-                    color: Colors.white.withOpacity(0.6),
+                    color: Colors.white,
+                    // color: Color.fromARGB(255, 189, 235, 247).withOpacity(1),
+
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
                       child: LoginForm(

@@ -1,4 +1,5 @@
 import 'package:app_reparto/providers/clients_provider.dart';
+import 'package:app_reparto/providers/user_provider.dart';
 import 'package:app_reparto/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +18,8 @@ void main() {
         ChangeNotifierProvider(create: (_) => TimerProvider()),
         // Proveedor para la gestión de clientes
         ChangeNotifierProvider(create: (_) => ClientsProvider()),
+        // Proveedor para la gestión de usuarios
+        ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),
     ),

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/geolocation_service.dart';
 import '../widgets/button_widget.dart';
+import 'package:app_reparto/providers/user_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,216 +13,184 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Temporizador para actualizar la ubicación periódicamente
   Timer? _locationTimer;
-  // Servicio de geolocalización
   final GeolocationService _geolocationService = GeolocationService();
-  String userName = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Obtiene los argumentos pasados a la pantalla (el nombre del usuario)
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is String) {
-      userName = arguments;
+      final userName = capitalizeFirstLetter(arguments);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<UserProvider>().setUserName(userName);
+      });
     }
   }
 
-  // Método para iniciar la actualización de la ubicación cada segundo
   void startLocationUpdates() {
     _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _geolocationService.getCurrentLocation();
     });
   }
 
-  // Método para detener la actualización de la ubicación
   void stopLocationUpdates() {
     _locationTimer?.cancel();
   }
 
   @override
   void dispose() {
-    // Detiene la actualización de ubicación al cerrar la pantalla
     stopLocationUpdates();
     super.dispose();
   }
 
+  String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Estructura de la pantalla
+    final userName = context.watch<UserProvider>().userName;
+
     return Scaffold(
-      // Contenedor principal ocupando toda la pantalla
       body: Container(
-        // Configura el fondo de la pantalla con un degradado
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0D3A21),
-              Color(0xFF1E5631),
-              Color(0xFF4FC98E),
+              Color.fromARGB(255, 200, 120, 20),
+              Color.fromARGB(255, 252, 231, 197),
             ],
-            stops: [0.0, 0.5, 1.0],
+            stops: [0.0, 1],
           ),
         ),
-
-        // Columna principal ocupando toda la pantalla
-        child: Column(
-          children: [
-            // Encabezado de la pantalla
-            Container(
-              padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
-              child: Column(
-                children: [
-                  const Icon(
-                    Icons.timer,
-                    size: 42,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(height: 15),
-
-                  // Título de la pantalla
-                  Text(
-                    "Control Horario",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                      fontFamily: 'Roboto',
-                      shadows: [
-                        Shadow(
-                          blurRadius: 8,
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.3),
-                          offset: const Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Contenido principal
-            Expanded(
-              // Contenedor que ocupa el 90% del ancho de la pantalla
-              child: Container(
-                // Configura el fondo del contenedor con un degradado
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color.fromARGB(255, 91, 92, 91),
-                        Color.fromARGB(255, 232, 238, 235),
-                      ]),
-                  color: Colors.grey,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      // ignore: deprecated_member_use
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 20,
-                      spreadRadius: 5,
-                    ),
-                  ],
-                ),
-
-                child: Padding(
-                  // Padding interno del contenedor
-                  padding: const EdgeInsets.all(30.0),
+        child: Center(
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: Column(
+              children: [
+                Container(
+                  padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if (userName.isNotEmpty)
-                        // Nombre de usuario
-                        Text(
-                          userName,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontFamily: 'Roboto',
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      const SizedBox(height: 5),
-                      // Icono de reparto
-                      Container(
-                        padding: const EdgeInsets.all(25),
-                        decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFF1E5631),
-                              Color(0xFF4FC98E),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              // ignore: deprecated_member_use
-                              color: Colors.black.withOpacity(0.2),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
+                      const Icon(
+                        Icons.timer,
+                        size: 42,
+                        color: Colors.white,
+                      ),
+                      const SizedBox(height: 15),
+                      Text(
+                        "Control Horario",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 28,
+                          fontFamily: 'Roboto',
+                          shadows: [
+                            Shadow(
+                              blurRadius: 8,
+                              color: Colors.black.withOpacity(0.3),
+                              offset: const Offset(2, 2),
                             ),
                           ],
                         ),
-                        child: const Icon(
-                          Icons.delivery_dining,
-                          size: 80,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 40),
-
-                      // Botón Iniciar Jornada
-                      ButtonWidget(
-                        text: 'INICIAR JORNADA',
-                        icon: Icons.timer,
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color(0xFF1E5631),
-                            Color(0xFF4FC98E),
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        onPressed: () {
-                          startLocationUpdates();
-                          Navigator.pushNamed(context, '/timer',
-                              arguments: true);
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
-                      // Botón Cerrar Sesión
-                      ButtonWidget(
-                        text: 'CERRAR SESIÓN',
-                        icon: Icons.logout,
-                        gradient: LinearGradient(
-                          colors: [
-                            Colors.grey[700]!,
-                            Colors.grey[600]!,
-                          ],
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                        ),
-                        onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
-                        },
                       ),
                     ],
                   ),
                 ),
-              ),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 20,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(30.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (userName.isNotEmpty)
+                            Text(
+                              userName,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 35,
+                                fontFamily: 'Roboto',
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          const SizedBox(height: 20),
+                          Container(
+                            padding: const EdgeInsets.all(25),
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 200, 120, 20),
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: const Icon(
+                              Icons.delivery_dining,
+                              size: 80,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 40),
+                          ButtonWidget(
+                            text: 'INICIAR JORNADA',
+                            icon: Icons.timer,
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 200, 120, 20),
+                                Color.fromARGB(255, 200, 120, 20),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            onPressed: () {
+                              startLocationUpdates();
+                              Navigator.pushNamed(context, '/timer',
+                                  arguments: true);
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          ButtonWidget(
+                            text: 'CERRAR SESIÓN',
+                            icon: Icons.logout,
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.grey[700]!,
+                                Colors.grey[600]!,
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(context, '/login');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
