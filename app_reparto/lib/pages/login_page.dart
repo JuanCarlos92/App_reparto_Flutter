@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       // Llama al servicio de autenticación
-      final userData = await _authService.login(
+      await _authService.login(
         _usernameController.text,
         _passwordController.text,
       );
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
           context,
           '/home',
           (route) => false,
-          arguments: userData['usuario'],
+          arguments: _usernameController.text,
         );
       }
     } catch (e) {

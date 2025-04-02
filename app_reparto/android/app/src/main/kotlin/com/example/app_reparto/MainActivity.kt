@@ -1,4 +1,4 @@
-package com.example.app_geolocalizacion
+package com.example.app_reparto
 
 import io.flutter.embedding.android.FlutterActivity
 
