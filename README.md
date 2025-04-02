@@ -1,7 +1,7 @@
 # Aplicación de reparto con sistema de control horario (Frontend)
 
 ## 1. Introducción
-Este proyecto consiste en la creación de un sistema de control de horario que involucra un servidor middleware desarrollado en Go y una aplicación móvil para Android. El sistema permitirá a los usuarios autenticarse, registrar su jornada laboral y gestionar visitas a clientes mediante geolocalización.
+Este proyecto consiste en la creación de un sistema de control de horario que involucra un servidor middleware desarrollado en Go y una aplicación móvil para Android en Flutter. El sistema permitirá a los usuarios autenticarse, registrar su jornada laboral y gestionar visitas a clientes mediante geolocalización.
 
 ## 2. Arquitectura del Sistema
 El sistema se divide en dos partes principales:
