@@ -19,8 +19,9 @@ class _LoginPageState extends State<LoginPage> {
 
   // Método para manejar el inicio de sesión
   Future<void> _login() async {
+    // Verifica si el formulario es válido
     if (!_formKey.currentState!.validate()) {
-      return; // Verifica si el formulario es válido
+      return;
     }
 
     setState(() {
