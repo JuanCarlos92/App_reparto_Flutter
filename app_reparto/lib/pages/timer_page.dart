@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
-import '../widgets/button_widget.dart'; // Importamos el widget de botón
+import '../widgets/button_widget.dart';
 
 class TimerPage extends StatefulWidget {
   const TimerPage({super.key});
@@ -37,8 +37,8 @@ class _TimerPageState extends State<TimerPage> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFF0D3A21), // Verde muy oscuro
-              Color(0xFF1E5631), // Verde oscuro principal
+              Color(0xFF0D3A21),
+              Color(0xFF1E5631),
               Color(0xFF4FC98E),
             ],
             begin: Alignment.topCenter,
@@ -67,6 +67,7 @@ class _TimerPageState extends State<TimerPage> {
                       shadows: [
                         Shadow(
                           blurRadius: 8,
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.3),
                           offset: const Offset(2, 2),
                         ),
@@ -93,6 +94,7 @@ class _TimerPageState extends State<TimerPage> {
                   ),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
@@ -120,6 +122,7 @@ class _TimerPageState extends State<TimerPage> {
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
+                              // ignore: deprecated_member_use
                               color: Colors.black.withOpacity(0.2),
                               blurRadius: 10,
                               offset: const Offset(0, 5),

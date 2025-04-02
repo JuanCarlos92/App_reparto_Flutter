@@ -11,53 +11,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Temporizador para actualizar la ubicación periódicamente
   Timer? _locationTimer;
+  // Servicio de geolocalización
   final GeolocationService _geolocationService = GeolocationService();
   String userName = '';
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    // Obtiene los argumentos pasados a la pantalla (el nombre del usuario)
     final arguments = ModalRoute.of(context)?.settings.arguments;
     if (arguments != null && arguments is String) {
       userName = arguments;
     }
   }
 
+  // Método para iniciar la actualización de la ubicación cada segundo
   void startLocationUpdates() {
     _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _geolocationService.getCurrentLocation();
     });
   }
 
+  // Método para detener la actualización de la ubicación
   void stopLocationUpdates() {
     _locationTimer?.cancel();
   }
 
   @override
   void dispose() {
+    // Detiene la actualización de ubicación al cerrar la pantalla
     stopLocationUpdates();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Estructura de la pantalla
     return Scaffold(
+      // Contenedor principal ocupando toda la pantalla
       body: Container(
+        // Configura el fondo de la pantalla con un degradado
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0D3A21), // Verde muy oscuro
-              Color(0xFF1E5631), // Verde oscuro principal
-              Color(0xFF4FC98E), // Verde claro
+              Color(0xFF0D3A21),
+              Color(0xFF1E5631),
+              Color(0xFF4FC98E),
             ],
             stops: [0.0, 0.5, 1.0],
           ),
         ),
+
+        // Columna principal ocupando toda la pantalla
         child: Column(
           children: [
+            // Encabezado de la pantalla
             Container(
               padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
               child: Column(
@@ -68,6 +80,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white,
                   ),
                   const SizedBox(height: 15),
+
+                  // Título de la pantalla
                   Text(
                     "Control Horario",
                     style: TextStyle(
@@ -78,6 +92,7 @@ class _HomePageState extends State<HomePage> {
                       shadows: [
                         Shadow(
                           blurRadius: 8,
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.3),
                           offset: const Offset(2, 2),
                         ),
@@ -87,9 +102,12 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
+
             // Contenido principal
             Expanded(
+              // Contenedor que ocupa el 90% del ancho de la pantalla
               child: Container(
+                // Configura el fondo del contenedor con un degradado
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
                       begin: Alignment.topCenter,
@@ -105,20 +123,24 @@ class _HomePageState extends State<HomePage> {
                   ),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
                     ),
                   ],
                 ),
+
                 child: Padding(
+                  // Padding interno del contenedor
                   padding: const EdgeInsets.all(30.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (userName.isNotEmpty)
+                        // Nombre de usuario
                         Text(
-                          userName, // Mostrar el nombre del usuario
+                          userName,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -142,6 +164,7 @@ class _HomePageState extends State<HomePage> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
+                              // ignore: deprecated_member_use
                               color: Colors.black.withOpacity(0.2),
                               blurRadius: 10,
                               offset: const Offset(0, 5),

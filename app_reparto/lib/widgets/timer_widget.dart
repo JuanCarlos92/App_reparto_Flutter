@@ -14,6 +14,7 @@ class TimerWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       decoration: BoxDecoration(
+        // ignore: deprecated_member_use
         color: Colors.black.withOpacity(0.2),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -50,6 +51,7 @@ class TimerWidget extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
@@ -71,6 +73,7 @@ class TimerWidget extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),

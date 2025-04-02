@@ -3,28 +3,34 @@ import 'dart:convert';
 import 'token_service.dart';
 
 class AuthService {
-  static const String baseUrl = 'https://b38e-80-102-248-37.ngrok-free.app';
+  static const String baseUrl = 'https://27bf-80-102-248-37.ngrok-free.app';
 
   // Método de login
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       final response = await http.post(
-        // Realiza una petición HTTP POST a la API de login
         Uri.parse('$baseUrl/login'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
-        // Convierte los datos en JSON
         body: json.encode({'usuario': username, 'contrasena': password}),
       );
 
       if (response.statusCode == 200) {
         // Si el login es exitoso...
         final data = json.decode(response.body);
-        // Guarda el token en el almacenamiento
-        await TokenService.setToken(data['token']);
-        return data;
+
+        // Verificar que el token está presente
+        if (data.containsKey('DOLAPIKEY')) {
+          String token = data['DOLAPIKEY'];
+
+          // Guarda el token en el almacenamiento
+          await TokenService.setToken(token);
+          return data;
+        } else {
+          throw Exception('Token no encontrado en la respuesta');
+        }
       } else if (response.statusCode == 401) {
         // Si las credenciales son inválidas...
         await TokenService.clearToken();
@@ -33,8 +39,7 @@ class AuthService {
       } else {
         // Cualquier otro error
         throw Exception(
-          'Error de autenticación: ${response.statusCode} - ${response.body}',
-        );
+            'Error de autenticación: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
       // Captura errores de conexión u otros errores inesperados

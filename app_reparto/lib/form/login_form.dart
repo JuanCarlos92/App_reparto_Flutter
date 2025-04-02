@@ -21,6 +21,7 @@ class LoginForm extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginFormState createState() => _LoginFormState();
 }
 
@@ -37,6 +38,7 @@ class _LoginFormState extends State<LoginForm> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.2),
             blurRadius: 8,
             offset: const Offset(0, 4),
@@ -89,6 +91,7 @@ class _LoginFormState extends State<LoginForm> {
               shadows: [
                 Shadow(
                   blurRadius: 8,
+                  // ignore: deprecated_member_use
                   color: Colors.black.withOpacity(0.3),
                   offset: Offset(2, 2),
                 ),
@@ -103,6 +106,7 @@ class _LoginFormState extends State<LoginForm> {
               prefixIcon: Icon(Icons.person),
               border: OutlineInputBorder(),
               fillColor:
+                  // ignore: deprecated_member_use
                   Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
               filled: true,
             ),
@@ -121,6 +125,7 @@ class _LoginFormState extends State<LoginForm> {
               prefixIcon: Icon(Icons.lock),
               border: OutlineInputBorder(),
               fillColor:
+                  // ignore: deprecated_member_use
                   Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
               filled: true,
             ),

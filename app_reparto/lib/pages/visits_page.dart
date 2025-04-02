@@ -53,6 +53,7 @@ class VisitsPage extends StatelessWidget {
                       shadows: [
                         Shadow(
                           blurRadius: 8,
+                          // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.3),
                           offset: const Offset(2, 2),
                         ),
@@ -80,6 +81,7 @@ class VisitsPage extends StatelessWidget {
                   ),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.1),
                       blurRadius: 20,
                       spreadRadius: 5,
