@@ -64,23 +64,33 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     // Estructura principal
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
+        centerTitle: true,
+        // Título de la barra de navegación
+        title: const Text(
+          'App Reparto',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontFamily: 'Roboto',
+            shadows: [
+              Shadow(
+                blurRadius: 8,
+                color: Color.fromRGBO(0, 0, 0, 0.3),
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+        ),
+        // Color de fondo de la barra de navegación
+      ),
       // Contenedor principal ocupando toda la pantalla
       body: Container(
         // Configura el fondo de la pantalla con un degradado
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromARGB(255, 200, 120, 20),
-              Color.fromARGB(255, 252, 231, 197),
-
-              // Color(0xFF0D3A21),
-              // Color(0xFF1E5631),
-              // Color(0xFF4FC98E),
-            ],
-            // stops: [0.0, 1],
-          ),
+          color: Colors.white,
         ),
 
         // Centra su contenido en la pantalla
@@ -93,42 +103,23 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
-                    Icons.local_shipping,
-                    size: 80,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        // Sombra del texto
-                        blurRadius: 8,
-                        // ignore: deprecated_member_use
-                        color: Colors.black.withOpacity(0.3),
-                        offset: Offset(2, 2),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
+                  // Icon(
+                  //   Icons.local_shipping,
+                  //   size: 80,
+                  //   color: const Color.fromARGB(255, 200, 120, 20),
+                  //   shadows: [
+                  //     Shadow(
+                  //       // Sombra del texto
+                  //       blurRadius: 8,
+                  //       // ignore: deprecated_member_use
+                  //       color: Colors.black.withOpacity(0.3),
+                  //       offset: Offset(2, 2),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 16),
 
-                  // Título de la aplicación
-                  Text(
-                    'APP REPARTO',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto',
-                      shadows: [
-                        Shadow(
-                          // Sombra del texto
-                          blurRadius: 8,
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.3),
-                          offset: Offset(2, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+                  // const SizedBox(height: 40),
 
                   // Tarjeta que contiene el formulario de inicio de sesión
                   Card(
@@ -136,6 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                     elevation: 8,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
+                      side: const BorderSide(
+                        color: Color.fromARGB(255, 200, 120, 20),
+                        width: 1.5,
+                      ),
                     ),
                     // ignore: deprecated_member_use
                     color: Colors.white,

@@ -14,11 +14,9 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Lee el argumento pasado al navegar a esta página
     final shouldStartTimer =
         ModalRoute.of(context)?.settings.arguments as bool?;
 
-    // Si el argumento es true, inicia el temporizador
     if (shouldStartTimer == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.read<TimerProvider>().iniciarTimer();
@@ -33,16 +31,29 @@ class _TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
+        centerTitle: true,
+        title: const Text(
+          'Control Horario',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+            fontFamily: 'Roboto',
+            shadows: [
+              Shadow(
+                blurRadius: 8,
+                color: Color.fromRGBO(0, 0, 0, 0.3),
+                offset: Offset(2, 2),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 200, 120, 20),
-              Color.fromARGB(255, 252, 231, 197),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+          color: Colors.white,
         ),
         child: Center(
           child: SizedBox(
@@ -51,42 +62,12 @@ class _TimerPageState extends State<TimerPage> {
               children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
-                  child: Column(
-                    children: [
-                      const Icon(
-                        Icons.timer,
-                        size: 42,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(height: 15),
-                      Text(
-                        "Control Horario",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 28,
-                          fontFamily: 'Roboto',
-                          shadows: [
-                            Shadow(
-                              blurRadius: 8,
-                              // ignore: deprecated_member_use
-                              color: Colors.black.withOpacity(0.3),
-                              offset: const Offset(2, 2),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
                 ),
-                //Contenedor principal
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                      ),
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
                       boxShadow: [
                         BoxShadow(
                           // ignore: deprecated_member_use
@@ -95,6 +76,10 @@ class _TimerPageState extends State<TimerPage> {
                           spreadRadius: 5,
                         ),
                       ],
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 200, 120, 20),
+                        width: 1.5,
+                      ),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(30.0),
@@ -138,8 +123,7 @@ class _TimerPageState extends State<TimerPage> {
                             ),
                           ),
                           const SizedBox(height: 40),
-
-                          // Botón Pausar/Reanudar usando ButtonWidget
+                          // Botón Pausar/Reanudar
                           Consumer<TimerProvider>(
                             builder: (context, timerProvider, child) {
                               return ButtonWidget(
@@ -161,10 +145,8 @@ class _TimerPageState extends State<TimerPage> {
                               );
                             },
                           ),
-
                           const SizedBox(height: 20),
-
-                          // Botón Finalizar usando ButtonWidget
+                          // Botón Finalizar
                           ButtonWidget(
                             text: 'FINALIZAR',
                             icon: Icons.stop,
@@ -186,6 +168,7 @@ class _TimerPageState extends State<TimerPage> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),

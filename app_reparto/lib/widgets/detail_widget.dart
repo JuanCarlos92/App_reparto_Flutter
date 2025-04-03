@@ -1,18 +1,13 @@
-import 'package:app_reparto/widgets/clients_map_widget.dart';
 import 'package:flutter/material.dart';
 
-class ClientDetailsWidget extends StatelessWidget {
+class DetailWidget extends StatelessWidget {
   final String clientName;
   final String clientAddress;
-  final double latitude;
-  final double longitude;
 
-  const ClientDetailsWidget({
+  const DetailWidget({
     super.key,
     required this.clientName,
     required this.clientAddress,
-    required this.latitude,
-    required this.longitude,
   });
 
   @override
@@ -30,11 +25,6 @@ class ClientDetailsWidget extends StatelessWidget {
           Text(
             clientAddress,
             style: const TextStyle(fontSize: 18),
-          ),
-          const SizedBox(height: 20),
-          ClientMapWidget(
-            latitude: latitude,
-            longitude: longitude,
           ),
         ],
       ),

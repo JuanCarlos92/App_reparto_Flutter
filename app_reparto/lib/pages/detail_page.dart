@@ -1,25 +1,26 @@
+import 'package:app_reparto/widgets/detail_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
-import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../widgets/list_widget.dart';
 
-class VisitsPage extends StatelessWidget {
-  const VisitsPage({super.key});
+class DetailPage extends StatelessWidget {
+  final String clientName;
+  final String clientAddress;
+
+  const DetailPage({
+    super.key,
+    required this.clientName,
+    required this.clientAddress,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Cargar los clientes al iniciar la página
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ClientsProvider>().fetchClientsFromBackend();
-    });
-
+    // Estructura principal
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
-          'Visitas Programadas',
+          'Detalles del cliente',
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
@@ -35,30 +36,33 @@ class VisitsPage extends StatelessWidget {
           ),
         ),
       ),
+      // Contenedor principal toda la pantalla
       body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
+        decoration: const BoxDecoration(color: Colors.white),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Header
+            // Contenedor superior con el temporizador
             Container(
               padding: const EdgeInsets.fromLTRB(25, 60, 25, 20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const TimerWidget(),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
-            const SizedBox(height: 20.5),
-            // Contenido principal
+            const SizedBox(height: 8.5),
+
+            // Contenedor inferior con el widget del mapa
             Expanded(
               child: Center(
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 252, 231, 197),
                       borderRadius: const BorderRadius.all(Radius.circular(40)),
                       boxShadow: [
                         BoxShadow(
@@ -73,10 +77,14 @@ class VisitsPage extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
-                    child: const Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                      child: ListWidget(),
+                    // Contenedor de detalles del cliente
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 30),
+                      child: DetailWidget(
+                        clientName: clientName,
+                        clientAddress: clientAddress,
+                      ),
                     ),
                   ),
                 ),
