@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.black, // Cambiado a negro
+              color: Colors.black,
               fontFamily: 'Roboto',
               shadows: [
                 Shadow(
