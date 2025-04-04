@@ -9,8 +9,11 @@ class TimerProvider extends ChangeNotifier {
   Timer? _timer;
 
   int get seconds => _seconds;
+
   int get minutes => _minutes;
+
   int get hours => _hours;
+
   bool get isRunning => _isRunning;
 
   void iniciarTimer() {
@@ -30,16 +33,17 @@ class TimerProvider extends ChangeNotifier {
 
         notifyListeners();
       });
-      _isRunning = true;
+      _isRunning = true; // Cambia el estado a corriendo
       notifyListeners();
     }
   }
 
   void pausarTimer() {
     if (_isRunning) {
-      _timer?.cancel();
-      _isRunning = false;
+      _timer?.cancel(); // Detiene el temporizador
+      _isRunning = false; // Actualiza el estado
     } else {
+      // Reanuda el temporizador al llamar iniciarTimer
       iniciarTimer();
     }
     notifyListeners();

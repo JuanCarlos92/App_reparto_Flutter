@@ -2,11 +2,11 @@ import 'package:app_reparto/widgets/map_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 
-class LocationPage extends StatelessWidget {
+class LocationWidget extends StatelessWidget {
   final double latitude;
   final double longitude;
 
-  const LocationPage({
+  const LocationWidget({
     super.key,
     required this.latitude,
     required this.longitude,

@@ -14,10 +14,10 @@ class _TimerPageState extends State<TimerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final shouldStartTimer =
-        ModalRoute.of(context)?.settings.arguments as bool?;
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    if (shouldStartTimer == true) {
+    if (arguments != null && arguments['startTimer'] == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         context.read<TimerProvider>().iniciarTimer();
       });
@@ -160,7 +160,7 @@ class _TimerPageState extends State<TimerPage> {
                             ),
                             onPressed: () {
                               context.read<TimerProvider>().finalizarTimer();
-                              Navigator.pushReplacementNamed(context, '/home');
+                              Navigator.pop(context, '/home');
                             },
                           ),
                         ],

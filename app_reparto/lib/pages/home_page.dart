@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:app_reparto/widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/geolocation_service.dart';
@@ -76,7 +75,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          NotificationWidget(),
+          // NotificationWidget(),
         ],
       ),
       body: Column(
@@ -175,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                   onPressed: () {
                                     startLocationUpdates();
                                     Navigator.pushNamed(context, '/timer',
-                                        arguments: true);
+                                        arguments: {'startTimer': true});
                                   },
                                 ),
                                 const SizedBox(height: 20),
