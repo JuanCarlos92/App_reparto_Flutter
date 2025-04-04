@@ -9,16 +9,14 @@ class TimerProvider extends ChangeNotifier {
   Timer? _timer;
 
   int get seconds => _seconds;
-
   int get minutes => _minutes;
-
   int get hours => _hours;
-
   bool get isRunning => _isRunning;
 
   void iniciarTimer() {
-    if (!_isRunning) {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _isRunning = true;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (_isRunning) {
         _seconds++;
 
         if (_seconds == 60) {
@@ -32,18 +30,15 @@ class TimerProvider extends ChangeNotifier {
         }
 
         notifyListeners();
-      });
-      _isRunning = true; // Cambia el estado a corriendo
-      notifyListeners();
-    }
+      }
+    });
   }
 
   void pausarTimer() {
-    if (_isRunning) {
-      _timer?.cancel(); // Detiene el temporizador
-      _isRunning = false; // Actualiza el estado
+    _isRunning = !_isRunning;
+    if (!_isRunning) {
+      _timer?.cancel();
     } else {
-      // Reanuda el temporizador al llamar iniciarTimer
       iniciarTimer();
     }
     notifyListeners();

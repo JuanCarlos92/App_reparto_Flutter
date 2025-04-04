@@ -16,6 +16,7 @@ class VisitsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
