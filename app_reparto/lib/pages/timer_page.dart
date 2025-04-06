@@ -18,11 +18,10 @@ class _TimerPageState extends State<TimerPage> {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    // Solo inicia el temporizador si el argumento 'startTimer' es true y el temporizador no está corriendo
     if (arguments != null && arguments['startTimer'] == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final timerProvider = context.read<TimerProvider>();
-        if (!timerProvider.isRunning) {
+        if (!timerProvider.hasStarted) {
           timerProvider.iniciarTimer();
         }
       });
