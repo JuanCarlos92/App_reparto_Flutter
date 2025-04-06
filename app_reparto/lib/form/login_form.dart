@@ -39,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.black, // Cambiado a negro
+              color: Colors.black,
               fontFamily: 'Roboto',
               shadows: [
                 Shadow(
@@ -60,7 +60,8 @@ class _LoginFormState extends State<LoginForm> {
               border: OutlineInputBorder(),
               fillColor:
                   // ignore: deprecated_member_use
-                  Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
+                  Colors.white.withOpacity(0.2),
+              // Ajusta la opacidad aquí
               filled: true,
             ),
             validator: (value) {
@@ -79,7 +80,8 @@ class _LoginFormState extends State<LoginForm> {
               border: OutlineInputBorder(),
               fillColor:
                   // ignore: deprecated_member_use
-                  Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
+                  Colors.white.withOpacity(0.2),
+              // Ajusta la opacidad aquí
               filled: true,
             ),
             obscureText: true,

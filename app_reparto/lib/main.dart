@@ -1,13 +1,13 @@
+import 'package:app_reparto/pages/home_page.dart';
+import 'package:app_reparto/pages/login_page.dart';
+import 'package:app_reparto/pages/main_page.dart';
+import 'package:app_reparto/pages/visits_page.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
+import 'package:app_reparto/providers/timer_provider.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import 'package:app_reparto/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:app_reparto/providers/timer_provider.dart';
-import 'package:app_reparto/pages/visits_page.dart';
-import 'package:app_reparto/pages/home_page.dart';
-import 'package:app_reparto/pages/login_page.dart';
-import 'package:app_reparto/pages/main_page.dart';
 
 void main() {
   runApp(
