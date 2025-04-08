@@ -3,13 +3,13 @@ import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 
 // Widget para mostrar la ubicación del cliente con un mapa y temporizador
-class LocationWidget extends StatelessWidget {
+class LocationScreen extends StatelessWidget {
   // Coordenadas geográficas del cliente
   final double latitud; // Latitud del cliente
   final double longitud; // Longitud del cliente
 
   // Constructor que requiere las coordenadas
-  const LocationWidget({
+  const LocationScreen({
     super.key,
     required this.latitud,
     required this.longitud,

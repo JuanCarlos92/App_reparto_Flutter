@@ -66,10 +66,12 @@ class ClientService {
                 'name': (item['name'] ?? '').toString(),
                 'town': (item['town'] ?? '').toString(),
                 'address': (item['address'] ?? '').toString(),
-                'latitud':
-                    double.tryParse(item['latitud']?.toString() ?? '0') ?? 0.0,
-                'longitud':
-                    double.tryParse(item['longitud']?.toString() ?? '0') ?? 0.0,
+                'latitud': item['latitud'] is num
+                    ? (item['latitud'] as num).toDouble()
+                    : 0.0,
+                'longitud': item['longitud'] is num
+                    ? (item['longitud'] as num).toDouble()
+                    : 0.0,
               };
 
               // Crea y añade el objeto Cliente

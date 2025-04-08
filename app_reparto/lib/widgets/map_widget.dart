@@ -16,6 +16,18 @@ class MapWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Add debug prints
+    print('Debug - MapWidget - Latitude: $latitud');
+    print('Debug - MapWidget - Longitude: $longitud');
+
+    // Verify coordinates are within valid ranges
+    if (latitud == 0.0 || longitud == 0.0) {
+      print('Warning: Invalid coordinates detected');
+    }
+    if (latitud < -90 || latitud > 90 || longitud < -180 || longitud > 180) {
+      print('Warning: Coordinates out of valid range');
+    }
+
     return Container(
       margin: const EdgeInsets.all(16.0), // Margen uniforme alrededor del mapa
       // Decoración del contenedor del mapa
@@ -45,6 +57,8 @@ class MapWidget extends StatelessWidget {
                   longitud), // Centro del mapa en la ubicación del cliente
               zoom: 15, // Nivel de zoom inicial
             ),
+            myLocationEnabled: true,
+            mapType: MapType.normal,
             // Marcador que indica la ubicación del cliente
             markers: {
               Marker(

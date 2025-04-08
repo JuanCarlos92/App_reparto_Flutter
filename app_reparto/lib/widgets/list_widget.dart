@@ -1,5 +1,5 @@
 import 'package:app_reparto/screens/detail_screen.dart';
-import 'package:app_reparto/widgets/location_widget.dart';
+import 'package:app_reparto/screens/location_screen.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -100,7 +100,7 @@ class ListWidget extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LocationWidget(
+                              builder: (context) => LocationScreen(
                                 latitud: client.latitud,
                                 longitud: client.longitud,
                               ),
