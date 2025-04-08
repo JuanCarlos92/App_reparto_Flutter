@@ -8,12 +8,11 @@ String clientToJson(Client data) => json.encode(data.toJson());
 class Client {
   // Propiedades básicas del cliente
   String id;
-  String name;        // Nombre del cliente
-  String town;        // Ciudad o población
-  String address;     // Dirección completa
-  double latitud;     // Coordenada de latitud para geolocalización
-  double longitud;    // Coordenada de longitud para geolocalización
-  ArrayOptions arrayOptions;  // Opciones adicionales del cliente
+  String name; // Nombre del cliente
+  String town; // Ciudad o población
+  String address; // Dirección completa
+  double latitud; // Coordenada de latitud para geolocalización
+  double longitud; // Coordenada de longitud para geolocalización
 
   // Constructor que requiere todos los campos
   Client({
@@ -23,7 +22,6 @@ class Client {
     required this.address,
     required this.latitud,
     required this.longitud,
-    required this.arrayOptions,
   });
 
   // Factory constructor para crear una instancia desde un Map (JSON)
@@ -39,9 +37,6 @@ class Client {
         longitud: (json["longitud"] != null)
             ? double.parse(json["longitud"].toString())
             : 0.0,
-        arrayOptions: json["array_options"] != null
-            ? ArrayOptions.fromJson(json["array_options"])
-            : ArrayOptions(opcion1: '', opcion2: '', opcion3: ''),
       );
 
   // Método para convertir la instancia a un Map (JSON)
@@ -52,34 +47,5 @@ class Client {
         "address": address,
         "latitud": latitud,
         "longitud": longitud,
-        "array_options": arrayOptions.toJson(),
-      };
-}
-
-// Clase para manejar opciones adicionales del cliente
-class ArrayOptions {
-  String opcion1;    // Primera opción personalizable
-  String opcion2;    // Segunda opción personalizable
-  String opcion3;    // Tercera opción personalizable
-
-  // Constructor que requiere todas las opciones
-  ArrayOptions({
-    required this.opcion1,
-    required this.opcion2,
-    required this.opcion3,
-  });
-
-  // Factory constructor para crear una instancia desde un Map (JSON)
-  factory ArrayOptions.fromJson(Map<String, dynamic> json) => ArrayOptions(
-        opcion1: json["opcion1"],
-        opcion2: json["opcion2"],
-        opcion3: json["opcion3"],
-      );
-
-  // Método para convertir la instancia a un Map (JSON)
-  Map<String, dynamic> toJson() => {
-        "opcion1": opcion1,
-        "opcion2": opcion2,
-        "opcion3": opcion3,
       };
 }

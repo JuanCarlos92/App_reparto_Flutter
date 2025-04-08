@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 // Widget para mostrar la ubicación del cliente con un mapa y temporizador
 class LocationWidget extends StatelessWidget {
   // Coordenadas geográficas del cliente
-  final double latitude; // Latitud del cliente
-  final double longitude; // Longitud del cliente
+  final double latitud; // Latitud del cliente
+  final double longitud; // Longitud del cliente
 
   // Constructor que requiere las coordenadas
   const LocationWidget({
     super.key,
-    required this.latitude,
-    required this.longitude,
+    required this.latitud,
+    required this.longitud,
   });
 
   @override
@@ -93,8 +93,8 @@ class LocationWidget extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
                       child: MapWidget(
-                        latitude: latitude,
-                        longitude: longitude,
+                        latitud: latitud,
+                        longitud: longitud,
                       ),
                     ),
                   ),

@@ -13,8 +13,8 @@ class AuthService {
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/login'),
         headers: {
-          'Content-Type': 'application/json',  // Tipo de contenido JSON
-          'Accept': 'application/json',        // Acepta respuesta JSON
+          'Content-Type': 'application/json', // Tipo de contenido JSON
+          'Accept': 'application/json', // Acepta respuesta JSON
         },
         // Envía las credenciales en formato JSON
         body: json.encode({'usuario': username, 'contrasena': password}),
@@ -27,17 +27,15 @@ class AuthService {
         // Verifica si el token de autenticación está presente
         if (data.containsKey('DOLAPIKEY')) {
           String token = data['DOLAPIKEY'];
-
-          // Almacena el token para futuras peticiones
-          await TokenService.setToken(token);
-          return data;  // Retorna los datos de la respuesta
+          await TokenService.setToken(token); //Almacena token
+          return data;
         } else {
           // Error si no se encuentra el token
           throw Exception('Token no encontrado en la respuesta');
         }
       } else if (response.statusCode == 401) {
         // Manejo de credenciales inválidas
-        await TokenService.clearToken();  // Limpia el token almacenado
+        await TokenService.clearToken(); // Limpia el token almacenado
         throw Exception(
             'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
       } else {

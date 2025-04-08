@@ -4,14 +4,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 // Widget para mostrar un mapa de Google Maps con la ubicación del cliente
 class MapWidget extends StatelessWidget {
   // Coordenadas geográficas del cliente
-  final double latitude; // Latitud del cliente
-  final double longitude; // Longitud del cliente
+  final double latitud; // Latitud del cliente
+  final double longitud; // Longitud del cliente
 
   // Constructor que requiere las coordenadas
   const MapWidget({
     super.key,
-    required this.latitude,
-    required this.longitude,
+    required this.latitud,
+    required this.longitud,
   });
 
   @override
@@ -41,15 +41,15 @@ class MapWidget extends StatelessWidget {
           child: GoogleMap(
             // Configuración inicial de la cámara del mapa
             initialCameraPosition: CameraPosition(
-              target: LatLng(latitude,
-                  longitude), // Centro del mapa en la ubicación del cliente
+              target: LatLng(latitud,
+                  longitud), // Centro del mapa en la ubicación del cliente
               zoom: 15, // Nivel de zoom inicial
             ),
             // Marcador que indica la ubicación del cliente
             markers: {
               Marker(
                 markerId: const MarkerId('client_location'),
-                position: LatLng(latitude, longitude),
+                position: LatLng(latitud, longitud),
                 infoWindow: InfoWindow(
                     title: 'Ubicación del Cliente'), // Título del marcador
               ),

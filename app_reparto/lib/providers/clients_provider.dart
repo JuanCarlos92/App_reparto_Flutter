@@ -24,35 +24,32 @@ class ClientsProvider extends ChangeNotifier {
   // Método para obtener los clientes desde el backend
   Future<void> fetchClientsFromBackend() async {
     try {
-      // Inicia el proceso de carga
       _isLoading = true;
       _error = '';
-      notifyListeners(); // Notifica a los widgets que escuchan cambios
+      notifyListeners();
 
-      // Obtiene los clientes del servicio
+      print('Debug - Fetching clients from backend...'); // Debug print
       final fetchedClients = await _clientService.getClients();
-      // ignore: avoid_print
-      print(
-          'Fetched clients count: ${fetchedClients.length}'); // Log de depuración
+      print('Debug - Response from backend: $fetchedClients'); // Debug print
+      print('Debug - Fetched clients count: ${fetchedClients.length}');
 
-      // Si no hay clientes, limpia la lista y termina
       if (fetchedClients.isEmpty) {
+        print('Debug - No clients received from backend'); // Debug print
         _clients = [];
         _isLoading = false;
         notifyListeners();
         return;
       }
 
-      // Actualiza la lista de clientes
+      print('Debug - Setting clients in provider'); // Debug print
       _clients = fetchedClients;
     } catch (e) {
-      // Manejo de errores
+      print('Debug - Error in fetchClientsFromBackend: $e'); // Debug print
       _error = e.toString();
       debugPrint('Error al obtener clientes: $e');
     } finally {
-      // Finaliza el proceso de carga
       _isLoading = false;
-      notifyListeners(); // Notifica a los widgets que escuchan cambios
+      notifyListeners();
     }
   }
 

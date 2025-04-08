@@ -101,8 +101,8 @@ class ListWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => LocationWidget(
-                                latitude: client.latitud,
-                                longitude: client.longitud,
+                                latitud: client.latitud,
+                                longitud: client.longitud,
                               ),
                             ),
                           );

@@ -9,42 +9,49 @@ class ClientService {
   // Método para obtener la lista de clientes desde el servidor
   Future<List<Client>> getClients() async {
     try {
-      // Obtiene el token de autenticación
       final token = await TokenService.getToken();
 
-      // Verifica si existe un token válido
+      // Add debug print for token
+      print('Debug - Token: $token');
+
       if (token == null) {
         throw Exception(
             'No se ha encontrado el token. Por favor inicia sesión.');
       }
 
-      // Realiza la petición GET al endpoint de clientes
+      final url = Uri.parse('${ApiConfig.baseUrl}/clients');
+      print('Debug - URL completa: $url');
+
+      // Updated headers with Authorization
       final response = await http.get(
-        Uri.parse('${ApiConfig.baseUrl}/clients'),
+        url,
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'DOLAPIKEY': token, // Token de autenticación
+          'Authorization': 'Bearer $token',
         },
       );
 
+      // Add debug print for response
+      print('Debug - Response status code: ${response.statusCode}');
+      print('Debug - Response headers: ${response.headers}');
+
       // Procesa la respuesta exitosa
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // ignore: avoid_print
-        print('Response body: ${response.body}'); // Log de depuración
+        print('Response body: ${response.body}');
 
-        // Verifica si la respuesta está vacía
         if (response.body.isEmpty) {
-          // ignore: avoid_print
-          print('Response body is empty'); // Log de depuración
+          print('Response body is empty');
           return [];
         }
 
-        // Decodifica la respuesta JSON
         final decoded = json.decode(response.body);
-        // ignore: avoid_print
-        print('Decoded JSON: $decoded'); // Log de depuración
+        print('Debug - Decoded JSON type: ${decoded.runtimeType}');
+        print('Debug - Decoded JSON content: $decoded');
+
         if (decoded is! List) {
+          print(
+              'Debug - Decoded JSON is not a List, it is: ${decoded.runtimeType}');
           return [];
         }
 
@@ -63,9 +70,6 @@ class ClientService {
                     double.tryParse(item['latitud']?.toString() ?? '0') ?? 0.0,
                 'longitud':
                     double.tryParse(item['longitud']?.toString() ?? '0') ?? 0.0,
-                'array_options': item['array_options'] is Map
-                    ? item['array_options']
-                    : {'opcion1': '', 'opcion2': '', 'opcion3': ''}
               };
 
               // Crea y añade el objeto Cliente
@@ -81,9 +85,9 @@ class ClientService {
 
         return clients;
       } else if (response.statusCode == 401) {
-        // Manejo de sesión expirada
-        await TokenService.clearToken();
-        throw Exception('Sesión expirada. Por favor inicia sesión nuevamente.');
+        // Modificado para reflejar el problema de ID de trabajador
+        throw Exception(
+            'ID de trabajador no válido o sin permisos para ver los clientes.');
       } else {
         // Manejo de otros errores de la API
         throw Exception(
