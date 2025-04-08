@@ -1,48 +1,52 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'token_service.dart';
+import '../config/api_config.dart';
 
+// Servicio para manejar la autenticación de usuarios
 class AuthService {
-  static const String baseUrl = 'https://3f78-80-102-248-37.ngrok-free.app';
-
-  // Método de login
+  // Método para realizar el inicio de sesión
+  // Retorna un Map con la respuesta del servidor
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
+      // Realiza la petición POST al endpoint de login
       final response = await http.post(
-        Uri.parse('$baseUrl/login'),
+        Uri.parse('${ApiConfig.baseUrl}/login'),
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          'Content-Type': 'application/json',  // Tipo de contenido JSON
+          'Accept': 'application/json',        // Acepta respuesta JSON
         },
+        // Envía las credenciales en formato JSON
         body: json.encode({'usuario': username, 'contrasena': password}),
       );
 
       if (response.statusCode == 200) {
-        // Si el login es exitoso...
+        // Si la autenticación es exitosa
         final data = json.decode(response.body);
 
-        // Verificar que el token está presente
+        // Verifica si el token de autenticación está presente
         if (data.containsKey('DOLAPIKEY')) {
           String token = data['DOLAPIKEY'];
 
-          // Guarda el token en el almacenamiento
+          // Almacena el token para futuras peticiones
           await TokenService.setToken(token);
-          return data;
+          return data;  // Retorna los datos de la respuesta
         } else {
+          // Error si no se encuentra el token
           throw Exception('Token no encontrado en la respuesta');
         }
       } else if (response.statusCode == 401) {
-        // Si las credenciales son inválidas...
-        await TokenService.clearToken();
+        // Manejo de credenciales inválidas
+        await TokenService.clearToken();  // Limpia el token almacenado
         throw Exception(
             'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
       } else {
-        // Cualquier otro error
+        // Manejo de otros errores de autenticación
         throw Exception(
             'Error de autenticación: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      // Captura errores de conexión u otros errores inesperados
+      // Manejo de errores de conexión o inesperados
       throw Exception('Error de conexión: $e');
     }
   }

@@ -3,6 +3,7 @@ import 'package:app_reparto/services/auth_service.dart';
 import '../form/login_form.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 
+// Página de inicio de sesión que mantiene estado
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -10,14 +11,15 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+// Estado de la página de inicio de sesión
 class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _authService = AuthService();
-  bool _isLoading = false;
+  final _formKey = GlobalKey<FormState>();  // Clave global para validar el formulario
+  final _usernameController = TextEditingController();  // Controlador para el campo de usuario
+  final _passwordController = TextEditingController();  // Controlador para el campo de contraseña
+  final _authService = AuthService();  // Servicio de autenticación
+  bool _isLoading = false;  // Indicador de estado de carga
 
-  // Método para manejar el inicio de sesión
+  // Método para manejar el proceso de inicio de sesión
   Future<void> _login() async {
     // Verifica si el formulario es válido
     if (!_formKey.currentState!.validate()) {
@@ -25,20 +27,20 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     setState(() {
-      _isLoading = true;
+      _isLoading = true;  // Activa el indicador de carga
     });
 
     try {
-      // Llama al servicio de autenticación
+      // Intenta autenticar al usuario con el servicio
       await _authService.login(
         _usernameController.text,
         _passwordController.text,
       );
 
-      // Verifica si el widget sigue en el árbol de widgets
+      // Verifica si el widget sigue montado antes de continuar
       if (mounted) {
-        // Cierra el teclado
-        FocusScope.of(context).unfocus();
+        FocusScope.of(context).unfocus();  // Cierra el teclado
+        // Navega a la página principal y elimina el historial de navegación
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/home',
@@ -47,11 +49,12 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     } catch (e) {
-      // Muestra un diálogo de error si ocurre una excepción
+      // Maneja los errores mostrando un diálogo
       if (mounted) {
         DialogUtils.showErrorDialog(context, e.toString());
       }
     } finally {
+      // Desactiva el indicador de carga al finalizar
       if (mounted) {
         setState(() {
           _isLoading = false;
@@ -62,12 +65,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Estructura principal
     return Scaffold(
+      // Barra superior de la aplicación
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
-        // Título de la barra de navegación
         title: const Text(
           'App Reparto',
           style: TextStyle(
@@ -84,47 +86,22 @@ class _LoginPageState extends State<LoginPage> {
             ],
           ),
         ),
-        // Color de fondo de la barra de navegación
       ),
-      // Contenedor principal ocupando toda la pantalla
+      // Contenedor principal con scroll
       body: Container(
-        // Configura el fondo de la pantalla con un degradado
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
-
-        // Centra su contenido en la pantalla
         child: Center(
-          // Contenedor que ocupa el 90% del ancho de la pantalla
           child: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(24.0),
-              // Contenedor que contiene el contenido de la pantalla
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Icon(
-                  //   Icons.local_shipping,
-                  //   size: 80,
-                  //   color: const Color.fromARGB(255, 200, 120, 20),
-                  //   shadows: [
-                  //     Shadow(
-                  //       // Sombra del texto
-                  //       blurRadius: 8,
-                  //       // ignore: deprecated_member_use
-                  //       color: Colors.black.withOpacity(0.3),
-                  //       offset: Offset(2, 2),
-                  //     ),
-                  //   ],
-                  // ),
-                  // const SizedBox(height: 16),
-
-                  // const SizedBox(height: 40),
-
-                  // Tarjeta que contiene el formulario de inicio de sesión
+                  // Tarjeta que contiene el formulario de login
                   Card(
-                    // Efecto de sombra en la tarjeta
-                    elevation: 8,
+                    elevation: 8,  // Elevación para efecto de sombra
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: const BorderSide(
@@ -132,12 +109,10 @@ class _LoginPageState extends State<LoginPage> {
                         width: 1.5,
                       ),
                     ),
-                    // ignore: deprecated_member_use
                     color: Colors.white,
-                    // color: Color.fromARGB(255, 189, 235, 247).withOpacity(1),
-
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
+                      // Widget de formulario personalizado
                       child: LoginForm(
                         formKey: _formKey,
                         usernameController: _usernameController,
@@ -159,9 +134,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
+  // Limpieza de recursos cuando se destruye el widget
   void dispose() {
-    _usernameController.dispose(); // Libera el controlador del usuario
-    _passwordController.dispose(); // Libera el controlador de la contraseña
+    _usernameController.dispose();  // Libera el controlador del usuario
+    _passwordController.dispose();  // Libera el controlador de la contraseña
     super.dispose();
   }
 }

@@ -1,96 +1,60 @@
 import 'package:app_reparto/models/client.dart';
+import 'package:app_reparto/services/client_service.dart';
+// import 'package:app_reparto/services/geolocation_service.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+// import 'package:geolocator/geolocator.dart';
 
+// Proveedor para gestionar el estado y la lógica de los clientes en la aplicación
 class ClientsProvider extends ChangeNotifier {
-  // Lista de clientes
-  List<Client> _clients = [];
+  // Servicios necesarios para la gestión de clientes y geolocalización
+  final ClientService _clientService =
+      ClientService(); // Servicio para operaciones con clientes
+  // final GeolocationService _geolocationService = GeolocationService();
 
-  // Getter para la lista
-  List<Client> get clients => _clients;
+  // Variables de estado
+  List<Client> _clients = []; // Lista de clientes
+  bool _isLoading = false; // Indicador de carga
+  String _error = ''; // Mensaje de error si existe
 
-  // Método para actualizar los clientes
-  void setClients(List<Client> newClients) {
-    _clients = newClients;
-    notifyListeners();
-  }
+  // Getters para acceder al estado desde fuera del provider
+  List<Client> get clients => _clients; // Obtener lista de clientes
+  bool get isLoading => _isLoading; // Obtener estado de carga
+  String get error => _error; // Obtener mensaje de error
 
-  // Simulación de un llamado al backend (API)
+  // Método para obtener los clientes desde el backend
   Future<void> fetchClientsFromBackend() async {
     try {
-      // Simulando una llamada HTTP y respuesta JSON
-      await Future.delayed(const Duration(seconds: 2));
-      final response = [
-        {"name": "Cliente A", "address": "Dirección A", "latitude": 40.7128, "longitude": -74.0060},
-        {
-          "name": "Cliente B",
-          "address": "Dirección B",
-          "latitude": 37.0522,
-          "longitude": -130.2437
-        },
-        {"name": "Cliente C", "address": "Dirección C", "latitude": 41.8781, "longitude": -87.6298},
-      ];
+      // Inicia el proceso de carga
+      _isLoading = true;
+      _error = '';
+      notifyListeners(); // Notifica a los widgets que escuchan cambios
 
-      // Convierte la respuesta a una lista de objetos Cliente
-      List<Client> fetchedClients = response.map((data) => Client.fromJson(data)).toList();
+      // Obtiene los clientes del servicio
+      final fetchedClients = await _clientService.getClients();
+      // ignore: avoid_print
+      print(
+          'Fetched clients count: ${fetchedClients.length}'); // Log de depuración
 
-      // Obtén la ubicación actual del repartidor
-      Position position = await Geolocator.getCurrentPosition(
-        // ignore: deprecated_member_use
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // Calcula las distancias entre el repartidor y los clientes
-      for (var client in fetchedClients) {
-        double distance = Geolocator.distanceBetween(
-          position.latitude,
-          position.longitude,
-          client.latitude,
-          client.longitude,
-        );
-        client.distanceToDelivery = distance; // Asigna la distancia al cliente
+      // Si no hay clientes, limpia la lista y termina
+      if (fetchedClients.isEmpty) {
+        _clients = [];
+        _isLoading = false;
+        notifyListeners();
+        return;
       }
-
-      // Ordena los clientes por distancia (menor a mayor)
-      fetchedClients.sort((a, b) => a.distanceToDelivery.compareTo(b.distanceToDelivery));
 
       // Actualiza la lista de clientes
-      setClients(fetchedClients);
+      _clients = fetchedClients;
     } catch (e) {
-      debugPrint('Error al obtener clientes o calcular distancias: $e');
+      // Manejo de errores
+      _error = e.toString();
+      debugPrint('Error al obtener clientes: $e');
+    } finally {
+      // Finaliza el proceso de carga
+      _isLoading = false;
+      notifyListeners(); // Notifica a los widgets que escuchan cambios
     }
   }
 
-  // Método para eliminar un cliente y recalcular las distancias
-  Future<void> removeClient(Client clientToRemove) async {
-    try {
-      // Elimina el cliente de la lista
-      _clients.removeWhere((client) => client.name == clientToRemove.name);
-
-      // Obtén la ubicación actual del repartidor
-      Position position = await Geolocator.getCurrentPosition(
-        // ignore: deprecated_member_use
-        desiredAccuracy: LocationAccuracy.high,
-      );
-
-      // Recalcula las distancias para los clientes restantes
-      for (var client in _clients) {
-        double distance = Geolocator.distanceBetween(
-          position.latitude,
-          position.longitude,
-          client.latitude,
-          client.longitude,
-        );
-        client.distanceToDelivery = distance; // Actualiza la distancia
-      }
-
-      // Ordena los clientes restantes por distancia (menor a mayor)
-      _clients.sort((a, b) => a.distanceToDelivery.compareTo(b.distanceToDelivery));
-
-      // Notifica a los widgets para que se actualicen
-      notifyListeners();
-    } catch (e) {
-      debugPrint('Error al eliminar cliente o recalcular distancias: $e');
-    }
-  }
+  // Se eliminó el método refreshTravelTimes ya que no es necesario
 }

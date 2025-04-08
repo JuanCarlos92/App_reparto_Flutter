@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/timer_provider.dart';
 
+// Widget para mostrar y controlar un temporizador
 class TimerWidget extends StatelessWidget {
   const TimerWidget({super.key});
 
+  // Método auxiliar para formatear números a dos dígitos (ejemplo: 1 -> "01")
   String _formatNumber(int number) {
     return number.toString().padLeft(2, '0');
   }
@@ -13,23 +15,26 @@ class TimerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+      // Decoración del contenedor principal
       decoration: BoxDecoration(
-        // ignore: deprecated_member_use
-        color: Color.fromARGB(255, 200, 120, 20),
-        borderRadius: BorderRadius.circular(20),
+        color: Color.fromARGB(255, 200, 120, 20), // Color naranja personalizado
+        borderRadius: BorderRadius.circular(20), // Bordes redondeados
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.min, // Ajusta el tamaño al contenido
         children: [
+          // Icono del temporizador
           const Icon(
             Icons.timer,
             color: Colors.white,
             size: 24,
           ),
           const SizedBox(width: 10),
+          // Visualización del tiempo usando Consumer para actualizaciones automáticas
           Consumer<TimerProvider>(
             builder: (context, timerProvider, child) {
               return Text(
+                // Formato HH:MM:SS con números de dos dígitos
                 '${_formatNumber(timerProvider.hours)}:'
                 '${_formatNumber(timerProvider.minutes)}:'
                 '${_formatNumber(timerProvider.seconds)}',
@@ -42,10 +47,12 @@ class TimerWidget extends StatelessWidget {
             },
           ),
           const SizedBox(width: 15),
+          // Controles del temporizador (pausar/reanudar y detener)
           Consumer<TimerProvider>(
             builder: (context, timerProvider, child) {
               return Row(
                 children: [
+                  // Botón de pausar/reanudar
                   GestureDetector(
                     onTap: timerProvider.pausarTimer,
                     child: Container(
@@ -56,6 +63,7 @@ class TimerWidget extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
+                        // Cambia el icono según el estado del temporizador
                         timerProvider.isRunning
                             ? Icons.pause
                             : Icons.play_arrow,
@@ -65,10 +73,12 @@ class TimerWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 8),
+                  // Botón de detener y volver a inicio
                   GestureDetector(
                     onTap: () {
-                      timerProvider.finalizarTimer();
-                      Navigator.pushReplacementNamed(context, '/home');
+                      timerProvider.finalizarTimer(); // Detiene el temporizador
+                      Navigator.pushReplacementNamed(
+                          context, '/home'); // Navega a inicio
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),

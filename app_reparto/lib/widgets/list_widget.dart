@@ -3,16 +3,49 @@ import 'package:app_reparto/widgets/location_widget.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
+// Widget para mostrar la lista de clientes
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Obtiene la instancia del provider de clientes
     final clientsProvider = Provider.of<ClientsProvider>(context);
     final clients = clientsProvider.clients;
 
+    // Muestra un indicador de carga mientras se obtienen los datos
+    if (clientsProvider.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    // Muestra mensaje de error si existe alguno
+    if (clientsProvider.error.isNotEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              size: 60,
+              color: Color.fromARGB(255, 200, 120, 20),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              clientsProvider.error,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Color.fromARGB(255, 200, 120, 20),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    // Muestra mensaje cuando no hay clientes disponibles
     return clients.isEmpty
         ? const Center(
             child: Column(
@@ -35,20 +68,18 @@ class ListWidget extends StatelessWidget {
               ],
             ),
           )
+        // Construye la lista de clientes si hay datos disponibles
         : ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 10),
             itemCount: clients.length,
             itemBuilder: (context, index) {
               final client = clients[index];
 
-              // Formatear la distancia
-              final distanceFormatted = NumberFormat("#0.00")
-                  .format(client.distanceToDelivery / 1000); // En kilómetros
-
+              // Tarjeta de cliente individual
               return Container(
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 252, 231, 197),
+                  color: const Color.fromARGB(255, 252, 231, 197),
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: [
                     BoxShadow(
@@ -63,15 +94,15 @@ class ListWidget extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: Row(
                     children: [
-                      // Icono de ubicación
+                      // Botón de ubicación que abre el mapa
                       InkWell(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LocationWidget(
-                                latitude: client.latitude,
-                                longitude: client.longitude,
+                                latitude: client.latitud,
+                                longitude: client.longitud,
                               ),
                             ),
                           );
@@ -99,7 +130,8 @@ class ListWidget extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      // Información del cliente
+
+                      // Información básica del cliente
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,26 +153,11 @@ class ListWidget extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                             ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Icon(Icons.directions_car,
-                                    size: 16, color: Colors.black),
-                                const SizedBox(width: 5),
-                                Text(
-                                  '$distanceFormatted km',
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            ),
                           ],
                         ),
                       ),
-                      // Botón ver detalles
+
+                      // Botón para ver detalles del cliente
                       Container(
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 200, 120, 20),
@@ -164,6 +181,7 @@ class ListWidget extends StatelessWidget {
                                   builder: (context) => DetailPage(
                                     clientName: client.name,
                                     clientAddress: client.address,
+                                    clientTown: client.town,
                                   ),
                                 ),
                               );

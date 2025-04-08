@@ -5,6 +5,7 @@ import '../services/geolocation_service.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 
+// Página principal de la aplicación que gestiona el control horario
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -12,15 +13,19 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+// Estado de la página principal
 class _HomePageState extends State<HomePage> {
-  Timer? _locationTimer;
-  final GeolocationService _geolocationService = GeolocationService();
+  Timer? _locationTimer; // Temporizador para actualizar la ubicación
+  final GeolocationService _geolocationService =
+      GeolocationService(); // Servicio de geolocalización
 
   @override
+  // Se ejecuta cuando las dependencias cambian, útil para inicializar datos
   void didChangeDependencies() {
     super.didChangeDependencies();
     final arguments = ModalRoute.of(context)?.settings.arguments;
 
+    // Procesa el nombre de usuario si se recibe como argumento
     if (arguments != null && arguments is String) {
       final userName = capitalizeFirstLetter(arguments);
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -29,22 +34,26 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // Inicia la actualización periódica de la ubicación
   void startLocationUpdates() {
     _locationTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _geolocationService.getCurrentLocation();
     });
   }
 
+  // Detiene la actualización de ubicación
   void stopLocationUpdates() {
     _locationTimer?.cancel();
   }
 
   @override
+  // Limpia recursos cuando se destruye el widget
   void dispose() {
     stopLocationUpdates();
     super.dispose();
   }
 
+  // Función auxiliar para capitalizar la primera letra del texto
   String capitalizeFirstLetter(String text) {
     if (text.isEmpty) return text;
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
@@ -52,11 +61,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtiene el nombre de usuario del provider
     final userName = context.watch<UserProvider>().userName;
 
     return Scaffold(
+      // Barra superior de la aplicación
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Oculta el botón de retroceso
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
@@ -76,11 +87,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          // NotificationWidget(),
+          // Espacio para widget de notificaciones futuro
         ],
       ),
+      // Cuerpo principal de la página
       body: Column(
         children: [
+          // Muestra el nombre del usuario si está disponible
           if (userName.isNotEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 16.0),
@@ -94,6 +107,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ),
+          // Contenedor principal expandible
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
@@ -101,11 +115,13 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                  width: MediaQuery.of(context).size.width *
+                      0.9, // 90% del ancho de la pantalla
                   child: Column(
                     children: [
+                      // Sección superior con icono de temporizador
                       Container(
-                        padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
+                        padding: const EdgeInsets.fromLTRB(25, 20, 25, 30),
                         child: Column(
                           children: [
                             const Icon(
@@ -116,6 +132,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
+                      // Contenedor principal con los botones de acción
                       Expanded(
                         child: Container(
                           decoration: BoxDecoration(
@@ -139,6 +156,7 @@ class _HomePageState extends State<HomePage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                // Icono circular de entrega
                                 Container(
                                   padding: const EdgeInsets.all(25),
                                   decoration: BoxDecoration(
@@ -161,6 +179,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 const SizedBox(height: 40),
+                                // Botón para iniciar la jornada
                                 ButtonWidget(
                                   text: 'INICIAR JORNADA',
                                   icon: Icons.timer,
@@ -173,12 +192,13 @@ class _HomePageState extends State<HomePage> {
                                     end: Alignment.centerRight,
                                   ),
                                   onPressed: () {
-                                    startLocationUpdates();
+                                    startLocationUpdates(); // Inicia el seguimiento de ubicación
                                     Navigator.pushNamed(context, '/timer',
                                         arguments: {'startTimer': true});
                                   },
                                 ),
                                 const SizedBox(height: 20),
+                                // Botón para cerrar sesión
                                 ButtonWidget(
                                   text: 'CERRAR SESIÓN',
                                   icon: Icons.logout,

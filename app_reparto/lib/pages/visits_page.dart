@@ -4,19 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/list_widget.dart';
 
+// Página que muestra la lista de visitas programadas a clientes
 class VisitsPage extends StatelessWidget {
   const VisitsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Cargar los clientes al iniciar la página
+    // Carga los clientes después de que se construya el widget si la lista está vacía
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ClientsProvider>().fetchClientsFromBackend();
+      if (context.read<ClientsProvider>().clients.isEmpty) {
+        context.read<ClientsProvider>().fetchClientsFromBackend();
+      }
     });
 
     return Scaffold(
+      // Barra superior de la aplicación
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // Oculta el botón de retroceso
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
@@ -36,13 +40,14 @@ class VisitsPage extends StatelessWidget {
           ),
         ),
       ),
+      // Contenedor principal de la página
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: Column(
           children: [
-            // Header
+            // Sección superior con el widget del temporizador
             Container(
               padding: const EdgeInsets.fromLTRB(25, 60, 25, 20),
               child: Column(
@@ -52,12 +57,15 @@ class VisitsPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.5),
-            // Contenido principal
+
+            // Contenedor principal con la lista de visitas
             Expanded(
               child: Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                  width: MediaQuery.of(context).size.width *
+                      0.9, // 90% del ancho de la pantalla
                   child: Container(
+                    // Decoración del contenedor de la lista
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: const BorderRadius.all(Radius.circular(40)),
@@ -74,16 +82,18 @@ class VisitsPage extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
+                    // Widget personalizado que muestra la lista de clientes
                     child: const Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                      child: ListWidget(),
+                      child:
+                          ListWidget(), // Widget que renderiza la lista de clientes
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 20), // Espacio inferior
           ],
         ),
       ),

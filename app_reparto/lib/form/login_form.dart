@@ -1,15 +1,20 @@
 import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
+// Widget de formulario de inicio de sesión que mantiene estado
 class LoginForm extends StatefulWidget {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController usernameController;
-  final TextEditingController passwordController;
-  final bool isLoginForm;
-  final VoidCallback onLogin;
-  final VoidCallback toggleForm;
-  final bool isLoading;
+  // Controladores y propiedades necesarias para el formulario
+  final GlobalKey<FormState> formKey; // Clave global para validar el formulario
+  final TextEditingController
+      usernameController; // Controlador para el campo de usuario
+  final TextEditingController
+      passwordController; // Controlador para el campo de contraseña
+  final bool isLoginForm; // Indica si es formulario de login
+  final VoidCallback onLogin; // Función que se ejecuta al iniciar sesión
+  final VoidCallback toggleForm; // Función para alternar entre formularios
+  final bool isLoading; // Indica si está cargando
 
+  // Constructor con parámetros requeridos
   const LoginForm({
     super.key,
     required this.formKey,
@@ -26,20 +31,23 @@ class LoginForm extends StatefulWidget {
   _LoginFormState createState() => _LoginFormState();
 }
 
+// Estado del formulario de login
 class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
+    // Estructura del formulario
     return Form(
       key: widget.formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Título del formulario con estilo personalizado
           Text(
             'Iniciar Sesión',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.black, // Cambiado a negro
+              color: Colors.black,
               fontFamily: 'Roboto',
               shadows: [
                 Shadow(
@@ -52,15 +60,16 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           const SizedBox(height: 24),
+
+          // Campo de texto para el usuario con validación
           TextFormField(
             controller: widget.usernameController,
             decoration: InputDecoration(
               labelText: 'Usuario',
               prefixIcon: Icon(Icons.person),
               border: OutlineInputBorder(),
-              fillColor:
-                  // ignore: deprecated_member_use
-                  Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
+              // ignore: deprecated_member_use
+              fillColor: Colors.white.withOpacity(0.2),
               filled: true,
             ),
             validator: (value) {
@@ -71,18 +80,19 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 16),
+
+          // Campo de texto para la contraseña con validación
           TextFormField(
             controller: widget.passwordController,
             decoration: InputDecoration(
               labelText: 'Contraseña',
               prefixIcon: Icon(Icons.lock),
               border: OutlineInputBorder(),
-              fillColor:
-                  // ignore: deprecated_member_use
-                  Colors.white.withOpacity(0.2), // Ajusta la opacidad aquí
+              // ignore: deprecated_member_use
+              fillColor: Colors.white.withOpacity(0.2),
               filled: true,
             ),
-            obscureText: true,
+            obscureText: true, // Oculta el texto de la contraseña
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor ingresa tu contraseña';
@@ -91,6 +101,8 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 24),
+
+          // Botón personalizado para iniciar sesión
           ButtonWidget(
             text: 'INICIAR SESIÓN',
             icon: Icons.login,
@@ -102,6 +114,7 @@ class _LoginFormState extends State<LoginForm> {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
+            // Deshabilita el botón mientras está cargando
             onPressed: widget.isLoading ? () {} : widget.onLogin,
           ),
         ],
