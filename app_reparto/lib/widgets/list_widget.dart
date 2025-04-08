@@ -1,4 +1,4 @@
-import 'package:app_reparto/pages/detail_page.dart';
+import 'package:app_reparto/screens/detail_screen.dart';
 import 'package:app_reparto/widgets/location_widget.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
@@ -178,7 +178,7 @@ class ListWidget extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DetailPage(
+                                  builder: (context) => DetailScreen(
                                     clientName: client.name,
                                     clientAddress: client.address,
                                     clientTown: client.town,

@@ -3,14 +3,14 @@ import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 
 // Página que muestra los detalles de un cliente específico
-class DetailPage extends StatelessWidget {
+class DetailScreen extends StatelessWidget {
   // Propiedades para almacenar la información del cliente
   final String clientName; // Nombre del cliente
   final String clientAddress; // Dirección del cliente
   final String clientTown; // Ciudad del cliente
 
   // Constructor que requiere los datos básicos del cliente
-  const DetailPage({
+  const DetailScreen({
     super.key,
     required this.clientName,
     required this.clientAddress,

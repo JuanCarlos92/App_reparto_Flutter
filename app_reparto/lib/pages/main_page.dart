@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:app_reparto/pages/timer_page.dart';
-import 'package:app_reparto/pages/visits_page.dart';
+import 'package:app_reparto/screens/timer_screen.dart';
+import 'package:app_reparto/screens/visits_screen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -23,7 +23,7 @@ class _MainPageState extends State<MainPage> {
     return PageView(
       controller: _pageController,
       physics: const BouncingScrollPhysics(),
-      children: const [TimerPage(), VisitsPage()],
+      children: const [TimerScreen(), VisitsScreen()],
     );
   }
 }

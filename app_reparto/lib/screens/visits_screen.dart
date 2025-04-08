@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import '../widgets/list_widget.dart';
 
 // Página que muestra la lista de visitas programadas a clientes
-class VisitsPage extends StatelessWidget {
-  const VisitsPage({super.key});
+class VisitsScreen extends StatelessWidget {
+  const VisitsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

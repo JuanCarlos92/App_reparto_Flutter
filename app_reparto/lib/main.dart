@@ -4,9 +4,9 @@ import 'package:app_reparto/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
-import 'package:app_reparto/pages/visits_page.dart';
-import 'package:app_reparto/pages/home_page.dart';
-import 'package:app_reparto/pages/login_page.dart';
+import 'package:app_reparto/screens/visits_screen.dart';
+import 'package:app_reparto/screens/home_screen.dart';
+import 'package:app_reparto/screens/login_screen.dart';
 import 'package:app_reparto/pages/main_page.dart';
 
 void main() {
@@ -37,10 +37,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/splash': (context) => const SplashScreen(),
-        '/login': (context) => const LoginPage(),
-        '/home': (context) => const HomePage(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const HomeScreen(),
         '/timer': (context) => const MainPage(),
-        '/visits': (context) => const VisitsPage(),
+        '/visits': (context) => const VisitsScreen(),
       },
     );
   }

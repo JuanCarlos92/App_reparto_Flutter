@@ -4,20 +4,23 @@ import '../form/login_form.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 
 // Página de inicio de sesión que mantiene estado
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
 // Estado de la página de inicio de sesión
-class _LoginPageState extends State<LoginPage> {
-  final _formKey = GlobalKey<FormState>();  // Clave global para validar el formulario
-  final _usernameController = TextEditingController();  // Controlador para el campo de usuario
-  final _passwordController = TextEditingController();  // Controlador para el campo de contraseña
-  final _authService = AuthService();  // Servicio de autenticación
-  bool _isLoading = false;  // Indicador de estado de carga
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey =
+      GlobalKey<FormState>(); // Clave global para validar el formulario
+  final _usernameController =
+      TextEditingController(); // Controlador para el campo de usuario
+  final _passwordController =
+      TextEditingController(); // Controlador para el campo de contraseña
+  final _authService = AuthService(); // Servicio de autenticación
+  bool _isLoading = false; // Indicador de estado de carga
 
   // Método para manejar el proceso de inicio de sesión
   Future<void> _login() async {
@@ -27,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     setState(() {
-      _isLoading = true;  // Activa el indicador de carga
+      _isLoading = true; // Activa el indicador de carga
     });
 
     try {
@@ -39,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 
       // Verifica si el widget sigue montado antes de continuar
       if (mounted) {
-        FocusScope.of(context).unfocus();  // Cierra el teclado
+        FocusScope.of(context).unfocus(); // Cierra el teclado
         // Navega a la página principal y elimina el historial de navegación
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -101,7 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   // Tarjeta que contiene el formulario de login
                   Card(
-                    elevation: 8,  // Elevación para efecto de sombra
+                    elevation: 8, // Elevación para efecto de sombra
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                       side: const BorderSide(
@@ -136,8 +139,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   // Limpieza de recursos cuando se destruye el widget
   void dispose() {
-    _usernameController.dispose();  // Libera el controlador del usuario
-    _passwordController.dispose();  // Libera el controlador de la contraseña
+    _usernameController.dispose(); // Libera el controlador del usuario
+    _passwordController.dispose(); // Libera el controlador de la contraseña
     super.dispose();
   }
 }

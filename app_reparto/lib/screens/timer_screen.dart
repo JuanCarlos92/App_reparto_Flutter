@@ -4,15 +4,15 @@ import 'package:app_reparto/providers/timer_provider.dart';
 import '../widgets/button_widget.dart';
 
 // Página que muestra y controla el temporizador de la jornada laboral
-class TimerPage extends StatefulWidget {
-  const TimerPage({super.key});
+class TimerScreen extends StatefulWidget {
+  const TimerScreen({super.key});
 
   @override
-  State<TimerPage> createState() => _TimerPageState();
+  State<TimerScreen> createState() => _TimerScreenState();
 }
 
 // Estado de la página del temporizador
-class _TimerPageState extends State<TimerPage> {
+class _TimerScreenState extends State<TimerScreen> {
   @override
   // Se ejecuta cuando cambian las dependencias, útil para inicializar el temporizador
   void didChangeDependencies() {

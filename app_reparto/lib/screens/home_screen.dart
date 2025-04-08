@@ -6,15 +6,15 @@ import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 
 // Página principal de la aplicación que gestiona el control horario
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 // Estado de la página principal
-class _HomePageState extends State<HomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   Timer? _locationTimer; // Temporizador para actualizar la ubicación
   final GeolocationService _geolocationService =
       GeolocationService(); // Servicio de geolocalización
