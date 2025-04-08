@@ -17,34 +17,19 @@ class _TimerPageState extends State<TimerPage> {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    // Solo inicia el temporizador si el argumento 'startTimer' es true y el temporizador no está corriendo
     if (arguments != null && arguments['startTimer'] == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final timerProvider = context.read<TimerProvider>();
-        if (!timerProvider.isRunning) {
+        if (!timerProvider.isRunning && 
+            timerProvider.hours == 0 && 
+            timerProvider.minutes == 0 && 
+            timerProvider.seconds == 0) {
           timerProvider.iniciarTimer();
         }
       });
     }
   }
 
-/*
-    @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final previousRoute = ModalRoute.of(context)?.settings.name;
-
-    // Solo inicia el temporizador si la ruta anterior es '/home' y el temporizador no está corriendo
-    if (previousRoute == '/home') {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final timerProvider = context.read<TimerProvider>();
-        if (!timerProvider.isRunning) {
-          timerProvider.iniciarTimer();
-        }
-      });
-    }
-  }
-*/
   String _formatNumber(int number) {
     return number.toString().padLeft(2, '0');
   }
