@@ -8,6 +8,17 @@ import 'package:provider/provider.dart';
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});
 
+  // Método para formatear la duración en minutos o horas
+  String _formatDuration(int seconds) {
+    if (seconds < 60) {
+      return '$seconds seg';
+    } else if (seconds < 3600) {
+      return '${(seconds / 60).round()} min';
+    } else {
+      return '${(seconds / 3600).round()} h';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // Obtiene la instancia del provider de clientes
@@ -68,6 +79,7 @@ class ListWidget extends StatelessWidget {
               ],
             ),
           )
+
         // Construye la lista de clientes si hay datos disponibles
         : ListView.builder(
             padding: const EdgeInsets.symmetric(vertical: 10),
@@ -101,8 +113,8 @@ class ListWidget extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => LocationScreen(
-                                latitud: client.latitud,
-                                longitud: client.longitud,
+                                latitude: client.latitude,
+                                longitude: client.longitude,
                               ),
                             ),
                           );
@@ -152,6 +164,15 @@ class ListWidget extends StatelessWidget {
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
+                            ),
+                            // Inside the ListView.builder itemBuilder
+                            Text(
+                              '${_formatDuration(client.durationInSeconds)}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ],
                         ),

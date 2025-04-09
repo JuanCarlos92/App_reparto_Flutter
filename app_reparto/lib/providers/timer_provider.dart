@@ -4,11 +4,11 @@ import 'dart:async';
 // Proveedor para gestionar el estado y la lógica del temporizador
 class TimerProvider extends ChangeNotifier {
   // Variables para almacenar el tiempo
-  int _seconds = 0; // Segundos transcurridos
-  int _minutes = 0; // Minutos transcurridos
-  int _hours = 0; // Horas transcurridas
-  bool _isRunning = false; // Estado del temporizador (activo/pausado)
-  Timer? _timer; // Objeto Timer para controlar el tiempo
+  int _seconds = 0;
+  int _minutes = 0;
+  int _hours = 0;
+  bool _isRunning = false;
+  Timer? _timer;
 
   // Getters para acceder al estado desde fuera del provider
   int get seconds => _seconds;

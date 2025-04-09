@@ -2,28 +2,58 @@ import 'package:app_reparto/widgets/map_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 
-// Widget para mostrar la ubicación del cliente con un mapa y temporizador
 class LocationScreen extends StatelessWidget {
-  // Coordenadas geográficas del cliente
-  final double latitud; // Latitud del cliente
-  final double longitud; // Longitud del cliente
+  final double latitude;
+  final double longitude;
 
   // Constructor que requiere las coordenadas
   const LocationScreen({
     super.key,
-    required this.latitud,
-    required this.longitud,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
   Widget build(BuildContext context) {
+    print('Debug - LocationScreen coordinates: $latitude, $longitude');
+
+    // Si las coordenadas son inválidas, muestra un mensaje de error
+    if (latitude == 0.0 ||
+        longitude == 0.0 ||
+        latitude < -90 ||
+        latitude > 90 ||
+        longitude < -180 ||
+        longitude > 180) {
+      return Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 200, 120, 20),
+          title: const Text('Error de ubicación'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Coordenadas no válidas para este cliente',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Latitud: $latitude, Longitud: $longitude',
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     // Estructura principal de la pantalla
     return Scaffold(
       // Barra superior de la aplicación
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(
-            255, 200, 120, 20), // Color naranja personalizado
-        centerTitle: true, // Centra el título
+        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
+        centerTitle: true,
         title: const Text(
           'Ubicación',
           style: TextStyle(
@@ -31,7 +61,6 @@ class LocationScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
             color: Colors.black,
             fontFamily: 'Roboto',
-            // Efecto de sombra para el texto
             shadows: [
               Shadow(
                 blurRadius: 8,
@@ -42,6 +71,7 @@ class LocationScreen extends StatelessWidget {
           ),
         ),
       ),
+
       // Cuerpo principal de la pantalla
       body: Container(
         decoration: const BoxDecoration(color: Colors.white),
@@ -65,15 +95,13 @@ class LocationScreen extends StatelessWidget {
             Expanded(
               child: Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width *
-                      0.9, // 90% del ancho de la pantalla
+                  // 90% del ancho de la pantalla
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  // Decoración del contenedor del mapa
                   child: Container(
-                    // Decoración del contenedor del mapa
                     decoration: BoxDecoration(
-                      color: Color.fromARGB(
-                          255, 252, 231, 197), // Color de fondo claro
+                      color: Color.fromARGB(255, 252, 231, 197),
                       borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      // Sombra suave alrededor del contenedor
                       boxShadow: [
                         BoxShadow(
                           // ignore: deprecated_member_use
@@ -93,15 +121,15 @@ class LocationScreen extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
                       child: MapWidget(
-                        latitud: latitud,
-                        longitud: longitud,
+                        latitude: latitude,
+                        longitude: longitude,
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20), // Espacio inferior
+            const SizedBox(height: 20),
           ],
         ),
       ),

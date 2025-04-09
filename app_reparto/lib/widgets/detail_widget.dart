@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-// Widget para mostrar los detalles de un cliente
 class DetailWidget extends StatelessWidget {
-  // Propiedades para almacenar la información del cliente
-  final String clientName;     // Nombre del cliente
-  final String clientAddress;  // Dirección del cliente
-  final String clientTown;     // Ciudad del cliente
+  final String clientName;
+  final String clientAddress;
+  final String clientTown;
 
-  // Constructor que requiere todos los datos del cliente
   const DetailWidget({
     super.key,
     required this.clientName,
@@ -18,22 +15,24 @@ class DetailWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),  // Espaciado uniforme alrededor del contenido
+      // Espaciado uniforme alrededor del contenido
+      padding: const EdgeInsets.all(16.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,  // Alinea los textos a la izquierda
+        // Alinea los textos a la izquierda
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Muestra el nombre del cliente con estilo destacado
           Text(
             'Nombre: $clientName',
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),  // Espacio vertical entre elementos
+          const SizedBox(height: 10),
           // Muestra la ciudad del cliente
           Text(
             'Ciudad: $clientTown',
             style: const TextStyle(fontSize: 18),
           ),
-          const SizedBox(height: 10),  // Espacio vertical entre elementos
+          const SizedBox(height: 10),
           // Muestra la dirección del cliente
           Text(
             'Dirección: $clientAddress',

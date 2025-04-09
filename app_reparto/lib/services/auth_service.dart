@@ -3,18 +3,16 @@ import 'dart:convert';
 import 'token_service.dart';
 import '../config/api_config.dart';
 
-// Servicio para manejar la autenticación de usuarios
 class AuthService {
   // Método para realizar el inicio de sesión
-  // Retorna un Map con la respuesta del servidor
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       // Realiza la petición POST al endpoint de login
       final response = await http.post(
         Uri.parse('${ApiConfig.baseUrl}/login'),
         headers: {
-          'Content-Type': 'application/json', // Tipo de contenido JSON
-          'Accept': 'application/json', // Acepta respuesta JSON
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
         // Envía las credenciales en formato JSON
         body: json.encode({'usuario': username, 'contrasena': password}),
@@ -35,17 +33,16 @@ class AuthService {
         }
       } else if (response.statusCode == 401) {
         // Manejo de credenciales inválidas
-        await TokenService.clearToken(); // Limpia el token almacenado
-        throw Exception(
-            'Credenciales inválidas. Por favor, inicia sesión nuevamente.');
+        await TokenService.clearToken();
+        throw Exception('Credenciales inválidas. Inicia sesión nuevamente.');
       } else {
         // Manejo de otros errores de autenticación
         throw Exception(
             'Error de autenticación: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
-      // Manejo de errores de conexión o inesperados
-      throw Exception('Error de conexión: $e');
+      // Manejo de errores inesperados
+      throw Exception('$e');
     }
   }
 }

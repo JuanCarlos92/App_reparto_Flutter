@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-// Widget personalizado para crear botones con estilo consistente
 class ButtonWidget extends StatelessWidget {
-  // Propiedades requeridas para personalizar el botón
   final String text; // Texto que se mostrará en el botón
   final IconData icon; // Icono que se mostrará junto al texto
   final Gradient gradient; // Gradiente para el fondo del botón
-  final VoidCallback
-      onPressed; // Función que se ejecutará al presionar el botón
+  final VoidCallback onPressed; // Función al presionar el botón
 
   // Constructor del widget que requiere todas las propiedades
   const ButtonWidget({
@@ -23,38 +20,45 @@ class ButtonWidget extends StatelessWidget {
     return Container(
       // Decoración exterior del botón
       decoration: BoxDecoration(
-        gradient: gradient, // Aplica el gradiente de fondo
-        borderRadius: BorderRadius.circular(15), // Bordes redondeados
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
             // ignore: deprecated_member_use
-            color: Colors.black.withOpacity(0.2), // Sombra suave
+            color: Colors.black.withOpacity(0.2),
             blurRadius: 8,
-            offset: const Offset(0, 4), // Desplazamiento de la sombra
+            offset: const Offset(0, 4),
           ),
         ],
       ),
+
       // Botón elevado con estilo personalizado
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors
-              .transparent, // Fondo transparente para mostrar el gradiente
-          shadowColor: Colors.transparent, // Sin sombra propia del botón
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
           padding:
-              const EdgeInsets.symmetric(vertical: 18), // Espaciado vertical
+              // Espaciado vertical
+              const EdgeInsets.symmetric(vertical: 18),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15), // Bordes redondeados
+            borderRadius: BorderRadius.circular(15),
           ),
         ),
-        onPressed: onPressed, // Función que se ejecuta al presionar
+
+        // Función que se ejecuta al presionar
+        onPressed: onPressed,
+
         // Contenido del botón organizado en fila
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Centra los elementos
+          // Centra los elementos
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 24, color: Colors.white), // Icono del botón
-            const SizedBox(width: 10), // Espacio entre icono y texto
+            // Icono del botón
+            Icon(icon, size: 24, color: Colors.white),
+            // Espacio entre icono y texto
+            const SizedBox(width: 10),
             Text(
-              text, // Texto del botón
+              text,
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,37 @@ import 'package:provider/provider.dart';
 import '../widgets/list_widget.dart';
 
 // Página que muestra la lista de visitas programadas a clientes
-class VisitsScreen extends StatelessWidget {
+class VisitsScreen extends StatefulWidget {
   const VisitsScreen({super.key});
+
+  @override
+  State<VisitsScreen> createState() => _VisitsScreenState();
+}
+
+class _VisitsScreenState extends State<VisitsScreen> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    // Actualizar cada 1 segundo
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        context.read<ClientsProvider>().updateClientsWithDuration();
+      }
+    });
+
+    // Actualización inicial
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ClientsProvider>().updateClientsWithDuration();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +51,7 @@ class VisitsScreen extends StatelessWidget {
     return Scaffold(
       // Barra superior de la aplicación
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Oculta el botón de retroceso
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(

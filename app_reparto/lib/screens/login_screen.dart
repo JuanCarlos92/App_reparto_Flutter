@@ -3,7 +3,6 @@ import 'package:app_reparto/services/auth_service.dart';
 import '../form/login_form.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 
-// Página de inicio de sesión que mantiene estado
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -13,14 +12,16 @@ class LoginScreen extends StatefulWidget {
 
 // Estado de la página de inicio de sesión
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey =
-      GlobalKey<FormState>(); // Clave global para validar el formulario
-  final _usernameController =
-      TextEditingController(); // Controlador para el campo de usuario
-  final _passwordController =
-      TextEditingController(); // Controlador para el campo de contraseña
-  final _authService = AuthService(); // Servicio de autenticación
-  bool _isLoading = false; // Indicador de estado de carga
+  // Clave global para validar el formulario
+  final _formKey = GlobalKey<FormState>();
+  // Controlador para el campo de usuario
+  final _usernameController = TextEditingController();
+  // Controlador para el campo de contraseña
+  final _passwordController = TextEditingController();
+  // Servicio de autenticación
+  final _authService = AuthService();
+  // Indicador de estado de carga
+  bool _isLoading = false;
 
   // Método para manejar el proceso de inicio de sesión
   Future<void> _login() async {
@@ -29,8 +30,9 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
+    // Activa el indicador de carga
     setState(() {
-      _isLoading = true; // Activa el indicador de carga
+      _isLoading = true;
     });
 
     try {
@@ -42,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Verifica si el widget sigue montado antes de continuar
       if (mounted) {
-        FocusScope.of(context).unfocus(); // Cierra el teclado
+        FocusScope.of(context).unfocus();
         // Navega a la página principal y elimina el historial de navegación
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -139,8 +141,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   // Limpieza de recursos cuando se destruye el widget
   void dispose() {
-    _usernameController.dispose(); // Libera el controlador del usuario
-    _passwordController.dispose(); // Libera el controlador de la contraseña
+    _usernameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 }

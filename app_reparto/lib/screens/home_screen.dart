@@ -5,7 +5,6 @@ import '../services/geolocation_service.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 
-// Página principal de la aplicación que gestiona el control horario
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -15,9 +14,10 @@ class HomeScreen extends StatefulWidget {
 
 // Estado de la página principal
 class _HomeScreenState extends State<HomeScreen> {
-  Timer? _locationTimer; // Temporizador para actualizar la ubicación
-  final GeolocationService _geolocationService =
-      GeolocationService(); // Servicio de geolocalización
+  // Temporizador para actualizar la ubicación
+  Timer? _locationTimer;
+  // Servicio de geolocalización
+  final GeolocationService _geolocationService = GeolocationService();
 
   @override
   // Se ejecuta cuando las dependencias cambian, útil para inicializar datos
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       // Barra superior de la aplicación
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Oculta el botón de retroceso
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
@@ -90,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Espacio para widget de notificaciones futuro
         ],
       ),
+
       // Cuerpo principal de la página
       body: Column(
         children: [
@@ -107,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+
           // Contenedor principal expandible
           Expanded(
             child: Container(
@@ -115,8 +117,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               child: Center(
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width *
-                      0.9, // 90% del ancho de la pantalla
+                  // 90% del ancho de la pantalla
+                  width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
                     children: [
                       // Sección superior con icono de temporizador
@@ -132,6 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                       ),
+
                       // Contenedor principal con los botones de acción
                       Expanded(
                         child: Container(
@@ -156,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Icono circular de entrega
+                                // Icono
                                 Container(
                                   padding: const EdgeInsets.all(25),
                                   decoration: BoxDecoration(
@@ -179,6 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 40),
+
                                 // Botón para iniciar la jornada
                                 ButtonWidget(
                                   text: 'INICIAR JORNADA',
@@ -191,13 +195,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   ),
+
+                                  // Inicia el seguimiento de ubicación
                                   onPressed: () {
-                                    startLocationUpdates(); // Inicia el seguimiento de ubicación
+                                    startLocationUpdates();
                                     Navigator.pushNamed(context, '/timer',
                                         arguments: {'startTimer': true});
                                   },
                                 ),
                                 const SizedBox(height: 20),
+
                                 // Botón para cerrar sesión
                                 ButtonWidget(
                                   text: 'CERRAR SESIÓN',
