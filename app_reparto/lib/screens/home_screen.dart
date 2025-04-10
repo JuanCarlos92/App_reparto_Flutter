@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:app_reparto/services/work_session_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/geolocation_service.dart';
@@ -13,7 +14,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-// Estado de la página principal
 class _HomeScreenState extends State<HomeScreen> {
   // Temporizador para actualizar la ubicación
   Timer? _locationTimer;
@@ -45,6 +45,31 @@ class _HomeScreenState extends State<HomeScreen> {
   // Detiene la actualización de ubicación
   void stopLocationUpdates() {
     _locationTimer?.cancel();
+  }
+
+  Future<void> _handleStartWork() async {
+    if (!mounted) return;
+
+    final bool confirm = await DialogUtils.showConfirmationDialog(
+        context, '¿Quieres iniciar tu jornada?');
+
+    if (!mounted) return;
+
+    if (confirm) {
+      try {
+        await WorkSessionService.startWorkSession();
+        if (!mounted) return;
+
+        startLocationUpdates();
+        Navigator.pushNamed(context, '/timer', arguments: {'startTimer': true});
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Error al iniciar la jornada: ${e.toString()}')),
+        );
+      }
+    }
   }
 
   @override
@@ -196,20 +221,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   ),
-                                  onPressed: () async {
-                                    if (!context.mounted) return;
-                                    final bool confirm = await DialogUtils
-                                        .showConfirmationDialog(context,
-                                            '¿Quieres iniciar tu jornada?');
-
-                                    if (!context.mounted) return;
-                                    if (confirm) {
-                                      startLocationUpdates();
-                                      Navigator.pushNamed(context, '/timer',
-                                          arguments: {'startTimer': true});
-                                    }
-                                  },
+                                  onPressed: _handleStartWork,
                                 ),
+                                // onPressed: () async {
+                                //     if (!context.mounted) return;
+                                //     final bool confirm = await DialogUtils
+                                //         .showConfirmationDialog(context,
+                                //             '¿Quieres iniciar tu jornada?');
+
+                                //     if (!context.mounted) return;
+                                //     if (confirm) {
+                                //       startLocationUpdates();
+                                //       Navigator.pushNamed(context, '/timer',
+                                //           arguments: {'startTimer': true});
+                                //     }
+                                //   },
                                 const SizedBox(height: 20),
 
                                 // Botón para cerrar sesión

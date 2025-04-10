@@ -4,9 +4,7 @@ import 'package:app_reparto/services/client_service.dart';
 import 'package:app_reparto/services/distance_api_service.dart';
 import 'package:app_reparto/services/geolocation_service.dart';
 import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
 
-// Proveedor para gestionar el estado y la lógica de los clientes en la aplicación
 class ClientsProvider extends ChangeNotifier {
   // Servicios necesarios para la gestión de clientes y geolocalización
   final ClientService _clientService = ClientService();

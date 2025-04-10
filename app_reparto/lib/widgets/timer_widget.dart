@@ -1,3 +1,5 @@
+import 'package:app_reparto/models/work_session.dart';
+import 'package:app_reparto/services/work_session_service.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -84,12 +86,44 @@ class TimerWidget extends StatelessWidget {
 
                       if (!context.mounted) return;
                       if (confirm) {
-                        timerProvider
-                            .finalizarTimer(); // Detiene el temporizador
-                        Navigator.pushReplacementNamed(
-                            context, '/home'); // Navega a inicio
+                        try {
+                          final workSession = WorkSession(
+                            startTime:
+                                timerProvider.startTime ?? DateTime.now(),
+                            endTime: DateTime.now(),
+                            workedTime: timerProvider.getWorkedTime(),
+                          );
+
+                          await WorkSessionService.endWorkSession(workSession);
+                          timerProvider.finalizarTimer();
+
+                          if (!context.mounted) return;
+                          Navigator.pushReplacementNamed(context, '/home');
+                        } catch (e) {
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                                content: Text(
+                                    'Error al finalizar la jornada: ${e.toString()}')),
+                          );
+                        }
                       }
                     },
+                    //  GestureDetector(
+                    // onTap: () async {
+                    //   if (!context.mounted) return;
+                    //   final bool confirm =
+                    //       await DialogUtils.showConfirmationDialog(
+                    //           context, '¿Finalizar la jornada del día?');
+
+                    //   if (!context.mounted) return;
+                    //   if (confirm) {
+                    //     timerProvider
+                    //         .finalizarTimer(); // Detiene el temporizador
+                    //     Navigator.pushReplacementNamed(
+                    //         context, '/home'); // Navega a inicio
+                    //   }
+                    // },
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(

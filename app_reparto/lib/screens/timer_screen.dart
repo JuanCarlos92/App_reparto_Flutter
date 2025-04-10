@@ -1,3 +1,5 @@
+import 'package:app_reparto/models/work_session.dart';
+import 'package:app_reparto/services/work_session_service.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -33,6 +35,38 @@ class _TimerScreenState extends State<TimerScreen> {
           timerProvider.iniciarTimer();
         }
       });
+    }
+  }
+
+  Future<void> _handleEndWork(TimerProvider timerProvider) async {
+    if (!mounted) return;
+
+    final bool confirm = await DialogUtils.showConfirmationDialog(
+      context,
+      '¿Finalizar la jornada del día?',
+    );
+
+    if (!mounted) return;
+    if (confirm) {
+      try {
+        final workSession = WorkSession(
+          startTime: timerProvider.startTime ?? DateTime.now(),
+          endTime: DateTime.now(),
+          workedTime: timerProvider.getWorkedTime(),
+        );
+
+        await WorkSessionService.endWorkSession(workSession);
+        timerProvider.finalizarTimer();
+
+        if (!mounted) return;
+        Navigator.pop(context, '/home');
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Text('Error al finalizar la jornada: ${e.toString()}')),
+        );
+      }
     }
   }
 
@@ -180,23 +214,26 @@ class _TimerScreenState extends State<TimerScreen> {
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                               ),
-                              onPressed: () async {
-                                if (!context.mounted) return;
-                                final bool confirm =
-                                    await DialogUtils.showConfirmationDialog(
-                                  context,
-                                  '¿Finalizar la jornada del día?',
-                                );
-                                if (!context.mounted) return;
-
-                                if (confirm) {
-                                  context
-                                      .read<TimerProvider>()
-                                      .finalizarTimer();
-                                  Navigator.pop(context, '/home');
-                                }
-                              },
+                              onPressed: () =>
+                                  _handleEndWork(context.read<TimerProvider>()),
                             ),
+
+                            // onPressed: () async {
+                            //     if (!context.mounted) return;
+                            //     final bool confirm =
+                            //         await DialogUtils.showConfirmationDialog(
+                            //       context,
+                            //       '¿Finalizar la jornada del día?',
+                            //     );
+                            //     if (!context.mounted) return;
+
+                            //     if (confirm) {
+                            //       context
+                            //           .read<TimerProvider>()
+                            //           .finalizarTimer();
+                            //       Navigator.pop(context, '/home');
+                            //     }
+                            //   }
                           ],
                         ),
                       )),
