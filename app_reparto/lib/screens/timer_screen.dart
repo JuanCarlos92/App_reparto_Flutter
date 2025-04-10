@@ -1,3 +1,4 @@
+import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
@@ -82,111 +83,123 @@ class _TimerScreenState extends State<TimerScreen> {
                 // Contenedor principal del temporizador
                 Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      boxShadow: [
-                        BoxShadow(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 200, 120, 20),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Título del temporizador
-                          const Text(
-                            'Llevas:',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(40)),
+                        boxShadow: [
+                          BoxShadow(
+                            // ignore: deprecated_member_use
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 20,
+                            spreadRadius: 5,
                           ),
-                          // Visualización del tiempo transcurrido
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 25),
-                            padding: const EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 200, 120, 20),
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  // ignore: deprecated_member_use
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 5),
-                                ),
-                              ],
+                        ],
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 200, 120, 20),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Título del temporizador
+                            const Text(
+                              'Llevas:',
+                              style: TextStyle(
+                                fontSize: 28,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
                             ),
-                            // Muestra el tiempo actualizado usando Consumer
-                            child: Consumer<TimerProvider>(
-                              builder: (context, timerProvider, child) {
-                                return Text(
-                                  '${_formatNumber(timerProvider.hours)}:${_formatNumber(timerProvider.minutes)}:${_formatNumber(timerProvider.seconds)}',
-                                  style: const TextStyle(
-                                    fontSize: 60,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                            // Visualización del tiempo transcurrido
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 25),
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 200, 120, 20),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    // ignore: deprecated_member_use
+                                    color: Colors.black.withOpacity(0.2),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 5),
                                   ),
+                                ],
+                              ),
+                              // Muestra el tiempo actualizado usando Consumer
+                              child: Consumer<TimerProvider>(
+                                builder: (context, timerProvider, child) {
+                                  return Text(
+                                    '${_formatNumber(timerProvider.hours)}:${_formatNumber(timerProvider.minutes)}:${_formatNumber(timerProvider.seconds)}',
+                                    style: const TextStyle(
+                                      fontSize: 60,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 40),
+                            // Botón para pausar o reanudar el temporizador
+                            Consumer<TimerProvider>(
+                              builder: (context, timerProvider, child) {
+                                return ButtonWidget(
+                                  text: timerProvider.isRunning
+                                      ? 'PAUSAR'
+                                      : 'REANUDAR',
+                                  icon: timerProvider.isRunning
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 200, 120, 20),
+                                      Color.fromARGB(255, 200, 120, 20),
+                                    ],
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                  ),
+                                  onPressed: timerProvider.pausarTimer,
                                 );
                               },
                             ),
-                          ),
-                          const SizedBox(height: 40),
-                          // Botón para pausar o reanudar el temporizador
-                          Consumer<TimerProvider>(
-                            builder: (context, timerProvider, child) {
-                              return ButtonWidget(
-                                text: timerProvider.isRunning
-                                    ? 'PAUSAR'
-                                    : 'REANUDAR',
-                                icon: timerProvider.isRunning
-                                    ? Icons.pause
-                                    : Icons.play_arrow,
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color.fromARGB(255, 200, 120, 20),
-                                    Color.fromARGB(255, 200, 120, 20),
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                onPressed: timerProvider.pausarTimer,
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 20),
-                          // Botón para finalizar la jornada
-                          ButtonWidget(
-                            text: 'FINALIZAR',
-                            icon: Icons.stop,
-                            gradient: const LinearGradient(
-                              colors: [
-                                Colors.red,
-                                Colors.red,
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
+                            const SizedBox(height: 20),
+                            // Botón para finalizar la jornada
+                            ButtonWidget(
+                              text: 'FINALIZAR',
+                              icon: Icons.stop,
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Colors.red,
+                                  Colors.red,
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                              onPressed: () async {
+                                if (!context.mounted) return;
+                                final bool confirm =
+                                    await DialogUtils.showConfirmationDialog(
+                                  context,
+                                  '¿Finalizar la jornada del día?',
+                                );
+                                if (!context.mounted) return;
+
+                                if (confirm) {
+                                  context
+                                      .read<TimerProvider>()
+                                      .finalizarTimer();
+                                  Navigator.pop(context, '/home');
+                                }
+                              },
                             ),
-                            onPressed: () {
-                              context.read<TimerProvider>().finalizarTimer();
-                              Navigator.pop(context, '/home');
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                          ],
+                        ),
+                      )),
                 ),
                 const SizedBox(height: 20),
               ],

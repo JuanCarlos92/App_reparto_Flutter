@@ -47,4 +47,32 @@ class DialogUtils {
       },
     );
   }
+
+  static Future<bool> showConfirmationDialog(
+      BuildContext context, String message) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Confirmación'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: const Text('Sí'),
+            ),
+          ],
+        );
+      },
+    );
+    return result ?? false;
+  }
 }

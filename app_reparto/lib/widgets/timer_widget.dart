@@ -1,3 +1,4 @@
+import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/timer_provider.dart';
@@ -75,10 +76,19 @@ class TimerWidget extends StatelessWidget {
                   const SizedBox(width: 8),
                   // Botón de detener y volver a inicio
                   GestureDetector(
-                    onTap: () {
-                      timerProvider.finalizarTimer(); // Detiene el temporizador
-                      Navigator.pushReplacementNamed(
-                          context, '/home'); // Navega a inicio
+                    onTap: () async {
+                      if (!context.mounted) return;
+                      final bool confirm =
+                          await DialogUtils.showConfirmationDialog(
+                              context, '¿Finalizar la jornada del día?');
+
+                      if (!context.mounted) return;
+                      if (confirm) {
+                        timerProvider
+                            .finalizarTimer(); // Detiene el temporizador
+                        Navigator.pushReplacementNamed(
+                            context, '/home'); // Navega a inicio
+                      }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(8),

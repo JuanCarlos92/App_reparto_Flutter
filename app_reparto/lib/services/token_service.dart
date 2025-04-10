@@ -1,40 +1,24 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenService {
+  // Clave utilizada para almacenar el token de autenticación
+  static const String _tokenKey = 'auth_token';
+
+  // Instancia del almacenamiento seguro
   static const FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
-  // Obtener el token de un usuario específico
-  static Future<String?> getToken(String username) async {
-    return await _secureStorage.read(key: _getTokenKey(username));
+  // Obtener el token almacenado
+  static Future<String?> getToken() async {
+    return await _secureStorage.read(key: _tokenKey);
   }
 
-  // Almacenar el token para un usuario específico
-  static Future<void> setToken(String username, String token) async {
-    await _secureStorage.write(key: _getTokenKey(username), value: token);
+  // Almacenar el token
+  static Future<void> setToken(String token) async {
+    await _secureStorage.write(key: _tokenKey, value: token);
   }
 
-  // Eliminar el token de un usuario específico
-  static Future<void> clearToken(String username) async {
-    await _secureStorage.delete(key: _getTokenKey(username));
-  }
-
-  // Eliminar todos los tokens (logout general)
-  static Future<void> clearAllTokens() async {
-    await _secureStorage.deleteAll();
-  }
-
-  // Generar clave única para cada usuario
-  static String _getTokenKey(String username) {
-    return 'auth_token_$username';
-  }
-
-  // Obtener el último usuario que inició sesión
-  static Future<String?> getLastLoggedUser() async {
-    return await _secureStorage.read(key: 'last_logged_user');
-  }
-
-  // Guardar el último usuario que inició sesión
-  static Future<void> setLastLoggedUser(String username) async {
-    await _secureStorage.write(key: 'last_logged_user', value: username);
+  // Eliminar el token
+  static Future<void> clearToken() async {
+    await _secureStorage.delete(key: _tokenKey);
   }
 }

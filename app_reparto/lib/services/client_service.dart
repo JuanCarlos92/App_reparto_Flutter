@@ -6,9 +6,9 @@ import '../config/api_config.dart';
 
 class ClientService {
   // Método para obtener la lista de clientes desde el servidor
-  Future<List<Client>> getClients(String username) async {
+  Future<List<Client>> getClients() async {
     try {
-      final token = await TokenService.getToken(username);
+      final token = await TokenService.getToken();
       if (token == null) {
         throw Exception(
             'No se ha encontrado el token. Por favor inicia sesión.');

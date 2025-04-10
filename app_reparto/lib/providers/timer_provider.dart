@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+// Proveedor para gestionar el estado y la lógica del temporizador
 class TimerProvider extends ChangeNotifier {
+  // Variables para almacenar el tiempo
   int _seconds = 0;
   int _minutes = 0;
   int _hours = 0;
   bool _isRunning = false;
   Timer? _timer;
-  DateTime? _startTime;
-  DateTime? _endTime;
 
   // Getters para acceder al estado desde fuera del provider
   int get seconds => _seconds;
   int get minutes => _minutes;
   int get hours => _hours;
   bool get isRunning => _isRunning;
-  DateTime? get startTime => _startTime;
-  DateTime? get endTime => _endTime;
 
-  // Método para iniciar
+  // Método para iniciar el temporizador
   void iniciarTimer() {
-    _startTime = DateTime.now();
     _isRunning = true;
     // Crea un temporizador que se ejecuta cada segundo
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -39,45 +36,38 @@ class TimerProvider extends ChangeNotifier {
           _hours++;
         }
 
+        // Notifica a los widgets que escuchan cambios
         notifyListeners();
       }
     });
   }
 
-  // Método para pausar o reanudar
+  // Método para pausar o reanudar el temporizador
   void pausarTimer() {
     _isRunning = !_isRunning; // Invierte el estado actual
     if (!_isRunning) {
-      _timer?.cancel();
+      _timer?.cancel(); // Cancela el timer si se pausa
     } else {
-      iniciarTimer();
+      iniciarTimer(); // Reinicia el timer si se reanuda
     }
-    notifyListeners();
+    notifyListeners(); // Notifica el cambio de estado
   }
 
-  // Método para finalizar
+  // Método para finalizar y reiniciar el temporizador
   void finalizarTimer() {
-    _endTime = DateTime.now();
-    _timer?.cancel();
+    _timer?.cancel(); // Detiene el timer
+    // Reinicia todos los valores
     _seconds = 0;
     _minutes = 0;
     _hours = 0;
     _isRunning = false;
-    notifyListeners();
-  }
-
-  Duration getDuration() {
-    return Duration(
-      hours: _hours,
-      minutes: _minutes,
-      seconds: _seconds,
-    );
+    notifyListeners(); // Notifica los cambios
   }
 
   @override
-  // Limpia los recursos
+  // Limpia los recursos cuando se destruye el provider
   void dispose() {
-    _timer?.cancel();
+    _timer?.cancel(); // Asegura que el timer se detenga
     super.dispose();
   }
 }

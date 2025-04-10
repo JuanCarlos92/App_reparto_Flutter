@@ -1,5 +1,5 @@
 class ApiConfig {
-  static const String baseUrl = 'https://ce4d-80-102-248-37.ngrok-free.app';
+  static const String baseUrl = 'https://940f-80-102-248-37.ngrok-free.app';
   static const String directionsMapsUrl =
       'https://maps.googleapis.com/maps/api/directions/json';
   static const String distanceMapsUrl =

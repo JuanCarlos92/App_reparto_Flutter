@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../services/geolocation_service.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
+import '../utils/dialog_utils.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -195,12 +196,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   ),
+                                  onPressed: () async {
+                                    if (!context.mounted) return;
+                                    final bool confirm = await DialogUtils
+                                        .showConfirmationDialog(context,
+                                            '¿Quieres iniciar tu jornada?');
 
-                                  // Inicia el seguimiento de ubicación
-                                  onPressed: () {
-                                    startLocationUpdates();
-                                    Navigator.pushNamed(context, '/timer',
-                                        arguments: {'startTimer': true});
+                                    if (!context.mounted) return;
+                                    if (confirm) {
+                                      startLocationUpdates();
+                                      Navigator.pushNamed(context, '/timer',
+                                          arguments: {'startTimer': true});
+                                    }
                                   },
                                 ),
                                 const SizedBox(height: 20),
