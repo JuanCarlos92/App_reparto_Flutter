@@ -6,7 +6,6 @@ import 'package:app_reparto/services/geolocation_service.dart';
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 
-// Proveedor para gestionar el estado y la lógica de los clientes en la aplicación
 class ClientsProvider extends ChangeNotifier {
   // Servicios necesarios para la gestión de clientes y geolocalización
   final ClientService _clientService = ClientService();
@@ -16,9 +15,17 @@ class ClientsProvider extends ChangeNotifier {
   List<Client> _clients = [];
   bool _isLoading = false;
   String _error = '';
+  String _currentUsername = '';
+
+  String get currentUsername => _currentUsername;
   List<Client> get clients => _clients;
   bool get isLoading => _isLoading;
   String get error => _error;
+
+  void setCurrentUsername(String username) {
+    _currentUsername = username;
+    notifyListeners();
+  }
 
   Future<void> fetchClientsFromBackend() async {
     try {
@@ -26,7 +33,7 @@ class ClientsProvider extends ChangeNotifier {
       _error = '';
       notifyListeners();
 
-      final fetchedClients = await _clientService.getClients();
+      final fetchedClients = await _clientService.getClients(_currentUsername);
       _clients = fetchedClients;
 
       // Actualizar duracion despues de actualizar clientes

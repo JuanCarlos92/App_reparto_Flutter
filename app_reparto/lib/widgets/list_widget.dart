@@ -167,7 +167,7 @@ class ListWidget extends StatelessWidget {
                             ),
                             // Inside the ListView.builder itemBuilder
                             Text(
-                              '${_formatDuration(client.durationInSeconds)}',
+                              _formatDuration(client.durationInSeconds),
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: Colors.black87,

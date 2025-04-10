@@ -4,18 +4,16 @@ import 'dart:convert';
 Client clientFromJson(String str) => Client.fromJson(json.decode(str));
 String clientToJson(Client data) => json.encode(data.toJson());
 
-// Clase que representa un cliente con sus datos básicos y ubicación
 class Client {
-  // Propiedades básicas del cliente
   String id;
-  String name; // Nombre del cliente
-  String town; // Ciudad o población
-  String address; // Dirección completa
-  double latitude; // Coordenada de latitud para geolocalización
-  double longitude; // Coordenada de longitud para geolocalización
-  int durationInSeconds; // Duracion estimada
+  String name;
+  String town;
+  String address;
+  double latitude;
+  double longitude;
+  int durationInSeconds;
 
-  // Constructor que requiere todos los campos
+  // Constructor
   Client({
     required this.id,
     required this.name,
