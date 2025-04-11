@@ -15,6 +15,7 @@ class LocationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: avoid_print
     print('Debug - LocationScreen coordinates: $latitude, $longitude');
 
     // Si las coordenadas son inválidas, muestra un mensaje de error

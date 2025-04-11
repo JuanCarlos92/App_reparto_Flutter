@@ -115,13 +115,18 @@ class ClientService {
       );
 
       // Procesa la respuesta exitosa
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return true;
-      } else if (response.statusCode == 401) {
-        throw Exception(
-            'Trabajador no válido o sin permisos para ver los clientes.');
-      } else {
-        throw Exception('Error : ${response.statusCode}');
+      switch (response.statusCode) {
+        case 200:
+        case 204:
+          return true;
+        case 401:
+          throw Exception('Token no válido o expirado');
+        case 403:
+          throw Exception('No tiene permisos para eliminar este cliente');
+        case 404:
+          throw Exception('Cliente no encontrado');
+        default:
+          throw Exception('Error al eliminar cliente: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('$e');
