@@ -1,8 +1,8 @@
+import 'package:app_reparto/config/backend_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../models/client.dart';
-import 'token_service.dart';
-import '../config/api_config.dart';
+import '../../models/client.dart';
+import '../local/token_service.dart';
 
 class ClientService {
   // Método para obtener la lista de clientes
@@ -14,7 +14,7 @@ class ClientService {
             'No se ha encontrado el token. Por favor inicia sesión.');
       }
 
-      final url = Uri.parse('${ApiConfig.baseUrl}/clients');
+      final url = Uri.parse('${BackendConfig.url}/clients');
 
       // actualiza headers con Authorization
       final response = await http.get(

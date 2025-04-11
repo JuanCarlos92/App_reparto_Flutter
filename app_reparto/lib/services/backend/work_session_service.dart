@@ -1,9 +1,8 @@
-// Importaciones necesarias para el servicio
 import 'dart:convert';
-import 'package:app_reparto/config/api_config.dart';
+import 'package:app_reparto/config/backend_config.dart';
 import 'package:http/http.dart' as http;
-import '../models/work_session.dart';
-import 'token_service.dart';
+import '../../models/work_session.dart';
+import '../local/token_service.dart';
 
 class WorkSessionService {
   static Future<void> startWorkSession() async {
@@ -14,7 +13,7 @@ class WorkSessionService {
 
       // Realiza la petición POST
       final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/work-sessions/start'),
+        Uri.parse('${BackendConfig.url}/work-sessions/start'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',
@@ -41,7 +40,7 @@ class WorkSessionService {
 
       // Realiza la petición POST
       final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/work-sessions/end'),
+        Uri.parse('${BackendConfig.url}/work-sessions/end'),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json',

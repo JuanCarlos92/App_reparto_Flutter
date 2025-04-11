@@ -1,8 +1,8 @@
+// import 'package:app_reparto/services/work_session_service.dart';
 import 'dart:async';
-import 'package:app_reparto/services/work_session_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/geolocation_service.dart';
+import '../services/local/geolocation_service.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import '../utils/dialog_utils.dart';
@@ -47,30 +47,30 @@ class _HomeScreenState extends State<HomeScreen> {
     _locationTimer?.cancel();
   }
 
-  Future<void> _handleStartWork() async {
-    if (!mounted) return;
+  // Future<void> _handleStartWork() async {
+  //   if (!mounted) return;
 
-    final bool confirm = await DialogUtils.showConfirmationDialog(
-        context, '¿Quieres iniciar tu jornada?');
+  //   final bool confirm = await DialogUtils.showConfirmationDialog(
+  //       context, '¿Quieres iniciar tu jornada?');
 
-    if (!mounted) return;
+  //   if (!mounted) return;
 
-    if (confirm) {
-      try {
-        await WorkSessionService.startWorkSession();
-        if (!mounted) return;
+  //   if (confirm) {
+  //     try {
+  //       await WorkSessionService.startWorkSession();
+  //       if (!mounted) return;
 
-        startLocationUpdates();
-        Navigator.pushNamed(context, '/timer', arguments: {'startTimer': true});
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Error al iniciar la jornada: ${e.toString()}')),
-        );
-      }
-    }
-  }
+  //       startLocationUpdates();
+  //       Navigator.pushNamed(context, '/timer', arguments: {'startTimer': true});
+  //     } catch (e) {
+  //       if (!mounted) return;
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //             content: Text('Error al iniciar la jornada: ${e.toString()}')),
+  //       );
+  //     }
+  //   }
+  // }
 
   @override
   // Limpia recursos cuando se destruye el widget
@@ -221,21 +221,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                   ),
-                                  onPressed: _handleStartWork,
+                                  // onPressed: _handleStartWork,
 
-                                  // onPressed: () async {
-                                  //     if (!context.mounted) return;
-                                  //     final bool confirm = await DialogUtils
-                                  //         .showConfirmationDialog(context,
-                                  //             '¿Quieres iniciar tu jornada?');
+                                  onPressed: () async {
+                                    if (!context.mounted) return;
+                                    final bool confirm = await DialogUtils
+                                        .showConfirmationDialog(context,
+                                            '¿Quieres iniciar tu jornada?');
 
-                                  //     if (!context.mounted) return;
-                                  //     if (confirm) {
-                                  //       startLocationUpdates();
-                                  //       Navigator.pushNamed(context, '/timer',
-                                  //           arguments: {'startTimer': true});
-                                  //     }
-                                  //   },
+                                    if (!context.mounted) return;
+                                    if (confirm) {
+                                      startLocationUpdates();
+                                      Navigator.pushNamed(context, '/timer',
+                                          arguments: {'startTimer': true});
+                                    }
+                                  },
                                 ),
                                 const SizedBox(height: 20),
 

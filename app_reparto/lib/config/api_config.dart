@@ -1,11 +1,8 @@
 class ApiConfig {
-  static const String baseUrl = 'https://940f-80-102-248-37.ngrok-free.app';
-  static const String directionsMapsUrl =
+  static const String directionsMaps =
       'https://maps.googleapis.com/maps/api/directions/json';
-  static const String distanceMapsUrl =
+  static const String distanceMaps =
       'https://maps.googleapis.com/maps/api/distancematrix/json';
-  static const String directionApiKey =
-      'AIzaSyAheyTXSVD2gzEIrFRXo3J9yQTkVL18gas';
-  static const String distanceApiKey =
-      'AIzaSyCtKQuDX4wGnaU0Y34_1nasKspzYFH9i2U';
+  static const String directionKey = 'AIzaSyAheyTXSVD2gzEIrFRXo3J9yQTkVL18gas';
+  static const String distanceKey = 'AIzaSyCtKQuDX4wGnaU0Y34_1nasKspzYFH9i2U';
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
-import 'package:app_reparto/services/map_service.dart';
+import 'package:app_reparto/services/api/map_service.dart';
+import 'package:app_reparto/services/api/directions_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -24,6 +25,8 @@ class _MapWidgetState extends State<MapWidget> {
   late GoogleMapController _mapController;
   // Servicio que maneja la lógica del mapa
   final MapService _mapService = MapService();
+  // Servicio que maneja la lógica de la distancia
+  final DirectionsService _directionsService = DirectionsService();
   // Posición actual del usuario
   LatLng? _currentPosition;
   // Conjunto de marcadores en el mapa (ubicación actual y cliente)
@@ -55,6 +58,7 @@ class _MapWidgetState extends State<MapWidget> {
         await _updateCamera();
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Debug - Error getting current location: $e');
     }
   }
@@ -62,7 +66,7 @@ class _MapWidgetState extends State<MapWidget> {
   // Actualiza la ruta entre la ubicación actual y el destino
   Future<void> _updateRoute() async {
     if (_currentPosition != null) {
-      final polylines = await _mapService.drawRoute(
+      final polylines = await _directionsService.drawRoute(
         _currentPosition!,
         widget.latitude,
         widget.longitude,
@@ -106,6 +110,7 @@ class _MapWidgetState extends State<MapWidget> {
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
+            // ignore: deprecated_member_use
             color: Colors.black.withOpacity(0.5),
             spreadRadius: 5,
             blurRadius: 7,

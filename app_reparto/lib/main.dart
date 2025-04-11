@@ -1,19 +1,25 @@
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import 'package:app_reparto/screens/splash_screen.dart';
+import 'package:app_reparto/services/local/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
+import 'package:app_reparto/providers/pomodoro_provider.dart';
 import 'package:app_reparto/screens/visits_screen.dart';
 import 'package:app_reparto/screens/home_screen.dart';
 import 'package:app_reparto/screens/login_screen.dart';
 import 'package:app_reparto/pages/main_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initialize();
   runApp(
     // MultiProvider permite manejar múltiples estados con Provider
     MultiProvider(
       providers: [
+        // Proveedor pomodoro
+        ChangeNotifierProvider(create: (_) => PomodoroProvider()),
         // Proveedor temporizador
         ChangeNotifierProvider(create: (_) => TimerProvider()),
         // Proveedor clientes

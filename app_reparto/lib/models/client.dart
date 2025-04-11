@@ -41,6 +41,7 @@ class Client {
             : double.parse(json["longitud"].toString());
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error - parsing coordinates: $e');
     }
 

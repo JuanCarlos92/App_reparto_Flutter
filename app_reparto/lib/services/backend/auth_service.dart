@@ -1,7 +1,7 @@
+import 'package:app_reparto/config/backend_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'token_service.dart';
-import '../config/api_config.dart';
+import '../local/token_service.dart';
 
 class AuthService {
   // Método login
@@ -9,7 +9,7 @@ class AuthService {
     try {
       // Realiza la petición POST al endpoint de login
       final response = await http.post(
-        Uri.parse('${ApiConfig.baseUrl}/login'),
+        Uri.parse('${BackendConfig.url}/login'),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

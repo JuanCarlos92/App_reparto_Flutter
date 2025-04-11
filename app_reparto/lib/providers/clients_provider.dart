@@ -1,8 +1,8 @@
 import 'package:app_reparto/config/api_config.dart';
 import 'package:app_reparto/models/client.dart';
-import 'package:app_reparto/services/client_service.dart';
-import 'package:app_reparto/services/distance_api_service.dart';
-import 'package:app_reparto/services/geolocation_service.dart';
+import 'package:app_reparto/services/backend/client_service.dart';
+import 'package:app_reparto/services/api/distance_service.dart';
+import 'package:app_reparto/services/local/geolocation_service.dart';
 import 'package:flutter/material.dart';
 
 class ClientsProvider extends ChangeNotifier {
@@ -40,16 +40,16 @@ class ClientsProvider extends ChangeNotifier {
   Future<void> updateClientsWithDuration() async {
     try {
       final position = await _geolocationService.determinarPosition();
-      final apiKey = ApiConfig.distanceApiKey;
 
+      // ignore: avoid_print
       print('Debug - Actualizando tiempos para ${_clients.length} clientes');
+      // ignore: avoid_print
       print(
           'Debug - Posicion actual: ${position.latitude}, ${position.longitude}');
 
       // Actualizar la duración para cada cliente
       for (var client in _clients) {
-        final duration = await DistanceApiService.getDistanceMatrix(
-          apiKey,
+        final duration = await DistanceService.getDistanceMatrix(
           position.latitude,
           position.longitude,
           client.latitude,
@@ -64,6 +64,7 @@ class ClientsProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
+      // ignore: avoid_print
       print('Error actualizando duraciones: $e');
     }
   }

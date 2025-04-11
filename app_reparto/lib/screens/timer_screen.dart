@@ -1,5 +1,6 @@
-import 'package:app_reparto/models/work_session.dart';
-import 'package:app_reparto/services/work_session_service.dart';
+// import 'package:app_reparto/models/work_session.dart';
+// import 'package:app_reparto/services/work_session_service.dart';
+import 'package:app_reparto/providers/pomodoro_provider.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,7 +17,21 @@ class TimerScreen extends StatefulWidget {
 // Estado de la página del temporizador
 class _TimerScreenState extends State<TimerScreen> {
   @override
+  void initState() {
+    super.initState();
+    // Inicializa el temporizador al cargar la página
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final timerProvider = Provider.of<TimerProvider>(context, listen: false);
+      // Inicializa el PomodoroProvider y lo asigna al TimerProvider
+      final pomodoroProvider =
+          Provider.of<PomodoroProvider>(context, listen: false);
+      timerProvider.setPomodoroProvider(pomodoroProvider);
+    });
+  }
+
   // Se ejecuta cuando cambian las dependencias, útil para inicializar el temporizador
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final arguments =
@@ -37,37 +52,37 @@ class _TimerScreenState extends State<TimerScreen> {
     }
   }
 
-  Future<void> _handleEndWork(TimerProvider timerProvider) async {
-    if (!mounted) return;
+  // Future<void> _handleEndWork(TimerProvider timerProvider) async {
+  //   if (!mounted) return;
 
-    final bool confirm = await DialogUtils.showConfirmationDialog(
-      context,
-      '¿Finalizar la jornada del día?',
-    );
+  //   final bool confirm = await DialogUtils.showConfirmationDialog(
+  //     context,
+  //     '¿Finalizar la jornada del día?',
+  //   );
 
-    if (!mounted) return;
-    if (confirm) {
-      try {
-        final workSession = WorkSession(
-          startTime: timerProvider.startTime ?? DateTime.now(),
-          endTime: DateTime.now(),
-          workedTime: timerProvider.getWorkedTime(),
-        );
+  //   if (!mounted) return;
+  //   if (confirm) {
+  //     try {
+  //       final workSession = WorkSession(
+  //         startTime: timerProvider.startTime ?? DateTime.now(),
+  //         endTime: DateTime.now(),
+  //         workedTime: timerProvider.getWorkedTime(),
+  //       );
 
-        await WorkSessionService.endWorkSession(workSession);
-        timerProvider.finalizarTimer();
+  //       await WorkSessionService.endWorkSession(workSession);
+  //       timerProvider.finalizarTimer();
 
-        if (!mounted) return;
-        Navigator.pop(context, '/home');
-      } catch (e) {
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-              content: Text('Error al finalizar la jornada: ${e.toString()}')),
-        );
-      }
-    }
-  }
+  //       if (!mounted) return;
+  //       Navigator.pop(context, '/home');
+  //     } catch (e) {
+  //       if (!mounted) return;
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //             content: Text('Error al finalizar la jornada: ${e.toString()}')),
+  //       );
+  //     }
+  //   }
+  // }
 
   // Función auxiliar para formatear números a dos dígitos
   String _formatNumber(int number) {
@@ -98,6 +113,23 @@ class _TimerScreenState extends State<TimerScreen> {
             ],
           ),
         ),
+        actions: [
+          Consumer<PomodoroProvider>(
+            builder: (context, pomodoroProvider, child) {
+              return IconButton(
+                icon: Icon(
+                  pomodoroProvider.isPomodoroActive
+                      ? Icons.notifications_active
+                      : Icons.notifications_off,
+                  color: pomodoroProvider.isPomodoroActive
+                      ? Colors.white
+                      : Colors.grey,
+                ),
+                onPressed: () => _showPomodoroInputDialog(context),
+              );
+            },
+          ),
+        ],
       ),
 
       // Contenedor principal con el temporizador y los controles
@@ -208,36 +240,35 @@ class _TimerScreenState extends State<TimerScreen> {
 
                             // Botón para finalizar la jornada
                             ButtonWidget(
-                              text: 'FINALIZAR',
-                              icon: Icons.stop,
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Colors.red,
-                                  Colors.red,
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              onPressed: () =>
-                                  _handleEndWork(context.read<TimerProvider>()),
+                                text: 'FINALIZAR',
+                                icon: Icons.stop,
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Colors.red,
+                                    Colors.red,
+                                  ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                                // onPressed: () =>
+                                //     _handleEndWork(context.read<TimerProvider>()),
 
-                              // onPressed: () async {
-                              //     if (!context.mounted) return;
-                              //     final bool confirm =
-                              //         await DialogUtils.showConfirmationDialog(
-                              //       context,
-                              //       '¿Finalizar la jornada del día?',
-                              //     );
-                              //     if (!context.mounted) return;
+                                onPressed: () async {
+                                  if (!context.mounted) return;
+                                  final bool confirm =
+                                      await DialogUtils.showConfirmationDialog(
+                                    context,
+                                    '¿Finalizar la jornada del día?',
+                                  );
+                                  if (!context.mounted) return;
 
-                              //     if (confirm) {
-                              //       context
-                              //           .read<TimerProvider>()
-                              //           .finalizarTimer();
-                              //       Navigator.pop(context, '/home');
-                              //     }
-                              //   }
-                            ),
+                                  if (confirm) {
+                                    context
+                                        .read<TimerProvider>()
+                                        .finalizarTimer();
+                                    Navigator.pop(context, '/home');
+                                  }
+                                }),
                           ],
                         ),
                       )),
@@ -250,4 +281,53 @@ class _TimerScreenState extends State<TimerScreen> {
       ),
     );
   }
+}
+
+// Agregar este método en la clase _TimerScreenState
+void _showPomodoroInputDialog(BuildContext context) {
+  final TextEditingController controller = TextEditingController();
+
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text('Configurar tiempo de descanso'),
+      content: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          hintText: 'Ingrese tiempo (HH:MM)',
+          labelText: 'Formato: 00:30 para 30 minutos',
+        ),
+        keyboardType: TextInputType.datetime,
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            context.read<PomodoroProvider>().disablePomodoro();
+            Navigator.pop(context);
+          },
+          child: Text('Desactivar'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            final parts = controller.text.split(':');
+            if (parts.length == 2) {
+              final hours = int.tryParse(parts[0]) ?? 0;
+              final minutes = int.tryParse(parts[1]) ?? 0;
+              final duration = Duration(
+                hours: hours,
+                minutes: minutes,
+              );
+              context.read<PomodoroProvider>().setPomodoroTimer(duration);
+            }
+            Navigator.pop(context);
+          },
+          child: Text('Activar'),
+        ),
+      ],
+    ),
+  );
 }

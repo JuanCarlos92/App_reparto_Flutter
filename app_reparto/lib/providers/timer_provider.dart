@@ -1,7 +1,16 @@
+import 'package:app_reparto/providers/pomodoro_provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 class TimerProvider extends ChangeNotifier {
+  // Add PomodoroProvider reference
+  PomodoroProvider? _pomodoroProvider;
+
+  // Method to set PomodoroProvider
+  void setPomodoroProvider(PomodoroProvider provider) {
+    _pomodoroProvider = provider;
+  }
+
   int _seconds = 0;
   int _minutes = 0;
   int _hours = 0;
@@ -18,7 +27,7 @@ class TimerProvider extends ChangeNotifier {
 
   // Método para iniciar el temporizador
   void iniciarTimer() {
-    _startTime = DateTime.now(); // Guarda el tiempo de inicio
+    _startTime = DateTime.now();
     _isRunning = true;
     // Crea un temporizador que se ejecuta cada segundo
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -36,6 +45,15 @@ class TimerProvider extends ChangeNotifier {
           _minutes = 0;
           _hours++;
         }
+
+        // Notificar al PomodoroProvider del tiempo actual
+        _pomodoroProvider?.updateWorkTime(
+          Duration(
+            hours: _hours,
+            minutes: _minutes,
+            seconds: _seconds,
+          ),
+        );
 
         notifyListeners();
       }

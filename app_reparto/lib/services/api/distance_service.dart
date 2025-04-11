@@ -2,25 +2,25 @@ import 'package:app_reparto/config/api_config.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class DistanceApiService {
+class DistanceService {
   // Método estático que obtiene la matriz de distancia/tiempo entre un origen y un destino
   // Retorna la duración del viaje en segundos
-  static Future<int> getDistanceMatrix(String apiKey, double originLat,
-      double originLng, double destLat, double destLng) async {
-    // Formatea las coordenadas para la API
+  static Future<int> getDistanceMatrix(double originLat, double originLng,
+      double destLat, double destLng) async {
     final origin = '$originLat,$originLng';
     final destination = '$destLat,$destLng';
 
     // Construye la URL para la petición a la API
-    final url = Uri.parse('${ApiConfig.distanceMapsUrl}'
+    final url = Uri.parse('${ApiConfig.distanceMaps}'
         '?origins=$origin'
         '&destinations=$destination'
         '&mode=driving'
         '&language=es'
         '&units=metric'
-        '&key=$apiKey');
+        '&key=${ApiConfig.distanceKey}');
 
     try {
+      // ignore: avoid_print
       print('Debug - Consultando tiempo de viaje para destino: $destination');
       // Realiza la petición HTTP
       final response = await http.get(url);
@@ -40,16 +40,17 @@ class DistanceApiService {
           // Si la duración está disponible, la retorna
           if (element['status'] == 'OK' && element['duration'] != null) {
             final duration = element['duration']['value'];
-            print('Debug - Tiempo estimado: ${duration} segundos');
+            // ignore: avoid_print
+            print('Debug - Tiempo estimado: $duration segundos');
             return duration;
           }
         }
+        // ignore: avoid_print
         print('Debug - Estructura de respuesta inválida: $data');
       }
-      // Retorna 0 si no se pudo obtener la duración
       return 0;
     } catch (e) {
-      // Maneja cualquier error durante la petición
+      // ignore: avoid_print
       print('Error - Al obtener tiempo de viaje: $e');
       return 0;
     }

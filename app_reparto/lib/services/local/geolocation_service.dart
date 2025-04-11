@@ -24,7 +24,9 @@ class GeolocationService {
   // Metodo para obtener la ubicación actual
   Future<void> getCurrentLocation() async {
     Position position = await determinarPosition();
+    // ignore: avoid_print
     print(position.latitude);
+    // ignore: avoid_print
     print(position.longitude);
   }
 }
