@@ -199,6 +199,7 @@ class ListWidget extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => DetailScreen(
+                                    clienteID: client.id,
                                     clientName: client.name,
                                     clientAddress: client.address,
                                     clientTown: client.town,

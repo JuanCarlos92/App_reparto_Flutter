@@ -21,21 +21,35 @@ class DetailWidget extends StatelessWidget {
         // Alinea los textos a la izquierda
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Muestra el nombre del cliente con estilo destacado
-          Text(
-            'Nombre: $clientName',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          // Nombre
+          const Text(
+            'Nombre:',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          const SizedBox(height: 10),
-          // Muestra la ciudad del cliente
           Text(
-            'Ciudad: $clientTown',
+            clientName,
             style: const TextStyle(fontSize: 18),
           ),
           const SizedBox(height: 10),
-          // Muestra la dirección del cliente
+
+          // Ciudad
+          const Text(
+            'Ciudad:',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
           Text(
-            'Dirección: $clientAddress',
+            clientTown,
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+
+          // Dirección
+          const Text(
+            'Dirección:',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            clientAddress,
             style: const TextStyle(fontSize: 18),
           ),
         ],

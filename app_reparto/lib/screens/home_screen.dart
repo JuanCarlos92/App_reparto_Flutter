@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
           // Muestra el nombre del usuario si está disponible
           if (userName.isNotEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 16.0),
+              padding: const EdgeInsets.only(top: 35.0),
               child: Text(
                 userName,
                 style: const TextStyle(
@@ -135,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
+          const SizedBox(height: 30),
           // Contenedor principal expandible
           Expanded(
             child: Container(
@@ -147,20 +148,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
                     children: [
-                      // Sección superior con icono de temporizador
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(25, 20, 25, 30),
-                        child: Column(
-                          children: [
-                            const Icon(
-                              Icons.timer,
-                              size: 42,
-                              color: Colors.white,
-                            ),
-                          ],
-                        ),
-                      ),
-
                       // Contenedor principal con los botones de acción
                       Expanded(
                         child: Container(

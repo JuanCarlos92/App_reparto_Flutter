@@ -1,6 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:signature/signature.dart';
 
 class DialogUtils {
+  // Mostrar un diálogo de firma
+  static Future<bool?> showSignatureDialog(BuildContext context) async {
+    final SignatureController controller = SignatureController(
+      penStrokeWidth: 3,
+      penColor: Colors.black,
+    );
+
+    return showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Firma de entrega'),
+          content: Container(
+            width: 300,
+            height: 300,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+            ),
+            child: Signature(
+              controller: controller,
+              backgroundColor: Colors.white,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                controller.clear();
+                Navigator.of(context).pop(false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (controller.isNotEmpty) {
+                  Navigator.of(context).pop(true);
+                }
+              },
+              child: const Text('Aceptar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // Método estático para mostrar un diálogo de error
   static void showErrorDialog(BuildContext context, String message) {
     showDialog(
@@ -47,6 +93,7 @@ class DialogUtils {
     );
   }
 
+  // Método estático para mostrar un diálogo de confirmación
   static Future<bool> showConfirmationDialog(
       BuildContext context, String message) async {
     final result = await showDialog<bool>(

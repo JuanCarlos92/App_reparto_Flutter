@@ -1,8 +1,13 @@
+import 'package:app_reparto/services/backend/client_service.dart';
+import 'package:app_reparto/utils/dialog_utils.dart';
+import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:app_reparto/widgets/detail_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:signature/signature.dart';
 
 class DetailScreen extends StatelessWidget {
+  final String clienteID;
   final String clientName;
   final String clientAddress;
   final String clientTown;
@@ -10,6 +15,7 @@ class DetailScreen extends StatelessWidget {
   // Constructor
   const DetailScreen({
     super.key,
+    required this.clienteID,
     required this.clientName,
     required this.clientAddress,
     required this.clientTown,
@@ -69,13 +75,10 @@ class DetailScreen extends StatelessWidget {
                   child: Container(
                     // Decoración del contenedor de detalles
                     decoration: BoxDecoration(
-                      color:
-                          Color.fromARGB(255, 252, 231, 197), // Color de fondo
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(40)), // Bordes redondeados
+                      color: Color.fromARGB(255, 252, 231, 197),
+                      borderRadius: const BorderRadius.all(Radius.circular(40)),
                       boxShadow: [
                         BoxShadow(
-                          // Sombra del contenedor
                           // ignore: deprecated_member_use
                           color: Colors.black.withOpacity(0.1),
                           blurRadius: 20,
@@ -88,21 +91,65 @@ class DetailScreen extends StatelessWidget {
                         width: 1.5,
                       ),
                     ),
+
                     // Widget que muestra los detalles del cliente
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 30),
-                      child: DetailWidget(
-                        clientName: clientName,
-                        clientAddress: clientAddress,
-                        clientTown: clientTown,
+                      child: Column(
+                        children: [
+                          DetailWidget(
+                            clientName: clientName,
+                            clientAddress: clientAddress,
+                            clientTown: clientTown,
+                          ),
+                          const SizedBox(height: 60),
+                          ButtonWidget(
+                            text: 'ENTREGADO',
+                            icon: Icons.check_circle,
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 200, 120, 20),
+                                Color.fromARGB(255, 200, 120, 20),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            onPressed: () async {
+                              final scaffoldMessenger = ScaffoldMessenger.of(context);
+                              final navigator = Navigator.of(context);
+
+                              // Mostrar diálogo de firma
+                              final signed = await DialogUtils.showSignatureDialog(context);
+
+                              // Solo proceder si se firmó
+                              if (signed == true) {
+                                // Ejecutar operación async
+                                ClientService().deleteClient(clienteID).then((success) {
+                                  if (success) {
+                                    scaffoldMessenger.showSnackBar(
+                                      const SnackBar(
+                                        content: Text('Cliente entregado correctamente'),
+                                      ),
+                                    );
+                                    navigator.pop();
+                                  }
+                                }).catchError((e) {
+                                  scaffoldMessenger.showSnackBar(
+                                    SnackBar(content: Text('Error: $e')),
+                                  );
+                                });
+                              }
+                            },
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20), // Espacio inferior
+            const SizedBox(height: 20),
           ],
         ),
       ),
