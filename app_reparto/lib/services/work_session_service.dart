@@ -8,7 +8,7 @@ import 'token_service.dart';
 class WorkSessionService {
   static Future<void> startWorkSession() async {
     try {
-      // Obtiene el token de autenticación
+      // Obtiene el token
       final token = await TokenService.getToken();
       if (token == null) throw Exception('No authentication token found');
 

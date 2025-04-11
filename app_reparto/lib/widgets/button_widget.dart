@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
-  final String text; // Texto que se mostrará en el botón
-  final IconData icon; // Icono que se mostrará junto al texto
-  final Gradient gradient; // Gradiente para el fondo del botón
-  final VoidCallback onPressed; // Función al presionar el botón
+  final String text;
+  final IconData icon;
+  final Gradient gradient;
+  final VoidCallback onPressed;
 
-  // Constructor del widget que requiere todas las propiedades
+  // Constructor
   const ButtonWidget({
     super.key,
     required this.text,

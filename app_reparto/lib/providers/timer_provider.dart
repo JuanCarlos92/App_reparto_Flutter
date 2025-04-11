@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class TimerProvider extends ChangeNotifier {
-  // Variables para almacenar el tiempo
   int _seconds = 0;
   int _minutes = 0;
   int _hours = 0;

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/timer_provider.dart';
 
-// Widget para mostrar y controlar un temporizador
 class TimerWidget extends StatelessWidget {
   const TimerWidget({super.key});
 
@@ -20,11 +19,12 @@ class TimerWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
       // Decoración del contenedor principal
       decoration: BoxDecoration(
-        color: Color.fromARGB(255, 200, 120, 20), // Color naranja personalizado
-        borderRadius: BorderRadius.circular(20), // Bordes redondeados
+        color: Color.fromARGB(255, 200, 120, 20),
+        borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min, // Ajusta el tamaño al contenido
+        // Ajusta el tamaño al contenido
+        mainAxisSize: MainAxisSize.min,
         children: [
           // Icono del temporizador
           const Icon(
@@ -33,6 +33,7 @@ class TimerWidget extends StatelessWidget {
             size: 24,
           ),
           const SizedBox(width: 10),
+
           // Visualización del tiempo usando Consumer para actualizaciones automáticas
           Consumer<TimerProvider>(
             builder: (context, timerProvider, child) {
@@ -50,6 +51,7 @@ class TimerWidget extends StatelessWidget {
             },
           ),
           const SizedBox(width: 15),
+
           // Controles del temporizador (pausar/reanudar y detener)
           Consumer<TimerProvider>(
             builder: (context, timerProvider, child) {
@@ -66,7 +68,7 @@ class TimerWidget extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
-                        // Cambia el icono según el estado del temporizador
+                        // Cambia el icono según el estado
                         timerProvider.isRunning
                             ? Icons.pause
                             : Icons.play_arrow,
@@ -75,7 +77,9 @@ class TimerWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+
                   const SizedBox(width: 8),
+
                   // Botón de detener y volver a inicio
                   GestureDetector(
                     onTap: () async {

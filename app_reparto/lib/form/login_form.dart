@@ -1,20 +1,23 @@
 import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:flutter/material.dart';
 
-// Widget de formulario de inicio de sesión que mantiene estado
 class LoginForm extends StatefulWidget {
-  // Controladores y propiedades necesarias para el formulario
-  final GlobalKey<FormState> formKey; // Clave global para validar el formulario
-  final TextEditingController
-      usernameController; // Controlador para el campo de usuario
-  final TextEditingController
-      passwordController; // Controlador para el campo de contraseña
-  final bool isLoginForm; // Indica si es formulario de login
-  final VoidCallback onLogin; // Función que se ejecuta al iniciar sesión
-  final VoidCallback toggleForm; // Función para alternar entre formularios
-  final bool isLoading; // Indica si está cargando
+// Clave global para validar el formulario
+  final GlobalKey<FormState> formKey;
+  // Controlador para el campo de usuario
+  final TextEditingController usernameController;
+  // Controlador para el campo de contraseña
+  final TextEditingController passwordController;
+  // Indica si es formulario de login
+  final bool isLoginForm;
+  // Función que se ejecuta al iniciar sesión
+  final VoidCallback onLogin;
+  // Función para alternar entre formularios
+  final VoidCallback toggleForm;
+  // Indica si está cargando
+  final bool isLoading;
 
-  // Constructor con parámetros requeridos
+  // Constructor
   const LoginForm({
     super.key,
     required this.formKey,
@@ -92,7 +95,8 @@ class _LoginFormState extends State<LoginForm> {
               fillColor: Colors.white.withOpacity(0.2),
               filled: true,
             ),
-            obscureText: true, // Oculta el texto de la contraseña
+            // Oculta el texto de la contraseña
+            obscureText: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Por favor ingresa tu contraseña';
@@ -114,6 +118,7 @@ class _LoginFormState extends State<LoginForm> {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
+
             // Deshabilita el botón mientras está cargando
             onPressed: widget.isLoading ? () {} : widget.onLogin,
           ),

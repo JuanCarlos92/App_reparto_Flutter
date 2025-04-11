@@ -4,7 +4,6 @@ import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// Widget para mostrar la lista de clientes
 class ListWidget extends StatelessWidget {
   const ListWidget({super.key});
 

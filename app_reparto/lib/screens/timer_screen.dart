@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
 import '../widgets/button_widget.dart';
 
-// Página que muestra y controla el temporizador de la jornada laboral
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
 
@@ -23,7 +22,7 @@ class _TimerScreenState extends State<TimerScreen> {
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    // Inicia el temporizador automáticamente si se recibe el argumento correspondiente
+    // Inicia el temporizador automáticamente si se recibe true
     if (arguments != null && arguments['startTimer'] == true) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final timerProvider = context.read<TimerProvider>();
@@ -80,7 +79,7 @@ class _TimerScreenState extends State<TimerScreen> {
     return Scaffold(
       // Barra superior de la aplicación
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Oculta el botón de retroceso
+        automaticallyImplyLeading: false,
         backgroundColor: const Color.fromARGB(255, 200, 120, 20),
         centerTitle: true,
         title: const Text(
@@ -100,6 +99,7 @@ class _TimerScreenState extends State<TimerScreen> {
           ),
         ),
       ),
+
       // Contenedor principal con el temporizador y los controles
       body: Container(
         decoration: const BoxDecoration(
@@ -107,13 +107,13 @@ class _TimerScreenState extends State<TimerScreen> {
         ),
         child: Center(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width *
-                0.9, // 90% del ancho de la pantalla
+            width: MediaQuery.of(context).size.width * 0.9,
             child: Column(
               children: [
                 Container(
                   padding: const EdgeInsets.fromLTRB(25, 60, 25, 30),
                 ),
+
                 // Contenedor principal del temporizador
                 Expanded(
                   child: Container(
@@ -148,6 +148,7 @@ class _TimerScreenState extends State<TimerScreen> {
                                 color: Colors.black,
                               ),
                             ),
+
                             // Visualización del tiempo transcurrido
                             Container(
                               margin: const EdgeInsets.symmetric(vertical: 25),
@@ -164,6 +165,7 @@ class _TimerScreenState extends State<TimerScreen> {
                                   ),
                                 ],
                               ),
+
                               // Muestra el tiempo actualizado usando Consumer
                               child: Consumer<TimerProvider>(
                                 builder: (context, timerProvider, child) {
@@ -179,6 +181,7 @@ class _TimerScreenState extends State<TimerScreen> {
                               ),
                             ),
                             const SizedBox(height: 40),
+
                             // Botón para pausar o reanudar el temporizador
                             Consumer<TimerProvider>(
                               builder: (context, timerProvider, child) {
@@ -202,6 +205,7 @@ class _TimerScreenState extends State<TimerScreen> {
                               },
                             ),
                             const SizedBox(height: 20),
+
                             // Botón para finalizar la jornada
                             ButtonWidget(
                               text: 'FINALIZAR',
@@ -216,24 +220,24 @@ class _TimerScreenState extends State<TimerScreen> {
                               ),
                               onPressed: () =>
                                   _handleEndWork(context.read<TimerProvider>()),
+
+                              // onPressed: () async {
+                              //     if (!context.mounted) return;
+                              //     final bool confirm =
+                              //         await DialogUtils.showConfirmationDialog(
+                              //       context,
+                              //       '¿Finalizar la jornada del día?',
+                              //     );
+                              //     if (!context.mounted) return;
+
+                              //     if (confirm) {
+                              //       context
+                              //           .read<TimerProvider>()
+                              //           .finalizarTimer();
+                              //       Navigator.pop(context, '/home');
+                              //     }
+                              //   }
                             ),
-
-                            // onPressed: () async {
-                            //     if (!context.mounted) return;
-                            //     final bool confirm =
-                            //         await DialogUtils.showConfirmationDialog(
-                            //       context,
-                            //       '¿Finalizar la jornada del día?',
-                            //     );
-                            //     if (!context.mounted) return;
-
-                            //     if (confirm) {
-                            //       context
-                            //           .read<TimerProvider>()
-                            //           .finalizarTimer();
-                            //       Navigator.pop(context, '/home');
-                            //     }
-                            //   }
                           ],
                         ),
                       )),

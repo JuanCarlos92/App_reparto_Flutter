@@ -14,11 +14,11 @@ void main() {
     // MultiProvider permite manejar múltiples estados con Provider
     MultiProvider(
       providers: [
-        // Proveedor para la gestión del temporizador
+        // Proveedor temporizador
         ChangeNotifierProvider(create: (_) => TimerProvider()),
-        // Proveedor para la gestión de clientes
+        // Proveedor clientes
         ChangeNotifierProvider(create: (_) => ClientsProvider()),
-        // Proveedor para la gestión de usuarios
+        // Proveedor usuarios
         ChangeNotifierProvider(create: (_) => UserProvider()),
       ],
       child: const MyApp(),

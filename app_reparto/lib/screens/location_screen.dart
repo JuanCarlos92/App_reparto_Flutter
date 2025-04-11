@@ -6,7 +6,7 @@ class LocationScreen extends StatelessWidget {
   final double latitude;
   final double longitude;
 
-  // Constructor que requiere las coordenadas
+  // Constructor
   const LocationScreen({
     super.key,
     required this.latitude,

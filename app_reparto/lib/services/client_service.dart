@@ -5,7 +5,7 @@ import 'token_service.dart';
 import '../config/api_config.dart';
 
 class ClientService {
-  // Método para obtener la lista de clientes desde el servidor
+  // Método para obtener la lista de clientes
   Future<List<Client>> getClients() async {
     try {
       final token = await TokenService.getToken();

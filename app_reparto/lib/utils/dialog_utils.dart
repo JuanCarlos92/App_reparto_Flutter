@@ -25,7 +25,6 @@ class DialogUtils {
   }
 
   // Método estático para mostrar un diálogo informativo
-  // Recibe el contexto y el mensaje a mostrar
   static void showInfoDialog(BuildContext context, String message) {
     showDialog(
       context: context,
@@ -33,12 +32,12 @@ class DialogUtils {
         // Construye un diálogo de alerta con estilo informativo
         return AlertDialog(
           title: const Text('Información'),
-          content: Text(message), // Muestra el mensaje informativo
+          content: Text(message),
           actions: <Widget>[
             // Botón para cerrar el diálogo
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo actual
+                Navigator.of(context).pop();
               },
               child: const Text('Aceptar'),
             ),

@@ -222,20 +222,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                     end: Alignment.centerRight,
                                   ),
                                   onPressed: _handleStartWork,
-                                ),
-                                // onPressed: () async {
-                                //     if (!context.mounted) return;
-                                //     final bool confirm = await DialogUtils
-                                //         .showConfirmationDialog(context,
-                                //             '¿Quieres iniciar tu jornada?');
 
-                                //     if (!context.mounted) return;
-                                //     if (confirm) {
-                                //       startLocationUpdates();
-                                //       Navigator.pushNamed(context, '/timer',
-                                //           arguments: {'startTimer': true});
-                                //     }
-                                //   },
+                                  // onPressed: () async {
+                                  //     if (!context.mounted) return;
+                                  //     final bool confirm = await DialogUtils
+                                  //         .showConfirmationDialog(context,
+                                  //             '¿Quieres iniciar tu jornada?');
+
+                                  //     if (!context.mounted) return;
+                                  //     if (confirm) {
+                                  //       startLocationUpdates();
+                                  //       Navigator.pushNamed(context, '/timer',
+                                  //           arguments: {'startTimer': true});
+                                  //     }
+                                  //   },
+                                ),
                                 const SizedBox(height: 20),
 
                                 // Botón para cerrar sesión

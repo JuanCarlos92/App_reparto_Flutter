@@ -10,7 +10,6 @@ class ClientsProvider extends ChangeNotifier {
   final ClientService _clientService = ClientService();
   final GeolocationService _geolocationService = GeolocationService();
 
-  // Variables de estado
   List<Client> _clients = [];
   bool _isLoading = false;
   String _error = '';

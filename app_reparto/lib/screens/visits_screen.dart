@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/list_widget.dart';
 
-// Página que muestra la lista de visitas programadas a clientes
 class VisitsScreen extends StatefulWidget {
   const VisitsScreen({super.key});
 
@@ -118,13 +117,14 @@ class _VisitsScreenState extends State<VisitsScreen> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                       child:
-                          ListWidget(), // Widget que renderiza la lista de clientes
+                          // Widget que renderiza la lista de clientes
+                          ListWidget(),
                     ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20), // Espacio inferior
+            const SizedBox(height: 20),
           ],
         ),
       ),

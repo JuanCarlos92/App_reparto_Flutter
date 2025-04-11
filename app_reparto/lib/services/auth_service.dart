@@ -4,7 +4,7 @@ import 'token_service.dart';
 import '../config/api_config.dart';
 
 class AuthService {
-  // Método para realizar el inicio de sesión
+  // Método login
   Future<Map<String, dynamic>> login(String username, String password) async {
     try {
       // Realiza la petición POST al endpoint de login

@@ -4,7 +4,6 @@ import 'package:app_reparto/services/map_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-// Widget que muestra un mapa de Google
 class MapWidget extends StatefulWidget {
   // Coordenadas del destino (cliente)
   final double latitude;
