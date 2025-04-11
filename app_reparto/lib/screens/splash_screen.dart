@@ -31,14 +31,18 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Animación de carga usando Lottie
-            Lottie.asset('assets/loading.json'),
+            Lottie.asset(
+              'assets/loading.json',
+              width: 200,
+            ),
+
             // Texto de carga
             Text(
               'Cargando...',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1E5631),
+                color: const Color.fromARGB(255, 200, 120, 20),
               ),
             ),
           ],

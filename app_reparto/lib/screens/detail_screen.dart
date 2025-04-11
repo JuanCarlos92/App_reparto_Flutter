@@ -1,9 +1,11 @@
+import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:app_reparto/services/backend/client_service.dart';
 import 'package:app_reparto/utils/dialog_utils.dart';
 import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:app_reparto/widgets/detail_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DetailScreen extends StatelessWidget {
   final String clienteID;
@@ -115,26 +117,27 @@ class DetailScreen extends StatelessWidget {
                               end: Alignment.centerRight,
                             ),
                             onPressed: () async {
-                              final scaffoldMessenger =
-                                  ScaffoldMessenger.of(context);
+                              // Guardar referencias antes de la operación asíncrona
+                              final scaffoldMessenger = ScaffoldMessenger.of(context);
                               final navigator = Navigator.of(context);
+                              final clientsProvider = Provider.of<ClientsProvider>(context, listen: false);
 
                               // Mostrar diálogo de firma
-                              final signed =
-                                  await DialogUtils.showSignatureDialog(
-                                      context);
+                              final signed = await DialogUtils.showSignatureDialog(context);
 
-                              // Solo proceder si se firmo
+                              // Solo proceder si se firmó y el widget sigue montado
                               if (signed == true) {
                                 // Ejecutar operación async
                                 ClientService()
                                     .deleteClient(clienteID)
                                     .then((success) {
                                   if (success) {
+                                    // Actualizar la lista de clientes
+                                    clientsProvider.fetchClientsFromBackend();
+                                        
                                     scaffoldMessenger.showSnackBar(
                                       const SnackBar(
-                                        content: Text(
-                                            'Cliente entregado correctamente'),
+                                        content: Text('Cliente entregado correctamente'),
                                       ),
                                     );
                                     navigator.pop();

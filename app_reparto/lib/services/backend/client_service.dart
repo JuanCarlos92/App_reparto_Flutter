@@ -102,7 +102,7 @@ class ClientService {
         throw Exception(
             'No se ha encontrado el token. Por favor inicia sesión.');
       }
-      final url = Uri.parse('${BackendConfig.url}/clients/$clientId');
+      final url = Uri.parse('${BackendConfig.url}/clientes/$clientId');
 
       // actualiza headers con Authorization
       final response = await http.delete(
@@ -126,7 +126,8 @@ class ClientService {
         case 404:
           throw Exception('Cliente no encontrado');
         default:
-          throw Exception('Error al eliminar cliente: ${response.statusCode}');
+          throw Exception(
+              'Error al eliminar cliente (código ${response.statusCode}): ${response.body}');
       }
     } catch (e) {
       throw Exception('$e');
