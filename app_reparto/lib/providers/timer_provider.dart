@@ -1,4 +1,6 @@
+import 'package:app_reparto/models/work_session.dart';
 import 'package:app_reparto/providers/pomodoro_provider.dart';
+import 'package:app_reparto/services/backend/work_session_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -29,6 +31,17 @@ class TimerProvider extends ChangeNotifier {
   void iniciarTimer() {
     _startTime = DateTime.now();
     _isRunning = true;
+
+    // Crear una sesión inicial con estado 'working'
+    final workSession = WorkSession(
+      startTime: _startTime!,
+      workedTime: getWorkedTime(),
+      status: 'working',
+    );
+
+    // Enviar al servidor el estado inicial
+    WorkSessionService.startWorkSession(workSession);
+
     // Crea un temporizador que se ejecuta cada segundo
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_isRunning) {
@@ -61,18 +74,51 @@ class TimerProvider extends ChangeNotifier {
   }
 
   // Método para pausar o reanudar
+  String get status => _isRunning ? 'working' : 'paused';
+
+  // Modificar el método pausarTimer para enviar el estado al servidor
   void pausarTimer() {
     _isRunning = !_isRunning;
     if (!_isRunning) {
       _timer?.cancel();
+
+      // Crear una sesión con el estado actual
+      final workSession = WorkSession(
+        startTime: _startTime!,
+        workedTime: getWorkedTime(),
+        status: 'paused',
+      );
+
+      // Enviar al servidor
+      WorkSessionService.updateWorkSession(workSession);
     } else {
       iniciarTimer();
+      // Crear una sesión con el estado actual
+      final workSession = WorkSession(
+        startTime: _startTime!,
+        workedTime: getWorkedTime(),
+        status: 'working',
+      );
+
+      // Enviar al servidor
+      WorkSessionService.updateWorkSession(workSession);
     }
     notifyListeners();
   }
 
   // Método para finalizar
   void finalizarTimer() {
+    // Crear una sesión final con el estado y tiempo trabajado
+    final workSession = WorkSession(
+      startTime: _startTime ?? DateTime.now(),
+      endTime: DateTime.now(),
+      workedTime: getWorkedTime(),
+      status: 'finished',
+    );
+
+    // Enviar al servidor que la sesión ha finalizado
+    WorkSessionService.endWorkSession(workSession);
+
     _timer?.cancel();
     _seconds = 0;
     _minutes = 0;
