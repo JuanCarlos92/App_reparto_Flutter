@@ -1,7 +1,7 @@
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import 'package:app_reparto/screens/splash_screen.dart';
-import 'package:app_reparto/services/local/notification_service.dart';
+import 'package:app_reparto/core/services/local/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';

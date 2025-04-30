@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:app_reparto/services/api/map_service.dart';
-import 'package:app_reparto/services/api/directions_service.dart';
+import 'package:app_reparto/core/services/api/map_service.dart';
+import 'package:app_reparto/core/services/api/directions_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

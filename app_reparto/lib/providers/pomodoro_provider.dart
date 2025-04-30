@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../services/local/notification_service.dart';
+import '../core/services/local/notification_service.dart';
 
 class PomodoroProvider extends ChangeNotifier {
   bool _isPomodoroActive = false; // Indica si el Pomodoro está activo

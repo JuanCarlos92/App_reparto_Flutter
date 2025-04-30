@@ -1,7 +1,7 @@
 import 'package:app_reparto/models/client.dart';
-import 'package:app_reparto/services/backend/client_service.dart';
-import 'package:app_reparto/services/api/distance_service.dart';
-import 'package:app_reparto/services/local/geolocation_service.dart';
+import 'package:app_reparto/core/services/backend/client_service.dart';
+import 'package:app_reparto/core/services/api/distance_service.dart';
+import 'package:app_reparto/core/services/local/geolocation_service.dart';
 import 'package:flutter/material.dart';
 
 class ClientsProvider extends ChangeNotifier {
@@ -41,10 +41,7 @@ class ClientsProvider extends ChangeNotifier {
       final position = await _geolocationService.determinarPosition();
 
       // ignore: avoid_print
-      print('Debug - Actualizando tiempos para ${_clients.length} clientes');
-      // ignore: avoid_print
-      print(
-          'Debug - Posicion actual: ${position.latitude}, ${position.longitude}');
+      print('Client - Actualizando tiempos para ${_clients.length} clientes');
 
       // Actualizar la duración para cada cliente
       for (var client in _clients) {

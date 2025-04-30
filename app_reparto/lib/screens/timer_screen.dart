@@ -1,7 +1,7 @@
 // import 'package:app_reparto/models/work_session.dart';
 // import 'package:app_reparto/services/work_session_service.dart';
 import 'package:app_reparto/providers/pomodoro_provider.dart';
-import 'package:app_reparto/utils/dialog_utils.dart';
+import 'package:app_reparto/core/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';

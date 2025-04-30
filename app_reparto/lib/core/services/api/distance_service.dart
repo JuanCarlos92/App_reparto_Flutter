@@ -1,4 +1,45 @@
-import 'package:app_reparto/config/api_config.dart';
+// ignore_for_file: avoid_print
+
+// import 'package:app_reparto/core/config/api.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+
+// class DistanceService {
+//   static Future<int> getDistance(double originLat, double originLng,
+//       double destLat, double destLng) async {
+//     final url = Uri.parse('${Api.graphHopperApi}'
+//         '?point=$originLat,$originLng'
+//         '&point=$destLat,$destLng'
+//         '&vehicle=car'
+//         '&locale=es'
+//         '&key=${Api.graphHopperKey}');
+
+//     try {
+//       print(
+//           'Distance - Consultando tiempo de viaje para destino: $destLat,$destLng');
+//       final response = await http.get(url);
+
+//       if (response.statusCode == 200) {
+//         final data = json.decode(response.body);
+
+//         // GraphHopper devuelve el tiempo en milisegundos, lo convertimos a segundos
+//         if (data['paths'] != null && data['paths'].isNotEmpty) {
+//           final timeInMs = data['paths'][0]['time'];
+//           final timeInSeconds = (timeInMs / 1000).round();
+//           print('Distance - Tiempo estimado: $timeInSeconds segundos');
+//           return timeInSeconds;
+//         }
+//         print('Distance - Estructura de respuesta inválida: $data');
+//       }
+//       return 0;
+//     } catch (e) {
+//       print('Error - Al obtener tiempo de viaje: $e');
+//       return 0;
+//     }
+//   }
+// }
+
+import 'package:app_reparto/core/config/api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -11,16 +52,15 @@ class DistanceService {
     final destination = '$destLat,$destLng';
 
     // Construye la URL para la petición a la API
-    final url = Uri.parse('${ApiConfig.distanceMaps}'
+    final url = Uri.parse('${Api.distanceMaps}'
         '?origins=$origin'
         '&destinations=$destination'
         '&mode=driving'
         '&language=es'
         '&units=metric'
-        '&key=${ApiConfig.distanceKey}');
+        '&key=${Api.distanceKey}');
 
     try {
-      // ignore: avoid_print
       print('Debug - Consultando tiempo de viaje para destino: $destination');
       // Realiza la petición HTTP
       final response = await http.get(url);
@@ -40,17 +80,14 @@ class DistanceService {
           // Si la duración está disponible, la retorna
           if (element['status'] == 'OK' && element['duration'] != null) {
             final duration = element['duration']['value'];
-            // ignore: avoid_print
             print('Debug - Tiempo estimado: $duration segundos');
             return duration;
           }
         }
-        // ignore: avoid_print
         print('Debug - Estructura de respuesta inválida: $data');
       }
       return 0;
     } catch (e) {
-      // ignore: avoid_print
       print('Error - Al obtener tiempo de viaje: $e');
       return 0;
     }

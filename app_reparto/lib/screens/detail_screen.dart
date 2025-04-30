@@ -1,6 +1,6 @@
 import 'package:app_reparto/providers/clients_provider.dart';
-import 'package:app_reparto/services/backend/client_service.dart';
-import 'package:app_reparto/utils/dialog_utils.dart';
+import 'package:app_reparto/core/services/backend/client_service.dart';
+import 'package:app_reparto/core/utils/dialog.dart';
 import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:app_reparto/widgets/detail_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
@@ -118,12 +118,17 @@ class DetailScreen extends StatelessWidget {
                             ),
                             onPressed: () async {
                               // Guardar referencias antes de la operación asíncrona
-                              final scaffoldMessenger = ScaffoldMessenger.of(context);
+                              final scaffoldMessenger =
+                                  ScaffoldMessenger.of(context);
                               final navigator = Navigator.of(context);
-                              final clientsProvider = Provider.of<ClientsProvider>(context, listen: false);
+                              final clientsProvider =
+                                  Provider.of<ClientsProvider>(context,
+                                      listen: false);
 
                               // Mostrar diálogo de firma
-                              final signed = await DialogUtils.showSignatureDialog(context);
+                              final signed =
+                                  await DialogUtils.showSignatureDialog(
+                                      context);
 
                               // Solo proceder si se firmó y el widget sigue montado
                               if (signed == true) {
@@ -134,10 +139,11 @@ class DetailScreen extends StatelessWidget {
                                   if (success) {
                                     // Actualizar la lista de clientes
                                     clientsProvider.fetchClientsFromBackend();
-                                        
+
                                     scaffoldMessenger.showSnackBar(
                                       const SnackBar(
-                                        content: Text('Cliente entregado correctamente'),
+                                        content: Text(
+                                            'Cliente entregado correctamente'),
                                       ),
                                     );
                                     navigator.pop();

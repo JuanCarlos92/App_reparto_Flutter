@@ -1,6 +1,6 @@
 import 'package:app_reparto/models/work_session.dart';
 import 'package:app_reparto/providers/pomodoro_provider.dart';
-import 'package:app_reparto/services/backend/work_session_service.dart';
+import 'package:app_reparto/core/services/backend/work_session_service.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -40,7 +40,7 @@ class TimerProvider extends ChangeNotifier {
     );
 
     // Enviar al servidor el estado inicial
-    WorkSessionService.startWorkSession(workSession);
+    // WorkSessionService.startWorkSession(workSession);
 
     // Crea un temporizador que se ejecuta cada segundo
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -90,7 +90,7 @@ class TimerProvider extends ChangeNotifier {
       );
 
       // Enviar al servidor
-      WorkSessionService.updateWorkSession(workSession);
+      // WorkSessionService.updateWorkSession(workSession);
     } else {
       iniciarTimer();
       // Crear una sesión con el estado actual
@@ -101,7 +101,7 @@ class TimerProvider extends ChangeNotifier {
       );
 
       // Enviar al servidor
-      WorkSessionService.updateWorkSession(workSession);
+      // WorkSessionService.updateWorkSession(workSession);
     }
     notifyListeners();
   }
@@ -117,7 +117,7 @@ class TimerProvider extends ChangeNotifier {
     );
 
     // Enviar al servidor que la sesión ha finalizado
-    WorkSessionService.endWorkSession(workSession);
+    // WorkSessionService.endWorkSession(workSession);
 
     _timer?.cancel();
     _seconds = 0;

@@ -2,10 +2,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../services/local/geolocation_service.dart';
+import '../core/services/local/geolocation_service.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
-import '../utils/dialog_utils.dart';
+import '../core/utils/dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
