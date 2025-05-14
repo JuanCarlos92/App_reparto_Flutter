@@ -1,9 +1,11 @@
 import 'dart:math';
-
+import 'dart:async';
 import 'package:app_reparto/core/services/api/map_service.dart';
-import 'package:app_reparto/core/services/api/directions_service.dart';
+// import 'package:app_reparto/core/services/api/directions_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../core/services/api/graphHopper_service.dart';
 
 class MapWidget extends StatefulWidget {
   // Coordenadas del destino (cliente)
@@ -26,18 +28,52 @@ class _MapWidgetState extends State<MapWidget> {
   // Servicio que maneja la lógica del mapa
   final MapService _mapService = MapService();
   // Servicio que maneja la lógica de la distancia
-  final DirectionsService _directionsService = DirectionsService();
+  final GraphhopperService _graphhopperService = GraphhopperService();
   // Posición actual del usuario
   LatLng? _currentPosition;
   // Conjunto de marcadores en el mapa (ubicación actual y cliente)
   Set<Marker> _markers = {};
   // Conjunto de líneas que forman la ruta
   Set<Polyline> _polylines = {};
+  // Actualizaciones periódicas
+  Timer? _locationUpdateTimer;
 
   @override
   void initState() {
     super.initState();
     _initializeMap();
+    // Iniciar actualización periódica
+    _startLocationUpdates();
+  }
+
+  @override
+  void dispose() {
+    _locationUpdateTimer?.cancel();
+    super.dispose();
+  }
+
+  void _startLocationUpdates() {
+    // Actualizar cada 10 segundos
+    _locationUpdateTimer =
+        Timer.periodic(const Duration(seconds: 10), (timer) async {
+      try {
+        final position = await _mapService.getCurrentPosition();
+        if (mounted) {
+          setState(() {
+            _currentPosition = position;
+            _markers = _mapService.createMarkers(
+              _currentPosition,
+              widget.latitude,
+              widget.longitude,
+            );
+          });
+          await _updateRoute();
+        }
+      } catch (e) {
+        // ignore: avoid_print
+        print('Error actualizando ubicación: $e');
+      }
+    });
   }
 
   // Inicializa el mapa obteniendo la ubicación actual y configurando marcadores y ruta
@@ -66,18 +102,34 @@ class _MapWidgetState extends State<MapWidget> {
   // Actualiza la ruta entre la ubicación actual y el destino
   Future<void> _updateRoute() async {
     if (_currentPosition != null) {
-      final polylines = await _directionsService.drawRoute(
+      final result = await _graphhopperService.drawRouteAndGetTime(
         _currentPosition!,
         widget.latitude,
         widget.longitude,
       );
       if (mounted) {
         setState(() {
-          _polylines = polylines;
+          _polylines = result['polylines'];
         });
       }
     }
   }
+
+  // Actualiza la ruta entre la ubicación actual y el destino
+  // Future<void> _updateRoute() async {
+  //   if (_currentPosition != null) {
+  //     final polylines = await _directionsService.drawRoute(
+  //       _currentPosition!,
+  //       widget.latitude,
+  //       widget.longitude,
+  //     );
+  //     if (mounted) {
+  //       setState(() {
+  //         _polylines = polylines;
+  //       });
+  //     }
+  //   }
+  // }
 
   // Ajusta la cámara del mapa para mostrar tanto el origen como el destino
   Future<void> _updateCamera() async {

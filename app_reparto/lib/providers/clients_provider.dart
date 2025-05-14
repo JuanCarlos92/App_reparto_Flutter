@@ -1,13 +1,17 @@
 import 'package:app_reparto/models/client.dart';
 import 'package:app_reparto/core/services/backend/client_service.dart';
-import 'package:app_reparto/core/services/api/distance_service.dart';
+// import 'package:app_reparto/core/services/api/distance_service.dart';
 import 'package:app_reparto/core/services/local/geolocation_service.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../core/services/api/graphHopper_service.dart';
 
 class ClientsProvider extends ChangeNotifier {
   // Servicios necesarios para la gestión de clientes y geolocalización
   final ClientService _clientService = ClientService();
   final GeolocationService _geolocationService = GeolocationService();
+  final GraphhopperService _graphhopperService = GraphhopperService();
 
   List<Client> _clients = [];
   bool _isLoading = false;
@@ -44,14 +48,24 @@ class ClientsProvider extends ChangeNotifier {
       print('Client - Actualizando tiempos para ${_clients.length} clientes');
 
       // Actualizar la duración para cada cliente
+      // for (var client in _clients) {
+      //   final duration = await DistanceService.getDistanceMatrix(
+      //     position.latitude,
+      //     position.longitude,
+      //     client.latitude,
+      //     client.longitude,
+      //   );
+      //   client.durationInSeconds = duration;
+      // }
+      // Actualizar la duración para cada cliente usando GraphhopperService
       for (var client in _clients) {
-        final duration = await DistanceService.getDistanceMatrix(
-          position.latitude,
-          position.longitude,
+        final result = await _graphhopperService.drawRouteAndGetTime(
+          LatLng(position.latitude, position.longitude),
           client.latitude,
           client.longitude,
         );
-        client.durationInSeconds = duration;
+
+        client.durationInSeconds = result['duration'];
       }
 
       // Ordenar la lista por tiempos de viaje

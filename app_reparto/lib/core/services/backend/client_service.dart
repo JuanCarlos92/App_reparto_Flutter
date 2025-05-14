@@ -21,7 +21,7 @@ class ClientService {
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'DOLAPIKEY': token,
+          'Authorization': 'Bearer $token',
         },
       );
 

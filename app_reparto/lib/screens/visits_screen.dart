@@ -13,29 +13,50 @@ class VisitsScreen extends StatefulWidget {
   State<VisitsScreen> createState() => _VisitsScreenState();
 }
 
-class _VisitsScreenState extends State<VisitsScreen> {
+class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
   Timer? _timer;
+  late RouteObserver<PageRoute> routeObserver;
 
   @override
   void initState() {
     super.initState();
-    // Actualizar cada 1 segundo
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      if (mounted) {
-        context.read<ClientsProvider>().updateClientsWithDuration();
-      }
-    });
+    routeObserver = RouteObserver<PageRoute>();
+  }
 
-    // Actualización inicial
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ClientsProvider>().updateClientsWithDuration();
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
+
+    // Actualizar tiempos cuando la pantalla se muestra
+    final clientsProvider = context.read<ClientsProvider>();
+    clientsProvider.updateClientsWithDuration();
   }
 
   @override
   void dispose() {
+    routeObserver.unsubscribe(this);
     _timer?.cancel();
     super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    if (!mounted) return;
+    // Se ejecuta cuando se regresa a esta pantalla
+    final clientsProvider = context.read<ClientsProvider>();
+
+    // Ejecutamos las operaciones asíncronas de manera segura
+    clientsProvider.fetchClientsFromBackend().then((_) {
+      if (!mounted) return;
+      clientsProvider.updateClientsWithDuration();
+    });
+  }
+
+  @override
+  void didPushNext() {
+    // Se ejecuta cuando se navega a otra pantalla
+    _timer?.cancel();
   }
 
   @override

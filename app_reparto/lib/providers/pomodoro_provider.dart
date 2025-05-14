@@ -1,35 +1,61 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import '../core/services/local/notification_service.dart';
 
 class PomodoroProvider extends ChangeNotifier {
   bool _isPomodoroActive = false; // Indica si el Pomodoro está activo
   Duration? _pomodoroDuration; // Duración configurada para cada intervalo
+  Duration? _breakDuration; // Duración configurada para el descanso
   Duration _currentWorkTime = Duration.zero; // Tiempo actual de trabajo
+  bool _isOnBreak = false;
+  DateTime? _breakStartTime;
 
   // Getters para acceder al estado desde fuera
   bool get isPomodoroActive => _isPomodoroActive;
   Duration? get pomodoroDuration => _pomodoroDuration;
+  Duration? get breakDuration => _breakDuration;
+  bool get isOnBreak => _isOnBreak;
 
   // Configura el temporizador Pomodoro con una duración específica
-  void setPomodoroTimer(Duration duration) {
-    _pomodoroDuration = duration;
+  void setPomodoroTimer(Duration workDuration, Duration breakDuration) {
+    _pomodoroDuration = workDuration;
+    _breakDuration = breakDuration;
     _isPomodoroActive = true;
     _currentWorkTime = Duration.zero;
+    _isOnBreak = false;
     notifyListeners();
   }
 
   // Actualiza el tiempo trabajado y verifica si es momento de descanso
+  // Añadir getter para breakStartTime
+  DateTime? get breakStartTime => _breakStartTime;
+
+  // Modificar updateWorkTime para redirigir a la pantalla de descanso
   void updateWorkTime(Duration currentTime) async {
     if (!_isPomodoroActive || _pomodoroDuration == null) return;
 
-    _currentWorkTime = currentTime;
-    try {
-      if (shouldTakeBreak()) {
-        await NotificationService.showBreakNotification();
+    if (_isOnBreak) {
+      if (_breakStartTime != null) {
+        final breakElapsed = DateTime.now().difference(_breakStartTime!);
+        if (breakElapsed >= _breakDuration!) {
+          await NotificationService.showWorkNotification();
+          disablePomodoro();
+          notifyListeners();
+        }
       }
-    } catch (e) {
-      // ignore: avoid_print
-      print('Error en notificación: $e');
+    } else {
+      _currentWorkTime = currentTime;
+      try {
+        if (shouldTakeBreak()) {
+          _isOnBreak = true;
+          _breakStartTime = DateTime.now();
+          await NotificationService.showBreakNotification();
+          notifyListeners();
+        }
+      } catch (e) {
+        print('Error en notificación: $e');
+      }
     }
     notifyListeners();
   }
@@ -45,7 +71,10 @@ class PomodoroProvider extends ChangeNotifier {
   void disablePomodoro() {
     _isPomodoroActive = false;
     _pomodoroDuration = null;
+    _breakDuration = null;
     _currentWorkTime = Duration.zero;
+    _isOnBreak = false;
+    _breakStartTime = null;
     notifyListeners();
   }
 }

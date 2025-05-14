@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 class WorkSession {
   final DateTime startTime;
   final DateTime? endTime;
@@ -12,37 +14,33 @@ class WorkSession {
     required this.status,
   });
 
-// Método para inicio de sesión
+  // Método para inicio de sesión
   Map<String, dynamic> toJsonStart() {
-    return {
-      'startTime': startTime.toIso8601String(),
-      'status': status,
+    // Formatear la fecha al formato esperado por el backend
+    final formattedDate = startTime.toUtc().toIso8601String();
+    print('Fecha formateada para enviar: $formattedDate');
+
+    final jsonData = {
+      'fecha_inicio': formattedDate,
+      'estado': status,
     };
+    print('JSON a enviar: $jsonData');
+    return jsonData;
   }
 
   // Método para finalizar sesión
   Map<String, dynamic> toJsonEnd() {
     return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime?.toIso8601String(),
-      'workedTimeSeconds': workedTime.inSeconds,
+      'fecha_inicio': startTime.toUtc().toIso8601String(),
+      'fecha_fin': endTime?.toUtc().toIso8601String(),
+      'tiempo_trabajado_segundos': workedTime.inSeconds,
     };
   }
 
   // Método para actualizar estado
   Map<String, dynamic> toJsonUpdate() {
     return {
-      'status': status,
-    };
-  }
-
-  // Método general que incluye todos los datos
-  Map<String, dynamic> toJson() {
-    return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime?.toIso8601String(),
-      'workedTimeSeconds': workedTime.inSeconds,
-      'status': status,
+      'estado': status,
     };
   }
 }

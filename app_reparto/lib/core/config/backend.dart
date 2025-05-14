@@ -1,7 +1,7 @@
 class Backend {
-  //static const String url = 'https://d43f-80-102-248-37.ngrok-free.app';
-  static const String url =
-      'https://ec84-80-102-248-37.ngrok-free.app/dolibarr/api/index.php';
+  static const String url = 'https://528c-80-102-248-37.ngrok-free.app';
+  // static const String url =
+  //     'https://61c3-80-102-248-37.ngrok-free.app/dolibarr/api/index.php';
 }
 
 //admin

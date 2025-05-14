@@ -95,4 +95,33 @@ class NotificationService {
       print('Debug - Error mostrar notification: $e');
     }
   }
+
+  static Future<void> showWorkNotification() async {
+    try {
+      const AndroidNotificationDetails androidDetails =
+          AndroidNotificationDetails(
+        'pomodoro_channel',
+        'Descansos',
+        channelDescription: 'Notificaciones de descansos programados',
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+        enableVibration: true,
+      );
+
+      const NotificationDetails platformDetails = NotificationDetails(
+        android: androidDetails,
+      );
+
+      await _notifications.show(
+        1,
+        '¡Fin del descanso!',
+        'Es hora de volver al trabajo',
+        platformDetails,
+      );
+    } catch (e) {
+      // ignore: avoid_print
+      print('Debug - Error mostrar notification: $e');
+    }
+  }
 }
