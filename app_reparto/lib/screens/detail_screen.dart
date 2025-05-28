@@ -107,7 +107,6 @@ class DetailScreen extends StatelessWidget {
                           const SizedBox(height: 60),
                           ButtonWidget(
                             text: 'ENTREGADO',
-                            icon: Icons.check_circle,
                             gradient: const LinearGradient(
                               colors: [
                                 Color.fromARGB(255, 200, 120, 20),

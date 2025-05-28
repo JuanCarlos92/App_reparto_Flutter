@@ -3,6 +3,7 @@ import 'package:app_reparto/core/config/backend.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../local/token_service.dart';
+// import 'work_session_service.dart';
 
 class AuthService {
   // Método login
@@ -33,6 +34,17 @@ class AuthService {
           String token = data['DOLAPIKEY'];
           print('[AUTH] Token recibido correctamente: $token');
           await TokenService.setToken(token);
+
+          // Obtener el tiempo de trabajo
+          // try {
+          //   final workedTimeResponse = await WorkSessionService.getWorkedTime();
+          //   if (workedTimeResponse != null) {
+          //     data['worked_time'] = workedTimeResponse;
+          //   }
+          // } catch (e) {
+          //   print('[AUTH] Error al obtener el tiempo de trabajo: $e');
+          // }
+
           return data;
         } else {
           throw Exception('Token no encontrado en la respuesta');

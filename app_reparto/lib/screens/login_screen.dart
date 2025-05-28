@@ -71,28 +71,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Barra superior de la aplicación
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
-        centerTitle: true,
-        title: const Text(
-          'App Reparto',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontFamily: 'Roboto',
-            shadows: [
-              Shadow(
-                blurRadius: 8,
-                color: Color.fromRGBO(0, 0, 0, 0.3),
-                offset: Offset(2, 2),
-              ),
-            ],
-          ),
-        ),
-      ),
-      // Contenedor principal con scroll
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -104,20 +82,33 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Tarjeta que contiene el formulario de login
-                  Card(
-                    elevation: 8, // Elevación para efecto de sombra
-                    shape: RoundedRectangleBorder(
+                  // Logo image
+                  Image.asset(
+                    'assets/repartologo.png',
+                    height: 180,
+                    fit: BoxFit.contain,
+                  ),
+                  const SizedBox(height: 32),
+                  // Form container with border
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(16),
-                      side: const BorderSide(
-                        color: Color.fromARGB(255, 200, 120, 20),
-                        width: 1.5,
+                      border: Border.all(
+                        color: Colors.grey[300]!,
+                        width: 1,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.1),
+                          spreadRadius: 1,
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
-                    color: Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(24.0),
-                      // Widget de formulario personalizado
                       child: LoginForm(
                         formKey: _formKey,
                         usernameController: _usernameController,

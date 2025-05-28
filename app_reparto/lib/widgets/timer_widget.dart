@@ -1,5 +1,3 @@
-// import 'package:app_reparto/models/work_session.dart';
-// import 'package:app_reparto/services/work_session_service.dart';
 import 'package:app_reparto/core/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,61 +56,33 @@ class TimerWidget extends StatelessWidget {
               return Row(
                 children: [
                   // Botón de pausar/reanudar
-                  GestureDetector(
-                    onTap: timerProvider.pausarTimer,
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        // ignore: deprecated_member_use
-                        color: Colors.white.withOpacity(0.2),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        // Cambia el icono según el estado
-                        timerProvider.isRunning
-                            ? Icons.pause
-                            : Icons.play_arrow,
-                        color: Colors.white,
-                        size: 20,
-                      ),
-                    ),
+                  Consumer<TimerProvider>(
+                    builder: (context, timerProvider, child) {
+                      return GestureDetector(
+                        onTap: timerProvider.pausarTimer,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            // ignore: deprecated_member_use
+                            color: Colors.white.withOpacity(0.2),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(
+                            // Cambia el icono según el estado
+                            timerProvider.isRunning
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                      );
+                    },
                   ),
 
                   const SizedBox(width: 8),
 
                   // Botón de detener y volver a inicio
-                  // GestureDetector(
-                  //   onTap: () async {
-                  //     if (!context.mounted) return;
-                  //     final bool confirm =
-                  //         await DialogUtils.showConfirmationDialog(
-                  //             context, '¿Finalizar la jornada del día?');
-
-                  //     if (!context.mounted) return;
-                  //     if (confirm) {
-                  //       try {
-                  //         final workSession = WorkSession(
-                  //           startTime:
-                  //               timerProvider.startTime ?? DateTime.now(),
-                  //           endTime: DateTime.now(),
-                  //           workedTime: timerProvider.getWorkedTime(),
-                  //         );
-
-                  //         await WorkSessionService.endWorkSession(workSession);
-                  //         timerProvider.finalizarTimer();
-
-                  //         if (!context.mounted) return;
-                  //         Navigator.pushReplacementNamed(context, '/home');
-                  //       } catch (e) {
-                  //         if (!context.mounted) return;
-                  //         ScaffoldMessenger.of(context).showSnackBar(
-                  //           SnackBar(
-                  //               content: Text(
-                  //                   'Error al finalizar la jornada: ${e.toString()}')),
-                  //         );
-                  //       }
-                  //     }
-                  //   },
                   GestureDetector(
                     onTap: () async {
                       if (!context.mounted) return;

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+import 'dart:convert';
 
 class WorkSession {
   final DateTime startTime;
@@ -6,7 +6,7 @@ class WorkSession {
   final Duration workedTime;
   final String status;
 
-  //Constructor
+  // Constructor
   WorkSession({
     required this.startTime,
     this.endTime,
@@ -16,23 +16,23 @@ class WorkSession {
 
   // Método para inicio de sesión
   Map<String, dynamic> toJsonStart() {
-    // Formatear la fecha al formato esperado por el backend
-    final formattedDate = startTime.toUtc().toIso8601String();
-    print('Fecha formateada para enviar: $formattedDate');
-
-    final jsonData = {
-      'fecha_inicio': formattedDate,
+    final fechaFormateada = startTime.toUtc().toIso8601String();
+    final data = {
+      'fecha_inicio': fechaFormateada,
       'estado': status,
     };
-    print('JSON a enviar: $jsonData');
-    return jsonData;
+
+    print('Fecha enviada: $fechaFormateada');
+    print('JSON a enviar: ${json.encode(data)}');
+
+    return data;
   }
 
   // Método para finalizar sesión
   Map<String, dynamic> toJsonEnd() {
     return {
-      'fecha_inicio': startTime.toUtc().toIso8601String(),
-      'fecha_fin': endTime?.toUtc().toIso8601String(),
+      'fecha_inicio': startTime.toIso8601String(),
+      'fecha_fin': endTime?.toIso8601String(),
       'tiempo_trabajado_segundos': workedTime.inSeconds,
     };
   }
@@ -40,6 +40,16 @@ class WorkSession {
   // Método para actualizar estado
   Map<String, dynamic> toJsonUpdate() {
     return {
+      'estado': status,
+    };
+  }
+
+  // Método general con todos los datos
+  Map<String, dynamic> toJson() {
+    return {
+      'fecha_inicio': startTime.toIso8601String(),
+      'fecha_fin': endTime?.toIso8601String(),
+      'tiempo_trabajado_segundos': workedTime.inSeconds,
       'estado': status,
     };
   }

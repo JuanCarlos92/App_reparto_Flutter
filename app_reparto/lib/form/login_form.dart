@@ -38,42 +38,40 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   @override
   Widget build(BuildContext context) {
-    // Estructura del formulario
     return Form(
       key: widget.formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Título del formulario con estilo personalizado
           Text(
             'Iniciar Sesión',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: Colors.grey[800],
               fontFamily: 'Roboto',
-              shadows: [
-                Shadow(
-                  blurRadius: 8,
-                  // ignore: deprecated_member_use
-                  color: Colors.black.withOpacity(0.3),
-                  offset: Offset(2, 2),
-                ),
-              ],
             ),
           ),
           const SizedBox(height: 24),
-
-          // Campo de texto para el usuario con validación
           TextFormField(
             controller: widget.usernameController,
             decoration: InputDecoration(
               labelText: 'Usuario',
-              prefixIcon: Icon(Icons.person),
-              border: OutlineInputBorder(),
-              // ignore: deprecated_member_use
-              fillColor: Colors.white.withOpacity(0.2),
+              prefixIcon: Icon(Icons.person, color: Colors.grey[600]),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
               filled: true,
+              fillColor: Colors.grey[100],
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -83,19 +81,26 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 16),
-
-          // Campo de texto para la contraseña con validación
           TextFormField(
             controller: widget.passwordController,
             decoration: InputDecoration(
               labelText: 'Contraseña',
-              prefixIcon: Icon(Icons.lock),
-              border: OutlineInputBorder(),
-              // ignore: deprecated_member_use
-              fillColor: Colors.white.withOpacity(0.2),
+              prefixIcon: Icon(Icons.lock, color: Colors.grey[600]),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
               filled: true,
+              fillColor: Colors.grey[100],
             ),
-            // Oculta el texto de la contraseña
             obscureText: true,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -105,11 +110,8 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 24),
-
-          // Botón personalizado para iniciar sesión
           ButtonWidget(
             text: 'INICIAR SESIÓN',
-            icon: Icons.login,
             gradient: const LinearGradient(
               colors: [
                 Color.fromARGB(255, 200, 120, 20),
@@ -118,8 +120,6 @@ class _LoginFormState extends State<LoginForm> {
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
             ),
-
-            // Deshabilita el botón mientras está cargando
             onPressed: widget.isLoading ? () {} : widget.onLogin,
           ),
         ],

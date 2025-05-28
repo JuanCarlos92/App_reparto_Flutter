@@ -38,7 +38,7 @@ class _TimerScreenState extends State<TimerScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _timerProvider = Provider.of<TimerProvider>(context, listen: false);
-    
+
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
@@ -201,9 +201,6 @@ class _TimerScreenState extends State<TimerScreen> {
                                   text: timerProvider.isRunning
                                       ? 'PAUSAR'
                                       : 'REANUDAR',
-                                  icon: timerProvider.isRunning
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
                                   gradient: const LinearGradient(
                                     colors: [
                                       Color.fromARGB(255, 200, 120, 20),
@@ -221,7 +218,6 @@ class _TimerScreenState extends State<TimerScreen> {
                             // Botón para finalizar la jornada
                             ButtonWidget(
                                 text: 'FINALIZAR',
-                                icon: Icons.stop,
                                 gradient: const LinearGradient(
                                   colors: [
                                     Colors.red,
