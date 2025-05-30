@@ -65,16 +65,9 @@ El sistema se divide en dos partes principales:
 
 2. Crea una rama para tu nueva funcionalidad: git checkout -b nueva-funcionalidad.
 
-<<<<<<< HEAD
 3. Realiza tus cambios y confirma con un mensaje claro: git commit -am 'Agregado nueva funcionalidad'.
-=======
-3. Realiza tus cambios y confirma con un mensaje claro: git commit -m 'Agregado nueva funcionalidad'.
->>>>>>> cf20d64ee7d2aba3a5e40b7dc6bccad6d5caf675
 
 4. Sube tus cambios: git push origin nueva-funcionalidad.
 
 5. Crea un pull request con una descripción detallada de los cambios.
-<<<<<<< HEAD
 
-=======
->>>>>>> cf20d64ee7d2aba3a5e40b7dc6bccad6d5caf675
