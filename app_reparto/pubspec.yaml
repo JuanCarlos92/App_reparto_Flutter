@@ -32,6 +32,9 @@ flutter:
   assets:
     - assets/loading.json
     - assets/repartologo.png
+    - assets/icologo.png
+    - assets/fonts/
+    - assets/reparto360.png
 
   fonts:
     - family: Roboto

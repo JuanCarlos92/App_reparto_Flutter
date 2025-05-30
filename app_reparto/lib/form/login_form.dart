@@ -1,4 +1,4 @@
-import 'package:app_reparto/widgets/button_widget.dart';
+import 'package:app_reparto/widgets/button_login_widget.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
@@ -110,16 +110,9 @@ class _LoginFormState extends State<LoginForm> {
             },
           ),
           const SizedBox(height: 24),
-          ButtonWidget(
+          ButtonLoginWidget(
             text: 'INICIAR SESIÓN',
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 200, 120, 20),
-                Color.fromARGB(255, 200, 120, 20),
-              ],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            backgroundColor: const Color(0xFFD97B1E),
             onPressed: widget.isLoading ? () {} : widget.onLogin,
           ),
         ],

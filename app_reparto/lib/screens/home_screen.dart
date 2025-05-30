@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/services/local/geolocation_service.dart';
-import '../widgets/button_widget.dart';
+import '../widgets/button_home_widget.dart';
+import '../widgets/button_login_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import '../core/utils/dialog.dart';
 
@@ -269,10 +270,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
-              Icons.location_on,
-              color: Colors.white,
-              size: 24,
+            Image.asset(
+              'assets/icologo.png',
+              width: 32,
+              height: 32,
             ),
             const SizedBox(width: 8),
             const Text(
@@ -280,17 +281,17 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ],
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white),
-            onPressed: () {},
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: const Icon(Icons.more_vert, color: Colors.white),
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
       body: Container(
         color: Colors.white,
@@ -309,7 +310,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 32.0, horizontal: 24.0),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -323,51 +325,42 @@ class _HomeScreenState extends State<HomeScreen> {
                     'Jornada no iniciada',
                     style: TextStyle(
                       fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 32),
-                  ButtonWidget(
+                  ButtonHomeWidget(
                     text: 'INICIAR JORNADA',
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color(0xFFD97B1E),
-                        Color(0xFFD97B1E),
-                      ],
-                    ),
+                    backgroundColor: const Color(0xFFD97B1E),
                     onPressed: () async {
                       if (!context.mounted) return;
-                      final bool confirm = await DialogUtils.showConfirmationDialog(
-                          context, '¿Quieres iniciar tu jornada?');
+                      final bool confirm =
+                          await DialogUtils.showConfirmationDialog(
+                        context,
+                        '¿Quieres iniciar tu jornada?',
+                      );
                       if (!context.mounted) return;
                       if (confirm) {
-                        Navigator.pushNamed(context, '/timer',
-                            arguments: {'startTimer': true});
+                        Navigator.pushNamed(
+                          context,
+                          '/timer',
+                          arguments: {'startTimer': true},
+                        );
                       }
                     },
                   ),
                   const SizedBox(height: 12),
-                  ButtonWidget(
+                  ButtonHomeWidget(
                     text: 'CONTINUAR JORNADA',
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.grey[300]!,
-                        Colors.grey[300]!,
-                      ],
-                    ),
+                    backgroundColor: Colors.grey[300]!,
                     onPressed: () {},
                     textColor: Colors.black87,
                   ),
                   const SizedBox(height: 12),
-                  ButtonWidget(
+                  ButtonHomeWidget(
                     text: 'CERRAR SESIÓN',
-                    gradient: const LinearGradient(
-                      colors: [
-                        Colors.white,
-                        Colors.white,
-                      ],
-                    ),
+                    backgroundColor: Colors.white,
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/login');
                     },

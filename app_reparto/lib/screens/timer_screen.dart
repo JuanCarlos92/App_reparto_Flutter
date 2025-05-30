@@ -5,7 +5,7 @@ import 'package:app_reparto/core/utils/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:app_reparto/providers/timer_provider.dart';
-import '../widgets/button_widget.dart';
+import '../widgets/button_timer_widget.dart';
 import '../widgets/pomodoro_dialog.dart';
 
 class TimerScreen extends StatefulWidget {
@@ -197,18 +197,12 @@ class _TimerScreenState extends State<TimerScreen> {
                             // Botón para pausar o reanudar el temporizador
                             Consumer<TimerProvider>(
                               builder: (context, timerProvider, child) {
-                                return ButtonWidget(
+                                return ButtonTimerWidget(
                                   text: timerProvider.isRunning
                                       ? 'PAUSAR'
                                       : 'REANUDAR',
-                                  gradient: const LinearGradient(
-                                    colors: [
-                                      Color.fromARGB(255, 200, 120, 20),
-                                      Color.fromARGB(255, 200, 120, 20),
-                                    ],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 200, 120, 20),
                                   onPressed: timerProvider.pausarTimer,
                                 );
                               },
@@ -216,35 +210,26 @@ class _TimerScreenState extends State<TimerScreen> {
                             const SizedBox(height: 20),
 
                             // Botón para finalizar la jornada
-                            ButtonWidget(
-                                text: 'FINALIZAR',
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Colors.red,
-                                    Colors.red,
-                                  ],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                // onPressed: () =>
-                                //     _handleEndWork(context.read<TimerProvider>()),
+                            ButtonTimerWidget(
+                              text: 'FINALIZAR',
+                              backgroundColor: Colors.red,
+                              onPressed: () async {
+                                if (!context.mounted) return;
+                                final bool confirm =
+                                    await DialogUtils.showConfirmationDialog(
+                                  context,
+                                  '¿Finalizar la jornada del día?',
+                                );
+                                if (!context.mounted) return;
 
-                                onPressed: () async {
-                                  if (!context.mounted) return;
-                                  final bool confirm =
-                                      await DialogUtils.showConfirmationDialog(
-                                    context,
-                                    '¿Finalizar la jornada del día?',
-                                  );
-                                  if (!context.mounted) return;
-
-                                  if (confirm) {
-                                    context
-                                        .read<TimerProvider>()
-                                        .finalizarTimer();
-                                    Navigator.pop(context, '/home');
-                                  }
-                                }),
+                                if (confirm) {
+                                  context
+                                      .read<TimerProvider>()
+                                      .finalizarTimer();
+                                  Navigator.pop(context, '/home');
+                                }
+                              },
+                            ),
                           ],
                         ),
                       )),

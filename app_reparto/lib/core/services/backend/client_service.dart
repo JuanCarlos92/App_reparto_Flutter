@@ -11,7 +11,7 @@ class ClientService {
     try {
       final token = await TokenService.getToken();
       if (token == null) {
-        throw 'No se ha encontrado el token. Por favor inicia sesión.';
+        throw 'Por favor inicia sesión';
       }
 
       final url = Uri.parse('${Backend.url}/thirdparties');
@@ -67,7 +67,7 @@ class ClientService {
     try {
       final token = await TokenService.getToken();
       if (token == null) {
-        throw 'No se ha encontrado el token. Por favor inicia sesión.';
+        throw 'Por favor inicia sesión';
       }
       final url = Uri.parse('${Backend.url}/clientes/$clientId');
 

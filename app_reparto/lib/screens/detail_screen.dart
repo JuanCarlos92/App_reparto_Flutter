@@ -1,11 +1,12 @@
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:app_reparto/core/services/backend/client_service.dart';
 import 'package:app_reparto/core/utils/dialog.dart';
-import 'package:app_reparto/widgets/button_widget.dart';
 import 'package:app_reparto/widgets/detail_widget.dart';
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../widgets/button_widget.dart';
 
 class DetailScreen extends StatelessWidget {
   final String clienteID;
