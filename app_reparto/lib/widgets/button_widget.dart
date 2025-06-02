@@ -1,15 +1,17 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;
-  final Gradient gradient;
+  final Color backgroundColor;
   final VoidCallback onPressed;
   final Color textColor;
 
   const ButtonWidget({
     super.key,
     required this.text,
-    required this.gradient,
+    required this.backgroundColor,
     required this.onPressed,
     this.textColor = Colors.white,
   });
@@ -18,11 +20,11 @@ class ButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: gradient,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withOpacity(0.1),
             blurRadius: 8,
             offset: const Offset(0, 4),
           ),

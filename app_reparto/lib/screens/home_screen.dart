@@ -3,8 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/services/local/geolocation_service.dart';
-import '../widgets/button_home_widget.dart';
-import '../widgets/button_login_widget.dart';
+import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import '../core/utils/dialog.dart';
 
@@ -271,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              'assets/icologo.png',
+              'assets/logo.png',
               width: 32,
               height: 32,
             ),
@@ -330,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  ButtonHomeWidget(
+                  ButtonWidget(
                     text: 'INICIAR JORNADA',
                     backgroundColor: const Color(0xFFD97B1E),
                     onPressed: () async {
@@ -342,23 +341,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                       if (!context.mounted) return;
                       if (confirm) {
+                        startLocationUpdates(); // Iniciar geolocalización
                         Navigator.pushNamed(
                           context,
-                          '/timer',
+                          '/visits',
                           arguments: {'startTimer': true},
                         );
                       }
                     },
                   ),
                   const SizedBox(height: 12),
-                  ButtonHomeWidget(
+                  ButtonWidget(
                     text: 'CONTINUAR JORNADA',
                     backgroundColor: Colors.grey[300]!,
-                    onPressed: () {},
+                    onPressed: () {
+                      startLocationUpdates(); // Iniciar geolocalización
+                      Navigator.pushNamed(
+                        context,
+                        '/visits',
+                        arguments: {'startTimer': true},
+                      );
+                    },
                     textColor: Colors.black87,
                   ),
                   const SizedBox(height: 12),
-                  ButtonHomeWidget(
+                  ButtonWidget(
                     text: 'CERRAR SESIÓN',
                     backgroundColor: Colors.white,
                     onPressed: () {

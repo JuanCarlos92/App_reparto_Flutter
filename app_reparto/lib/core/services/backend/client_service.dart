@@ -81,7 +81,7 @@ class ClientService {
         },
       );
 
-      // Procesa la respuesta exitosa
+      // Procesa la respuesta
       switch (response.statusCode) {
         case 200:
         case 204:

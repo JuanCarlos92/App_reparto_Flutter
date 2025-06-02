@@ -51,86 +51,54 @@ class LocationScreen extends StatelessWidget {
 
     // Estructura principal de la pantalla
     return Scaffold(
-      // Barra superior de la aplicación
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
-        centerTitle: true,
-        title: const Text(
-          'Ubicación',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontFamily: 'Roboto',
-            shadows: [
-              Shadow(
-                blurRadius: 8,
-                color: Color.fromRGBO(0, 0, 0, 0.3),
-                offset: Offset(2, 2),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // Cuerpo principal de la pantalla
       body: Container(
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Padding superior para el logo
+            Padding(
+              padding: const EdgeInsets.only(top: 55, bottom: 5),
+              child: Image.asset(
+                'assets/reparto360.png',
+                height: 60,
+                fit: BoxFit.contain,
+              ),
+            ),
             // Sección superior con el widget del temporizador
             Container(
-              padding: const EdgeInsets.fromLTRB(25, 60, 25, 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+              child: const Column(
                 children: [
-                  const TimerWidget(), // Widget del temporizador
-                  const SizedBox(height: 10),
+                  TimerWidget(),
                 ],
               ),
             ),
-            const SizedBox(height: 8.5),
-
-            // Sección inferior con el mapa
-            Expanded(
-              child: Center(
-                child: SizedBox(
-                  // 90% del ancho de la pantalla
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  // Decoración del contenedor del mapa
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 252, 231, 197),
-                      borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      boxShadow: [
-                        BoxShadow(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          spreadRadius: 5,
-                        ),
-                      ],
-                      // Borde naranja alrededor del contenedor
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 200, 120, 20),
-                        width: 1.5,
-                      ),
-                    ),
-                    // Widget del mapa con padding
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 30),
-                      child: MapWidget(
-                        latitude: latitude,
-                        longitude: longitude,
-                      ),
-                    ),
+            const SizedBox(height: 5),
+            // Texto "Ubicación" alineado a la izquierda
+            const Padding(
+              padding: EdgeInsets.only(left: 25),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Ubicación',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'Roboto',
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            // Mapa expandido sin contenedor
+            Expanded(
+              child: MapWidget(
+                latitude: latitude,
+                longitude: longitude,
+              ),
+            ),
           ],
         ),
       ),

@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:app_reparto/providers/clients_provider.dart';
+import 'package:app_reparto/providers/pomodoro_provider.dart';
+import 'package:app_reparto/providers/timer_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/bar_widget.dart';
@@ -15,6 +17,7 @@ class VisitsScreen extends StatefulWidget {
 }
 
 class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
+  late TimerProvider _timerProvider;
   Timer? _timer;
   late RouteObserver<PageRoute> routeObserver;
 
@@ -22,6 +25,15 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
   void initState() {
     super.initState();
     routeObserver = RouteObserver<PageRoute>();
+
+    // Inicializa el temporizador al cargar la página
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final timerProvider = Provider.of<TimerProvider>(context, listen: false);
+      final pomodoroProvider =
+          Provider.of<PomodoroProvider>(context, listen: false);
+      timerProvider.setPomodoroProvider(pomodoroProvider);
+    });
   }
 
   @override
@@ -29,16 +41,25 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
     super.didChangeDependencies();
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
 
+    _timerProvider = Provider.of<TimerProvider>(context, listen: false);
+    final arguments =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    // Inicia el temporizador automáticamente si se recibe true
+    if (arguments != null && arguments['startTimer'] == true) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_timerProvider.isRunning &&
+            _timerProvider.hours == 0 &&
+            _timerProvider.minutes == 0 &&
+            _timerProvider.seconds == 0) {
+          _timerProvider.iniciarTimer();
+        }
+      });
+    }
+
     // Actualizar tiempos cuando la pantalla se muestra
     final clientsProvider = context.read<ClientsProvider>();
     clientsProvider.updateClientsWithDuration();
-  }
-
-  @override
-  void dispose() {
-    routeObserver.unsubscribe(this);
-    _timer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -58,6 +79,28 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
   void didPushNext() {
     // Se ejecuta cuando se navega a otra pantalla
     _timer?.cancel();
+  }
+
+  @override
+  void didPop() {
+    if (_timerProvider.isRunning) {
+      _timerProvider.pausarTimer();
+    }
+    super.didPop();
+  }
+
+  @override
+  void dispose() {
+    if (_timerProvider.isRunning) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          _timerProvider.finalizarTimer();
+        }
+      });
+    }
+    routeObserver.unsubscribe(this);
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override

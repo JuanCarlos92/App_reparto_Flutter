@@ -14,7 +14,6 @@ class DetailScreen extends StatelessWidget {
   final String clientAddress;
   final String clientTown;
 
-  // Constructor
   const DetailScreen({
     super.key,
     required this.clienteID,
@@ -25,139 +24,111 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Estructura principal de la página
     return Scaffold(
-      // Barra superior
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 200, 120, 20),
-        centerTitle: true,
-        title: const Text(
-          'Detalles del cliente',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-            fontFamily: 'Roboto',
-            shadows: [
-              Shadow(
-                blurRadius: 8,
-                color: Color.fromRGBO(0, 0, 0, 0.3),
-                offset: Offset(2, 2),
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // Contenedor principal que ocupa toda la pantalla
       body: Container(
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(
+          color: Colors.white,
+        ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Sección superior donde se muestra el temporizador
+            // Padding superior para el logo
+            Padding(
+              padding: const EdgeInsets.only(top: 55, bottom: 5),
+              child: Image.asset(
+                'assets/reparto360.png',
+                height: 60,
+                fit: BoxFit.contain,
+              ),
+            ),
+            // Sección superior con el widget del temporizador
             Container(
-              padding: const EdgeInsets.fromLTRB(25, 60, 25, 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+              child: const Column(
                 children: [
-                  const TimerWidget(), // Widget del temporizador
-                  const SizedBox(height: 10),
+                  TimerWidget(),
                 ],
               ),
             ),
-            const SizedBox(height: 8.5),
-
-            // Sección principal con los detalles del cliente
+            const SizedBox(height: 5),
+            // Texto "Detalles del cliente" alineado a la izquierda
+            Padding(
+              padding: const EdgeInsets.only(left: 25),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Detalles del cliente',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    fontFamily: 'Roboto',
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            // Contenedor principal con los detalles y el botón
             Expanded(
               child: Center(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width *
-                      0.9, // 90% del ancho de la pantalla
-                  child: Container(
-                    // Decoración del contenedor de detalles
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 252, 231, 197),
-                      borderRadius: const BorderRadius.all(Radius.circular(40)),
-                      boxShadow: [
-                        BoxShadow(
-                          // ignore: deprecated_member_use
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 20,
-                          spreadRadius: 5,
+                child: Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DetailWidget(
+                          clientName: clientName,
+                          clientAddress: clientAddress,
+                          clientTown: clientTown,
+                        ),
+                        const Spacer(),
+                        ButtonWidget(
+                          text: 'ENTREGADO',
+                          backgroundColor: const Color(0xFFD97B1E),
+                          onPressed: () async {
+                            final scaffoldMessenger = ScaffoldMessenger.of(context);
+                            final navigator = Navigator.of(context);
+                            final clientsProvider = Provider.of<ClientsProvider>(
+                                context,
+                                listen: false);
+
+                            final signed =
+                                await DialogUtils.showSignatureDialog(context);
+
+                            if (signed == true) {
+                              ClientService()
+                                  .deleteClient(clienteID)
+                                  .then((success) {
+                                if (success) {
+                                  clientsProvider.fetchClientsFromBackend();
+                                  scaffoldMessenger.showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            'Cliente entregado correctamente')),
+                                  );
+                                  navigator.pop();
+                                }
+                              }).catchError((e) {
+                                scaffoldMessenger.showSnackBar(
+                                  SnackBar(content: Text('Error: $e')),
+                                );
+                              });
+                            }
+                          },
                         ),
                       ],
-                      border: Border.all(
-                        // Borde del contenedor
-                        color: const Color.fromARGB(255, 200, 120, 20),
-                        width: 1.5,
-                      ),
-                    ),
-
-                    // Widget que muestra los detalles del cliente
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 30),
-                      child: Column(
-                        children: [
-                          DetailWidget(
-                            clientName: clientName,
-                            clientAddress: clientAddress,
-                            clientTown: clientTown,
-                          ),
-                          const SizedBox(height: 60),
-                          ButtonWidget(
-                            text: 'ENTREGADO',
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color.fromARGB(255, 200, 120, 20),
-                                Color.fromARGB(255, 200, 120, 20),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
-                            onPressed: () async {
-                              // Guardar referencias antes de la operación asíncrona
-                              final scaffoldMessenger =
-                                  ScaffoldMessenger.of(context);
-                              final navigator = Navigator.of(context);
-                              final clientsProvider =
-                                  Provider.of<ClientsProvider>(context,
-                                      listen: false);
-
-                              // Mostrar diálogo de firma
-                              final signed =
-                                  await DialogUtils.showSignatureDialog(
-                                      context);
-
-                              // Solo proceder si se firmó y el widget sigue montado
-                              if (signed == true) {
-                                // Ejecutar operación async
-                                ClientService()
-                                    .deleteClient(clienteID)
-                                    .then((success) {
-                                  if (success) {
-                                    // Actualizar la lista de clientes
-                                    clientsProvider.fetchClientsFromBackend();
-
-                                    scaffoldMessenger.showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                            'Cliente entregado correctamente'),
-                                      ),
-                                    );
-                                    navigator.pop();
-                                  }
-                                }).catchError((e) {
-                                  scaffoldMessenger.showSnackBar(
-                                    SnackBar(content: Text('Error: $e')),
-                                  );
-                                });
-                              }
-                            },
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ),
