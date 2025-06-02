@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../core/services/local/geolocation_service.dart';
+import '../providers/timer_provider.dart';
 import '../widgets/button_widget.dart';
 import 'package:app_reparto/providers/user_provider.dart';
 import '../core/utils/dialog.dart';
@@ -33,6 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
         context.read<UserProvider>().setUserName(userName);
       });
     }
+    //DETENER TEMPORIZADOR SI ESTÁ ACTIVO
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final timerProvider = context.read<TimerProvider>();
+      if (timerProvider.isRunning) {
+        timerProvider.pausarTimer(); // detiene el tiempo
+      }
+    });
   }
 
   // Inicia la actualización periódica de la ubicación
