@@ -5,7 +5,6 @@ import 'dart:async';
 import 'package:app_reparto/core/services/api/map_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../core/services/api/graphHopper_service.dart';
 import '../core/services/api/graphhopper_route_service.dart';
 
 class MapWidget extends StatefulWidget {
@@ -26,7 +25,8 @@ class MapWidget extends StatefulWidget {
 class _MapWidgetState extends State<MapWidget> {
   late GoogleMapController _mapController;
   final MapService _mapService = MapService();
-  final GraphhopperRouteService _graphhopperRouteService = GraphhopperRouteService();
+  final GraphhopperRouteService _graphhopperRouteService =
+      GraphhopperRouteService();
   LatLng? _currentPosition;
   Set<Marker> _markers = {};
   Set<Polyline> _polylines = {};
@@ -64,7 +64,8 @@ class _MapWidgetState extends State<MapWidget> {
 
   void _startLocationUpdates() {
     _locationUpdateTimer?.cancel();
-    _locationUpdateTimer = Timer.periodic(const Duration(minutes: 1), (timer) async {
+    _locationUpdateTimer =
+        Timer.periodic(const Duration(minutes: 1), (timer) async {
       if (!_isUpdatingRoute) {
         try {
           final position = await _mapService.getCurrentPosition();
@@ -185,5 +186,3 @@ class _MapWidgetState extends State<MapWidget> {
     );
   }
 }
-
-

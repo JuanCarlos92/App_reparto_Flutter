@@ -26,9 +26,11 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
     super.initState();
     routeObserver = RouteObserver<PageRoute>();
 
-    // Inicializa el temporizador al cargar la página
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      final clientsProvider = Provider.of<ClientsProvider>(context, listen: false);
+      clientsProvider.fetchClientsFromBackend();
+
       final timerProvider = Provider.of<TimerProvider>(context, listen: false);
       final pomodoroProvider =
           Provider.of<PomodoroProvider>(context, listen: false);
@@ -36,6 +38,7 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
     });
   }
 
+  @override
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -52,7 +55,6 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
     // Inicia o reanuda el temporizador automáticamente según los argumentos
     if (arguments != null) {
       if (arguments['resumeTimer'] == true) {
-        // Aseguramos que la reanudación ocurra después de que todo esté inicializado
         Future.microtask(() {
           if (mounted) {
             _timerProvider.reanudarTimer();

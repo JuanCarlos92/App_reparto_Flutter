@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:app_reparto/providers/clients_provider.dart';
 import 'package:app_reparto/core/services/backend/client_service.dart';
 import 'package:app_reparto/core/utils/dialog.dart';
@@ -6,6 +8,7 @@ import 'package:app_reparto/widgets/timer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/bar_details_widget.dart';
 import '../widgets/button_widget.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -110,7 +113,7 @@ class DetailScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         ButtonWidget(
-                          text: 'ENTREGADO',
+                          text: 'ENTREGAR  PEDIDO',
                           backgroundColor: const Color(0xFFD97B1E),
                           onPressed: () async {
                             final scaffoldMessenger =
@@ -154,6 +157,7 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: const BarDetailsWidget(),
     );
   }
 }

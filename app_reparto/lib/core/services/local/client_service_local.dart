@@ -15,10 +15,10 @@ class ClientServiceLocal {
     Client(
       id: '2',
       name: 'Supermercado García',
-      town: 'Madrid',
+      town: 'Ecija',
       address: 'Avenida Libertad 45',
-      latitude: 40.4152,
-      longitude: -3.7072,
+      latitude: 37.5357,
+      longitude: -5.0755,
       durationInSeconds: 2400,
     ),
     Client(
@@ -44,7 +44,7 @@ class ClientServiceLocal {
   // Obtener lista
   Future<List<Client>> getClients() async {
     // delay
-    await Future.delayed(const Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 200));
     return _mockClients;
   }
 
