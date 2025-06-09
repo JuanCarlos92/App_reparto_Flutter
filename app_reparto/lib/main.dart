@@ -11,6 +11,7 @@ import 'package:app_reparto/screens/home_screen.dart';
 import 'package:app_reparto/screens/login_screen.dart';
 import 'package:app_reparto/pages/main_page.dart';
 
+import 'screens/invoice_screen.dart';
 import 'widgets/break_overlay.dart';
 
 void main() async {
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
             '/home': (context) => const HomeScreen(),
             '/timer': (context) => const MainPage(),
             '/visits': (context) => const VisitsScreen(),
+            '/invoice': (context) => const InvoiceScreen(),
           },
           builder: (context, child) {
             return Stack(

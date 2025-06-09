@@ -59,13 +59,13 @@ class BarDetailsWidget extends StatelessWidget {
               ),
               tooltip: 'Ver factura',
               onPressed: () {
-                Navigator.pushNamed(context, '/invoice-list');
+                Navigator.pushNamed(context, '/invoice');
               },
             ),
             // Ver pedido
             IconButton(
               icon: const Icon(
-                Icons.shopping_cart,  // Cambiado de inventory a shopping_cart
+                Icons.shopping_cart,
                 color: Color(0xFFD97B1E),
                 size: 30,
               ),
