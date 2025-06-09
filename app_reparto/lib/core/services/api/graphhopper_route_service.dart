@@ -6,8 +6,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../../config/api.dart';
 
-class GraphhopperService {
-  Future<Map<String, dynamic>> drawRouteAndGetTime(
+class GraphhopperRouteService {
+  Future<Set<Polyline>> getRoute(
       LatLng currentPosition, double destLat, double destLng) async {
     final String url = '${Api.graphHopperApi}'
         '?point=${currentPosition.latitude},${currentPosition.longitude}'
@@ -19,41 +19,49 @@ class GraphhopperService {
         '&key=${Api.graphHopperKey}';
 
     try {
+      print('Solicitando ruta a: $url');
       final response = await http.get(Uri.parse(url));
       final data = json.decode(response.body);
 
-      // Verificar si hay mensaje de error de límite excedido
+      print('Respuesta de API: ${response.body}');
+
       if (data['message']?.contains('API limit') ?? false) {
-        return {
-          'polylines': <Polyline>{},
-          'duration': 0,
-          'error': 'API_LIMIT_EXCEEDED'
-        };
+        print('Límite de API excedido');
+        return <Polyline>{};
       }
 
-      if (response.statusCode == 200 && data['paths'] != null && data['paths'].isNotEmpty) {
+      if (response.statusCode == 200 &&
+          data['paths'] != null &&
+          data['paths'].isNotEmpty) {
         final path = data['paths'][0];
+        if (path['points'] == null || path['points']['coordinates'] == null) {
+          print('Error: No se encontraron coordenadas en la respuesta');
+          return <Polyline>{};
+        }
+
         List<LatLng> points = _decodePolyline(path['points']['coordinates']);
-        final timeInSeconds = (path['time'] / 1000).round();
+        print('Puntos decodificados: ${points.length}');
+
+        if (points.isEmpty) {
+          print('Error: No se pudieron decodificar puntos de la ruta');
+          return <Polyline>{};
+        }
 
         return {
-          'polylines': {
-            Polyline(
-              polylineId: const PolylineId('route'),
-              points: points,
-              color: Colors.blue,
-              width: 5,
-            ),
-          },
-          'duration': timeInSeconds,
+          Polyline(
+            polylineId: const PolylineId('route'),
+            points: points,
+            color: Colors.blue,
+            width: 5,
+          ),
         };
       }
-      
+
       print('Error - Respuesta de API inválida: ${response.body}');
-      return {'polylines': <Polyline>{}, 'duration': 0};
+      return <Polyline>{};
     } catch (e) {
-      print('Error dibujando ruta: $e');
-      return {'polylines': <Polyline>{}, 'duration': 0};
+      print('Error obteniendo ruta: $e');
+      return <Polyline>{};
     }
   }
 

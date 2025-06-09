@@ -11,24 +11,63 @@ class PomodoroDialog extends StatelessWidget {
     final TextEditingController breakController = TextEditingController();
 
     return AlertDialog(
-      title: const Text('Pomodoro'),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      title: const Text(
+        'Pomodoro',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          fontFamily: 'Roboto',
+        ),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           TextField(
             controller: workController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Inicio de descanso (HH:MM)',
               labelText: '00:30 para 30 minutos',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: Color(0xFFD97B1E),
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: Color(0xFFD97B1E),
+                  width: 2,
+                ),
+              ),
             ),
             keyboardType: TextInputType.datetime,
           ),
           const SizedBox(height: 16),
           TextField(
             controller: breakController,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'Tiempo de descanso (HH:MM)',
               labelText: '00:30 para 30 minutos',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: Color(0xFFD97B1E),
+                  width: 1.5,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: const BorderSide(
+                  color: Color(0xFFD97B1E),
+                  width: 2,
+                ),
+              ),
             ),
             keyboardType: TextInputType.datetime,
           ),
@@ -40,10 +79,22 @@ class PomodoroDialog extends StatelessWidget {
             context.read<PomodoroProvider>().disablePomodoro();
             Navigator.pop(context);
           },
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           child: const Text('Desactivar'),
         ),
         TextButton(
           onPressed: () => Navigator.pop(context),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           child: const Text('Cancelar'),
         ),
         TextButton(
@@ -51,6 +102,12 @@ class PomodoroDialog extends StatelessWidget {
             context,
             workController.text,
             breakController.text,
+          ),
+          style: TextButton.styleFrom(
+            foregroundColor: Colors.black,
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
           ),
           child: const Text('Activar'),
         ),

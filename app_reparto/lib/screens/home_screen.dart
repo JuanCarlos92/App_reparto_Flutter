@@ -1,4 +1,6 @@
 // import 'package:app_reparto/services/work_session_service.dart';
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   // Se ejecuta cuando las dependencias cambian, útil para inicializar datos
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final arguments = ModalRoute.of(context)?.settings.arguments;
@@ -34,11 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
         context.read<UserProvider>().setUserName(userName);
       });
     }
-    //DETENER TEMPORIZADOR SI ESTÁ ACTIVO
+
+    // Pausar el temporizador solo si no estamos continuando la jornada
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final timerProvider = context.read<TimerProvider>();
-      if (timerProvider.isRunning) {
-        timerProvider.pausarTimer(); // detiene el tiempo
+      if (timerProvider.isRunning && arguments is! Map<String, dynamic>) {
+        timerProvider.pausarTimer();
       }
     });
   }
@@ -328,49 +332,111 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.grey,
                   ),
                   const SizedBox(height: 16),
-                  const Text(
-                    'Jornada no iniciada',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  ButtonWidget(
-                    text: 'INICIAR JORNADA',
-                    backgroundColor: const Color(0xFFD97B1E),
-                    onPressed: () async {
-                      if (!context.mounted) return;
-                      final bool confirm =
-                          await DialogUtils.showConfirmationDialog(
-                        context,
-                        '¿Quieres iniciar tu jornada?',
+                  Consumer<TimerProvider>(
+                    builder: (context, timerProvider, child) {
+                      return Column(
+                        children: [
+                          Text(
+                            (timerProvider.hours > 0 ||
+                                    timerProvider.minutes > 0 ||
+                                    timerProvider.seconds > 0)
+                                ? 'Jornada iniciada'
+                                : 'Jornada no iniciada',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          if (timerProvider.hours > 0 ||
+                              timerProvider.minutes > 0 ||
+                              timerProvider.seconds > 0)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                '${timerProvider.hours.toString().padLeft(2, '0')}:${timerProvider.minutes.toString().padLeft(2, '0')}:${timerProvider.seconds.toString().padLeft(2, '0')}',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                        ],
                       );
-                      if (!context.mounted) return;
-                      if (confirm) {
-                        startLocationUpdates(); // Iniciar geolocalización
-                        Navigator.pushNamed(
-                          context,
-                          '/visits',
-                          arguments: {'startTimer': true},
-                        );
-                      }
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  const SizedBox(height: 16),
+                  Consumer<TimerProvider>(
+                    builder: (context, timerProvider, child) {
+                      bool jornadaIniciada = timerProvider.hours > 0 ||
+                          timerProvider.minutes > 0 ||
+                          timerProvider.seconds > 0;
+                      return ButtonWidget(
+                        text: 'INICIAR JORNADA',
+                        backgroundColor: jornadaIniciada
+                            ? Colors.grey[300]!
+                            : const Color(0xFFD97B1E),
+                        onPressed: jornadaIniciada
+                            ? () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content:
+                                        Text('La jornada ya está iniciada'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              }
+                            : () async {
+                                if (!context.mounted) return;
+                                final bool confirm =
+                                    await DialogUtils.showConfirmationDialog(
+                                  context,
+                                  '¿Quieres iniciar tu jornada?',
+                                );
+                                if (!context.mounted) return;
+                                if (confirm) {
+                                  startLocationUpdates();
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/visits',
+                                    arguments: {'startTimer': true},
+                                  );
+                                }
+                              },
+                      );
                     },
                   ),
                   const SizedBox(height: 12),
-                  ButtonWidget(
-                    text: 'CONTINUAR JORNADA',
-                    backgroundColor: Colors.grey[300]!,
-                    onPressed: () {
-                      startLocationUpdates(); // Iniciar geolocalización
-                      Navigator.pushNamed(
-                        context,
-                        '/visits',
-                        arguments: {'startTimer': true},
+                  Consumer<TimerProvider>(
+                    builder: (context, timerProvider, child) {
+                      bool jornadaIniciada = timerProvider.hours > 0 ||
+                          timerProvider.minutes > 0 ||
+                          timerProvider.seconds > 0;
+                      return ButtonWidget(
+                        text: 'CONTINUAR JORNADA',
+                        backgroundColor: jornadaIniciada
+                            ? const Color(0xFFD97B1E)
+                            : Colors.grey[300]!,
+                        onPressed: jornadaIniciada
+                            ? () {
+                                startLocationUpdates();
+                                Navigator.pushNamed(context, '/visits',
+                                    arguments: {'resumeTimer': true});
+                              }
+                            : () {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'No hay una jornada para continuar'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                        textColor:
+                            jornadaIniciada ? Colors.white : Colors.black87,
                       );
                     },
-                    textColor: Colors.black87,
                   ),
                   const SizedBox(height: 12),
                   ButtonWidget(

@@ -74,22 +74,22 @@ class TimerProvider extends ChangeNotifier {
     });
   }
 
-  // Método para pausar o reanudar
+  // Método para pausar o reanudar el temporizador
   String get status => _isRunning ? 'working' : 'paused';
 
   // Modificar el método pausarTimer para enviar el estado al servidor
   void pausarTimer() {
-    _isRunning = !_isRunning;
-    if (!_isRunning) {
+    if (_isRunning) {
       _timer?.cancel();
-
+      _isRunning = false;
+  
       // Crear una sesión con el estado actual
       final workSession = WorkSession(
         startTime: _startTime!,
         workedTime: getWorkedTime(),
         status: 'paused',
       );
-
+  
       // Enviar al servidor
       // WorkSessionService.updateWorkSession(workSession);
     } else {
@@ -100,14 +100,14 @@ class TimerProvider extends ChangeNotifier {
         workedTime: getWorkedTime(),
         status: 'working',
       );
-
+  
       // Enviar al servidor
       // WorkSessionService.updateWorkSession(workSession);
     }
     notifyListeners();
   }
 
-  // Método para finalizar
+  // Método para finalizar el temporizador
   void finalizarTimer() {
     // Crear una sesión final con el estado y tiempo trabajado
     final workSession = WorkSession(
@@ -126,6 +126,51 @@ class TimerProvider extends ChangeNotifier {
     _hours = 0;
     _isRunning = false;
     notifyListeners();
+  }
+
+  // Método para reanudar si está pausado
+  void reanudarTimer() {
+    // Cancelar el timer existente si hay uno
+    _timer?.cancel();
+
+    // Forzar el estado a running
+    _isRunning = true;
+    notifyListeners(); // Notificar inmediatamente el cambio de estado
+
+    // Establecer _startTime si es null
+    _startTime ??= DateTime.now();
+
+    // Create a work session with current state
+    final workSession = WorkSession(
+      startTime: _startTime!,
+      workedTime: getWorkedTime(),
+      status: 'working',
+    );
+
+    // Create timer that executes every second
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _seconds++;
+
+      if (_seconds == 60) {
+        _seconds = 0;
+        _minutes++;
+      }
+
+      if (_minutes == 60) {
+        _minutes = 0;
+        _hours++;
+      }
+
+      _pomodoroProvider?.updateWorkTime(
+        Duration(
+          hours: _hours,
+          minutes: _minutes,
+          seconds: _seconds,
+        ),
+      );
+
+      notifyListeners();
+    });
   }
 
   Duration getWorkedTime() {

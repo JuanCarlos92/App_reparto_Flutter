@@ -1,15 +1,16 @@
 import 'package:app_reparto/models/client.dart';
-import 'package:app_reparto/core/services/backend/client_service.dart';
+// import 'package:app_reparto/core/services/backend/client_service.dart';
 // import 'package:app_reparto/core/services/api/distance_service.dart';
+import '../core/services/local/client_service_local.dart';
 import 'package:app_reparto/core/services/local/geolocation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../core/services/api/graphHopper_service.dart';
 
 class ClientsProvider extends ChangeNotifier {
   // Servicios necesarios para la gestión de clientes y geolocalización
-  final ClientService _clientService = ClientService();
+  // final ClientService _clientService = ClientService();
+  final ClientServiceLocal _clientServiceLocal = ClientServiceLocal();
   final GeolocationService _geolocationService = GeolocationService();
   final GraphhopperService _graphhopperService = GraphhopperService();
 
@@ -26,7 +27,7 @@ class ClientsProvider extends ChangeNotifier {
       _error = '';
       notifyListeners();
 
-      final fetchedClients = await _clientService.getClients();
+      final fetchedClients = await _clientServiceLocal.getClients();
       _clients = fetchedClients;
 
       // Actualizar duracion despues de actualizar clientes

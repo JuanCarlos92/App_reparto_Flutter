@@ -100,20 +100,37 @@ class DialogUtils {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Confirmación'),
-          content: Text(message),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontFamily: 'Roboto',
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              child: const Text('No'),
+              onPressed: () => Navigator.of(context).pop(false),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              child: const Text('Cancelar'),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              child: const Text('Sí'),
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                textStyle: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              child: const Text('Aceptar'),
             ),
           ],
         );

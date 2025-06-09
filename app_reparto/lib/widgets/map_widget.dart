@@ -1,11 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 import 'dart:async';
 import 'package:app_reparto/core/services/api/map_service.dart';
-// import 'package:app_reparto/core/services/api/directions_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
 import '../core/services/api/graphHopper_service.dart';
+import '../core/services/api/graphhopper_route_service.dart';
 
 class MapWidget extends StatefulWidget {
   // Coordenadas del destino (cliente)
@@ -23,60 +24,21 @@ class MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<MapWidget> {
-  // Controlador para manipular el mapa
   late GoogleMapController _mapController;
-  // Servicio que maneja la lógica del mapa
   final MapService _mapService = MapService();
-  // Servicio que maneja la lógica de la distancia
-  final GraphhopperService _graphhopperService = GraphhopperService();
-  // Posición actual del usuario
+  final GraphhopperRouteService _graphhopperRouteService = GraphhopperRouteService();
   LatLng? _currentPosition;
-  // Conjunto de marcadores en el mapa (ubicación actual y cliente)
   Set<Marker> _markers = {};
-  // Conjunto de líneas que forman la ruta
   Set<Polyline> _polylines = {};
-  // Actualizaciones periódicas
   Timer? _locationUpdateTimer;
+  bool _isUpdatingRoute = false;
 
   @override
   void initState() {
     super.initState();
     _initializeMap();
-    // Iniciar actualización periódica
-    _startLocationUpdates();
   }
 
-  @override
-  void dispose() {
-    _locationUpdateTimer?.cancel();
-    super.dispose();
-  }
-
-  void _startLocationUpdates() {
-    // Actualizar cada 10 segundos
-    _locationUpdateTimer =
-        Timer.periodic(const Duration(seconds: 10), (timer) async {
-      try {
-        final position = await _mapService.getCurrentPosition();
-        if (mounted) {
-          setState(() {
-            _currentPosition = position;
-            _markers = _mapService.createMarkers(
-              _currentPosition,
-              widget.latitude,
-              widget.longitude,
-            );
-          });
-          await _updateRoute();
-        }
-      } catch (e) {
-        // ignore: avoid_print
-        print('Error actualizando ubicación: $e');
-      }
-    });
-  }
-
-  // Inicializa el mapa obteniendo la ubicación actual y configurando marcadores y ruta
   Future<void> _initializeMap() async {
     try {
       final position = await _mapService.getCurrentPosition();
@@ -90,50 +52,71 @@ class _MapWidgetState extends State<MapWidget> {
             widget.longitude,
           );
         });
+
         await _updateRoute();
         await _updateCamera();
+        _startLocationUpdates();
       }
     } catch (e) {
-      // ignore: avoid_print
       print('Debug - Error getting current location: $e');
     }
   }
 
-  // Actualiza la ruta entre la ubicación actual y el destino
+  void _startLocationUpdates() {
+    _locationUpdateTimer?.cancel();
+    _locationUpdateTimer = Timer.periodic(const Duration(minutes: 1), (timer) async {
+      if (!_isUpdatingRoute) {
+        try {
+          final position = await _mapService.getCurrentPosition();
+          if (mounted) {
+            setState(() {
+              _currentPosition = position;
+              _markers = _mapService.createMarkers(
+                _currentPosition,
+                widget.latitude,
+                widget.longitude,
+              );
+            });
+            await _updateRoute();
+          }
+        } catch (e) {
+          print('Error actualizando ubicación: $e');
+        }
+      }
+    });
+  }
+
   Future<void> _updateRoute() async {
-    if (_currentPosition != null) {
-      final result = await _graphhopperService.drawRouteAndGetTime(
+    if (_currentPosition == null || _isUpdatingRoute) return;
+
+    _isUpdatingRoute = true;
+    try {
+      final polylines = await _graphhopperRouteService.getRoute(
         _currentPosition!,
         widget.latitude,
         widget.longitude,
       );
+
       if (mounted) {
         setState(() {
-          _polylines = result['polylines'];
+          if (polylines.isNotEmpty) {
+            _polylines = polylines;
+          } else {
+            print('No se recibieron polylines de la API');
+          }
         });
       }
+    } catch (e) {
+      print('Error actualizando ruta: $e');
+    } finally {
+      _isUpdatingRoute = false;
     }
   }
 
-  // Actualiza la ruta entre la ubicación actual y el destino
-  // Future<void> _updateRoute() async {
-  //   if (_currentPosition != null) {
-  //     final polylines = await _directionsService.drawRoute(
-  //       _currentPosition!,
-  //       widget.latitude,
-  //       widget.longitude,
-  //     );
-  //     if (mounted) {
-  //       setState(() {
-  //         _polylines = polylines;
-  //       });
-  //     }
-  //   }
-  // }
-
-  // Ajusta la cámara del mapa para mostrar tanto el origen como el destino
   Future<void> _updateCamera() async {
-    if (_currentPosition != null) {
+    if (_currentPosition == null || !mounted) return;
+
+    try {
       final bounds = LatLngBounds(
         southwest: LatLng(
           min(_currentPosition!.latitude, widget.latitude),
@@ -148,11 +131,18 @@ class _MapWidgetState extends State<MapWidget> {
       await _mapController.animateCamera(
         CameraUpdate.newLatLngBounds(bounds, 50.0),
       );
+    } catch (e) {
+      print('Error actualizando cámara: $e');
     }
   }
 
   @override
-  // Construye la interfaz del widget del mapa
+  void dispose() {
+    _locationUpdateTimer?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(16.0),
@@ -195,3 +185,5 @@ class _MapWidgetState extends State<MapWidget> {
     );
   }
 }
+
+

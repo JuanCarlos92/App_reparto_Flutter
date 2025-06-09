@@ -31,9 +31,24 @@ class DetailScreen extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // Padding superior para el logo
+            // Botón de retroceso
             Padding(
-              padding: const EdgeInsets.only(top: 55, bottom: 5),
+              padding: const EdgeInsets.only(top: 10, left: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ),
+            // Logo
+            Padding(
+              padding: const EdgeInsets.only(bottom: 5),
               child: Image.asset(
                 'assets/reparto360.png',
                 height: 60,
@@ -98,11 +113,12 @@ class DetailScreen extends StatelessWidget {
                           text: 'ENTREGADO',
                           backgroundColor: const Color(0xFFD97B1E),
                           onPressed: () async {
-                            final scaffoldMessenger = ScaffoldMessenger.of(context);
+                            final scaffoldMessenger =
+                                ScaffoldMessenger.of(context);
                             final navigator = Navigator.of(context);
-                            final clientsProvider = Provider.of<ClientsProvider>(
-                                context,
-                                listen: false);
+                            final clientsProvider =
+                                Provider.of<ClientsProvider>(context,
+                                    listen: false);
 
                             final signed =
                                 await DialogUtils.showSignatureDialog(context);

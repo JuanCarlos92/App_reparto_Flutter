@@ -42,19 +42,34 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
     routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute);
 
     _timerProvider = Provider.of<TimerProvider>(context, listen: false);
+    final pomodoroProvider =
+        Provider.of<PomodoroProvider>(context, listen: false);
+    _timerProvider.setPomodoroProvider(pomodoroProvider);
+
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    // Inicia el temporizador automáticamente si se recibe true
-    if (arguments != null && arguments['startTimer'] == true) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+    // Inicia o reanuda el temporizador automáticamente según los argumentos
+    if (arguments != null) {
+      if (arguments['resumeTimer'] == true) {
+        // Aseguramos que la reanudación ocurra después de que todo esté inicializado
+        Future.microtask(() {
+          if (mounted) {
+            _timerProvider.reanudarTimer();
+          }
+        });
+      } else if (arguments['startTimer'] == true) {
         if (!_timerProvider.isRunning &&
             _timerProvider.hours == 0 &&
             _timerProvider.minutes == 0 &&
             _timerProvider.seconds == 0) {
-          _timerProvider.iniciarTimer();
+          Future.microtask(() {
+            if (mounted) {
+              _timerProvider.iniciarTimer();
+            }
+          });
         }
-      });
+      }
     }
 
     // Actualizar tiempos cuando la pantalla se muestra
@@ -119,9 +134,24 @@ class _VisitsScreenState extends State<VisitsScreen> with RouteAware {
         ),
         child: Column(
           children: [
+            // Botón de retroceso
+            Padding(
+              padding: const EdgeInsets.only(top: 10, left: 10),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: IconButton(
+                  icon: const Icon(
+                    Icons.arrow_back,
+                    color: Colors.black,
+                    size: 30,
+                  ),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+            ),
             // Padding superior para el logo
             Padding(
-              padding: const EdgeInsets.only(top: 55, bottom: 5),
+              padding: const EdgeInsets.only(bottom: 5),
               child: Image.asset(
                 'assets/reparto360.png',
                 height: 60,
