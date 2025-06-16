@@ -157,7 +157,7 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const BarDetailsWidget(),
+      bottomNavigationBar: BarDetailsWidget(clienteId: clienteID),
     );
   }
 }

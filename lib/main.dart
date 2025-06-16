@@ -62,7 +62,6 @@ class MyApp extends StatelessWidget {
             '/home': (context) => const HomeScreen(),
             '/timer': (context) => const MainPage(),
             '/visits': (context) => const VisitsScreen(),
-            '/invoice': (context) => const InvoiceScreen(),
           },
           builder: (context, child) {
             return Stack(

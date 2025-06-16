@@ -1,20 +1,12 @@
 // ignore_for_file: deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../providers/pomodoro_provider.dart';
-import 'pomodoro_dialog.dart';
-import 'calendar_popup.dart';
+import '../screens/invoice_screen.dart';
 
 class BarDetailsWidget extends StatelessWidget {
-  const BarDetailsWidget({super.key});
+  final String clienteId;
 
-  void _showPomodoroInputDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const PomodoroDialog(),
-    );
-  }
+  const BarDetailsWidget({super.key, required this.clienteId});
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +51,12 @@ class BarDetailsWidget extends StatelessWidget {
               ),
               tooltip: 'Ver factura',
               onPressed: () {
-                Navigator.pushNamed(context, '/invoice');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InvoiceScreen(clientId: clienteId),
+                  ),
+                );
               },
             ),
             // Ver pedido
@@ -74,7 +71,6 @@ class BarDetailsWidget extends StatelessWidget {
                 Navigator.pushNamed(context, '/order-view');
               },
             ),
-
             // Reportar problema
             IconButton(
               icon: const Icon(
